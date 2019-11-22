@@ -1,0 +1,86 @@
+---
+title: "BacterialProductivity"
+author: "Emmi Mueller"
+date: "August 5, 2019"
+output: html_document
+---
+
+```{r}
+rm(list = ls())
+getwd()
+
+```
+
+```{r}
+Resource <- as.data.frame(read.csv(file.choose(), header = TRUE))
+plot(Resource$Wells ~ Resource$Tau, pch = 16, ylab = "Wells with positive response", xlab = expression(paste("log(", tau, ")")))
+lines(lowess(Resource$Wells ~ Resource$Tau), col = "red")
+
+Tau <- as.data.frame(read.csv(file.choose(), header = TRUE))
+Tau$Tau <- log(Tau$Tau, 10)
+
+#Abundance
+N <- as.data.frame(read.csv(file.choose(), header = TRUE))
+Tau$N <- NA
+Tau$log_N <- NA
+Tau <- as.data.frame(Abundance(N, Tau))
+  
+#BP data
+CPM_8 <- as.data.frame(read.csv(file.choose(), header = FALSE))
+CPM_12 <-as.data.frame(read.csv(file.choose(), header = FALSE))
+Tau$ugCLhr <- NA
+Tau$log_ugCLhr <- NA
+Tau <- as.data.frame(BP(CPM_12, Tau))
+Tau <- as.data.frame(BP(CPM_8, Tau))
+
+
+plot(Tau$log_N ~ Tau$Tau, pch = 16, col = "black", ylab = "log(N)", xlab = expression(paste("log(",tau,")")), main = "Abundance")
+lines(lowess(Tau$log_N ~ Tau$Tau), col = "red")
+plot(Tau$log_ugCLhr ~ Tau$Tau, pch =16, col = "black", ylab = "log(P)", xlab = expression(paste("log(",tau,")")), main = "Productivity")
+lines(lowess(Tau$log_ugCLhr ~ Tau$Tau), col = "red")
+```
+
+```{r}
+BP <- function(CPMs, Tau){
+  date <- as.Date(strptime(as.character(CPMs[1,2]),"%Y-%m-%d"))
+  date_std <- as.Date(strptime(as.character(CPMs[2,2]), "%Y-%m-%d"))
+  DPM_std <- as.double(as.character(CPMs[3,2]))
+  DPM_curr <- as.double(as.character(CPMs[4,2]))
+  half_life <- as.double(as.character(CPMs[5,2]))
+  kills <- as.double(as.character(CPMs[6,2]))
+  M_Leu <- as.double(as.character(CPMs[7,2]))
+  Voucher <- as.double(as.character(CPMs[8,2]))
+  
+  CPMs <- CPMs[-c(1:10),]
+  colnames(CPMs) <- c("Sample", "CPM")
+
+  t <- as.numeric(date - date_std)/365
+  DPM_exp <- (DPM_std)*exp((-0.693/half_life)*t)
+  efficiency <- DPM_curr/DPM_exp
+  
+  CPMs$CPM <- as.numeric(as.character(CPMs$CPM))
+  CPMs$DPM <- CPMs$CPM / efficiency
+  CPMs$DPMkills <- CPMs$DPM - (kills / efficiency)
+  CPMs$MLeu <- (M_Leu * CPMs$DPM)/Voucher
+  CPMs$ugCLhr <- CPMs$MLeu * 131.2 * (1/0.073)*0.86*2*1000000
+
+  for(x in unique(CPMs$Sample)){
+    Tau$ugCLhr[Tau$Sample == x] <- mean(CPMs$ugCLhr[CPMs$Sample == x])
+  }
+  
+  Tau$log_ugCLhr <- log(Tau$ugCLhr, 10)
+  
+  return(Tau)
+}
+```
+
+```{r}
+Abundance <- function(N, Tau){
+  for(x in unique(N$Sample)){
+    Tau$N[Tau$Sample == x] <- mean(N$N[N$Sample == x])
+  }
+  Tau$log_N <- log(Tau$N, 10)
+  
+  return(Tau)
+}
+```
