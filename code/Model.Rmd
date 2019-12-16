@@ -1,0 +1,26 @@
+---
+title: "Model"
+author: "Emmi Mueller"
+date: "12/4/2019"
+output: pdf_document
+---
+```{r}
+volume <- 40
+tau <- 0
+flow <- volume/(10^tau)
+abundance <- (10^6 * volume)
+plot(tau, log(abundance, 10), ylim = c(0,10), xlim = c(-1,10))
+while(10^tau < 10^9){
+  abundance <- (10^6 * volume)
+  points(tau, log(abundance, 10))
+  flow <- volume/(10^tau)
+  x <- 0
+  while(x < 2){
+    abundance <- (abundance*2) - ((abundance/volume)*flow)+ (flow * 10^6)
+    x <- x + 1
+  }
+  points(tau, (log(abundance, 10) - log(10^6 * volume, 10)), col = "green")
+  tau <- tau + 0.25
+}
+```
+
