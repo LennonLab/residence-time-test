@@ -4,10 +4,80 @@ author: "Emmi Mueller"
 date: "July 23, 2019"
 output: html_document
 ---
+```{r setup, include = FALSE}
+rm(list=ls())
+require("knitr")
+getwd()
+```
 
 ```{r}
-getwd()
-abundance <- read.csv("../GitHub/20190722_EAM_RT_12_UL_D1-9_Samples.csv", header = TRUE, sep = ",")
+require("png")
+require("vegan")
+require("ggplot2")
+#install.packages("ggpmisc")
+#install.packages("cowplot")
+require("ggpubr")
+require("cowplot")
+require("ggpmisc")
+```
+
+```{r figure_setup}
+my.cols <- RColorBrewer::brewer.pal(n = 4, name = "Greys")[3:4]
+
+# Set theme for figures in the paper
+theme_set(theme_classic() + 
+  theme(axis.title = element_text(size = 16),
+        axis.title.x = element_text(margin = margin(t = 15, b = 15)),
+        axis.title.y = element_text(margin = margin(l = 15, r = 15)),
+        axis.text = element_text(size = 14),
+        axis.text.x = element_text(margin = margin(t = 5)),
+        axis.text.y = element_text(margin = margin(r = 5)),
+        #axis.line.x = element_line(size = 1),
+        #axis.line.y = element_line(size = 1),
+        axis.line.x = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks.x = element_line(size = 1),
+        axis.ticks.y = element_line(size = 1),
+        axis.ticks.length = unit(.1, "in"),
+        panel.border = element_rect(color = "black", fill = NA, size = 1.5),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 14),
+        strip.text = element_text(size = 14),
+        strip.background = element_blank()
+        ))
+```
+#Read in data
+
+```{r}
+# Pilot Tau data
+Tau <- read.csv("data/20191115_RT_Tau.csv", sep = ",", header=TRUE)
+
+# Pilot Abundance data
+N <- read.table("data/20191119_RT_N.csv", sep=",", header=TRUE)
+
+# Pilot time series Abundance data
+abundance <- read.csv("./data/20190722_EAM_RT_12_UL_D1-9_Samples.csv", header = TRUE, sep = ",")
+
+```
+
+#Generate and save N vs. Tau pilot figure
+```{r}
+Tau$N <- as.numeric(N$N)
+ggplot(Tau,aes(x=log(Tau, 10),y=log(N, 10)))+
+  geom_point(size=2,alpha=0.6)+
+  geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
+  xlab("log(Tau)") +
+  ylab("log(N)") +
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE) +
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+
+ggsave("./output/Tau_N.pdf")
+```
+
+#Generate N vs. Time pilot figure
+```{r}
 
 plot(log10(abundance$P1.Abs..Count[abundance$Sample=="A"]) ~ abundance$Day[abundance$Sample=="A"], col = "red", ylim= c(6,10), type = "b", pch = 16, xlab = "", ylab = "", axes = FALSE, cex = 1.2)
 axis(2, at= c(6,7,8,9,10), labels = c(expression(paste("10"^"6")),expression(paste("10"^"7")), expression(paste("10"^"8")),expression(paste("10"^"9")), expression(paste("10"^"10"))), las = 2)
@@ -27,21 +97,5 @@ mtext("Abundance (cells/mL)", side = 2, line = 3, cex = 1.4)
 mtext("Time (hrs)", side = 1, line = 3, cex = 1.4)
 box()
 
-plot(log10(abundance$P1.Abs..Count[abundance$Day == "9"]) ~ log10(abundance$Tau[abundance$Day=="9"]), col = "red", type = "p", pch = 16, ylab = "", xlab = "", axes = FALSE, cex = 1.2, xlim = c(2,6))
-axis(2, at= c(6,7,8), labels = c(expression(paste("10"^"6")),expression(paste("10"^"7")), expression(paste("10"^"8"))), las = 2)
-axis(1, at = c(1,2,3,4,5,6), labels = c(expression(paste("10"^"1")),expression(paste("10"^"2")), expression(paste("10"^"3")), expression(paste("10"^"4")), expression(paste("10"^"5")), expression(paste("10"^"6"))), las = 1)
-mtext("Abundance (cells/mL)", side = 2, line = 3, cex = 1.4)
-mtext("Tau", side = 1, line = 3, cex = 1.4)
 ```
 
-```{r}
-coef(lm(logit(OD600_Ecoli_GC$OD600/0.9)~OD600_Ecoli_GC$minutes))
-growthcurve_OD<-nls(OD600_Ecoli_GC$OD600~phi1/(1+exp(-(phi2+phi3*OD600_Ecoli_GC$minutes))),
- start=list(phi1=0.9,phi2=-2.805,phi3=0.031), data = OD600_Ecoli_GC, trace=TRUE)
-phi1_OD<-coef(growthcurve_OD)[1]
-phi2_OD<-coef(growthcurve_OD)[2]
-phi3_OD<-coef(growthcurve_OD)[3]
-x<-c(min(OD600_Ecoli_GC$minutes):max(OD600_Ecoli_GC$minutes))
-y<-phi1_OD/(1+exp(-(phi2_OD+phi3_OD*x)))
-predict_OD600<-data.frame(x,y)
-```
