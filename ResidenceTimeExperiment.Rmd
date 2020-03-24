@@ -14,8 +14,6 @@ getwd()
 require("png")
 require("vegan")
 require("ggplot2")
-#install.packages("ggpmisc")
-#install.packages("cowplot")
 require("ggpubr")
 require("cowplot")
 require("ggpmisc")
@@ -49,51 +47,82 @@ theme_set(theme_classic() +
 #Read in data
 
 ```{r}
-# Pilot Tau data
-Tau <- read.csv("data/20191115_RT_Tau.csv", sep = ",", header=TRUE)
+#Day 20 data from all trials
+RT <- read.csv("data/20200319_RT.csv", sep =",", header = TRUE)
 
-# Pilot Abundance data
-N <- read.table("data/20191119_RT_N.csv", sep=",", header=TRUE)
+# Pilot time series T data
+T <- read.csv("./data/20190722_EAM_RT_12_UL_D1-9_Samples.csv", header = TRUE, sep = ",")
 
-# Pilot time series Abundance data
-abundance <- read.csv("./data/20190722_EAM_RT_12_UL_D1-9_Samples.csv", header = TRUE, sep = ",")
+RT$BP_N <- RT$BP/RT$N
 
 ```
 
 #Generate and save N vs. Tau pilot figure
 ```{r}
-Tau$N <- as.numeric(N$N)
-ggplot(Tau,aes(x=log(Tau, 10),y=log(N, 10)))+
+N <- ggplot(RT,aes(x=log(Tau, 10),y=log(N, 10)))+
   geom_point(size=2,alpha=0.6)+
   geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
-  xlab("log(Tau)") +
+  xlab(expression(paste("log(", tau,")")))+
   ylab("log(N)") +
-  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE) +
-  theme_bw() +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
 
 ggsave("./output/Tau_N.pdf")
+ggsave("./output/Tau_N.png")
+
+OT <- ggplot(RT, aes(x=log(Tau, 10), y = OT))+
+  geom_point(size=2, alpha=0.6)+
+  geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
+  xlab(expression(paste("log(", tau,")")))+
+  ylab("Biofilm Formation")+
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
+
+ggsave("./output/Tau_Biofilm.pdf")
+ggsave("./output/Tau_Biofilm.png")
+
+BP_N <- ggplot(RT, aes(x=log(Tau, 10), y = BP_N))+
+  geom_point(size=2, alpha=0.6)+
+  geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
+  xlab(expression(paste("log(", tau,")")))+
+  ylab(expression(paste(mu,"M C/hr/cell")))+
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
+
+ggsave("./output/Tau_ind.P.pdf")
+ggsave("./output/Tau_ind.P.png")
+
+BP <- ggplot(RT, aes(x=log(Tau, 10), y = BP))+
+  geom_point(size=2, alpha=0.6)+
+  geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
+  xlab(expression(paste("log(", tau,")")))+
+  ylab(expression(paste(mu, "M C/hr")))+
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
+
+ggsave("./output/Tau_BP.pdf")
+ggsave("./output/Tau_BP.png")
+
+ggarrange(BP, N, BP_N, labels = c("A", "B", "C"), ncol = 3, nrow = 1)
+ggsave("./output/Tau_BP_N_BP_N.pdf", width = 15, height = 5)
+ggsave("./output/Tau_BP_N_BP_N.png", width = 15, height = 5)
 ```
+
 
 #Generate N vs. Time pilot figure
 ```{r}
 
-plot(log10(abundance$P1.Abs..Count[abundance$Sample=="A"]) ~ abundance$Day[abundance$Sample=="A"], col = "red", ylim= c(6,10), type = "b", pch = 16, xlab = "", ylab = "", axes = FALSE, cex = 1.2)
+plot(log10(T$P1.Abs..Count[T$Sample=="A"]) ~ T$Day[T$Sample=="A"], col = "red", ylim= c(6,8), type = "b", pch = 16, xlab = "", ylab = "", axes = FALSE, cex = 1.2)
 axis(2, at= c(6,7,8,9,10), labels = c(expression(paste("10"^"6")),expression(paste("10"^"7")), expression(paste("10"^"8")),expression(paste("10"^"9")), expression(paste("10"^"10"))), las = 2)
-axis(1, at= abundance$Day, labels = ((abundance$Day)*24))
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="B"]) ~ abundance$Day[abundance$Sample=="B"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="C"]) ~ abundance$Day[abundance$Sample=="C"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="D"]) ~ abundance$Day[abundance$Sample=="D"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="E"]) ~ abundance$Day[abundance$Sample=="E"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="F"]) ~ abundance$Day[abundance$Sample=="F"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="G"]) ~ abundance$Day[abundance$Sample=="G"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="H"]) ~ abundance$Day[abundance$Sample=="H"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="I"]) ~ abundance$Day[abundance$Sample=="I"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="J"]) ~ abundance$Day[abundance$Sample=="J"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="K"]) ~ abundance$Day[abundance$Sample=="K"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-points(log10(abundance$P1.Abs..Count[abundance$Sample=="L"]) ~ abundance$Day[abundance$Sample=="L"], col = "red", ylim= c(6,10), type = "b", pch = 16, cex = 1.2)
-mtext("Abundance (cells/mL)", side = 2, line = 3, cex = 1.4)
+axis(1, at= T$Day, labels = ((T$Day)*24))
+points(log10(T$P1.Abs..Count[T$Sample=="B"]) ~ T$Day[T$Sample=="B"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="C"]) ~ T$Day[T$Sample=="C"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="D"]) ~ T$Day[T$Sample=="D"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="E"]) ~ T$Day[T$Sample=="E"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="F"]) ~ T$Day[T$Sample=="F"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="G"]) ~ T$Day[T$Sample=="G"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="H"]) ~ T$Day[T$Sample=="H"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="I"]) ~ T$Day[T$Sample=="I"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="J"]) ~ T$Day[T$Sample=="J"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="K"]) ~ T$Day[T$Sample=="K"], col = "red", type = "b", pch = 16, cex = 1.2)
+points(log10(T$P1.Abs..Count[T$Sample=="L"]) ~ T$Day[T$Sample=="L"], col = "red", type = "b", pch = 16, cex = 1.2)
+mtext("T (cells/mL)", side = 2, line = 3, cex = 1.4)
 mtext("Time (hrs)", side = 1, line = 3, cex = 1.4)
 box()
 
