@@ -45,6 +45,22 @@ theme_set(theme_classic() +
         ))
 ```
 #Read in data
+# ```{r}
+# #Abundance
+# N <- as.data.frame(read.csv(file.choose(), header = TRUE))
+# Tau$N <- NA
+# Tau$log_N <- NA
+# Tau <- as.data.frame(Abundance(N, Tau))
+#   
+# #BP data
+# CPM_8 <- as.data.frame(read.csv(file.choose(), header = FALSE))
+# CPM_12 <-as.data.frame(read.csv(file.choose(), header = FALSE))
+# Tau$ugCLhr <- NA
+# Tau$log_ugCLhr <- NA
+# Tau <- as.data.frame(BP(CPM_12, Tau))
+# Tau <- as.data.frame(BP(CPM_8, Tau))
+# Tau$ind_P <- Tau$ugCLhr/Tau$N
+# ```
 
 ```{r}
 #Day 20 data from all trials
@@ -53,15 +69,114 @@ RT <- read.csv("data/20200319_RT.csv", sep =",", header = TRUE)
 # Pilot time series T data
 T <- read.csv("./data/20190722_EAM_RT_12_UL_D1-9_Samples.csv", header = TRUE, sep = ",")
 
+EcoPlate_t78 <- read.table("./data/eco.data.txt", header = TRUE, sep = "\t")
+EcoPlate_t78$Time <- c(0,6, 27,31,47,54,78)
+
+EcoPlate_allrt <- read.table("./data/eco.data.allrt.txt", header = TRUE, sep = "\t")
+EcoPlate_allrt$Tau <- c(4, 5, 6, 7, 4.5, 5.5, 6.5, 7.5)
+EcoPlate_allrt <- EcoPlate_allrt[!EcoPlate_allrt$Strain == "RT7",]
+
 RT$BP_N <- RT$BP/RT$N
+RT$BR_N <- RT$BR/RT$N
+
+RT <- RT[!RT$Sample =="UL_8_G",]
 
 ```
 
+```{r}
+BP <- function(CPMs, Tau){
+  date <- as.Date(strptime(as.character(CPMs[1,2]),"%Y-%m-%d"))
+  date_std <- as.Date(strptime(as.character(CPMs[2,2]), "%Y-%m-%d"))
+  DPM_std <- as.double(as.character(CPMs[3,2]))
+  DPM_curr <- as.double(as.character(CPMs[4,2]))
+  half_life <- as.double(as.character(CPMs[5,2]))
+  kills <- as.double(as.character(CPMs[6,2]))
+  M_Leu <- as.double(as.character(CPMs[7,2]))
+  Voucher <- as.double(as.character(CPMs[8,2]))
+  
+  CPMs <- CPMs[-c(1:10),]
+  colnames(CPMs) <- c("Sample", "CPM")
+
+  t <- as.numeric(date - date_std)/365
+  DPM_exp <- (DPM_std)*exp((-0.693/half_life)*t)
+  efficiency <- DPM_curr/DPM_exp
+  
+  CPMs$CPM <- as.numeric(as.character(CPMs$CPM))
+  CPMs$DPM <- CPMs$CPM / efficiency
+  CPMs$DPMkills <- CPMs$DPM - (kills / efficiency)
+  CPMs$MLeu <- (M_Leu * CPMs$DPM)/Voucher
+  CPMs$ugCLhr <- CPMs$MLeu * 131.2 * (1/0.073)*0.86*2*1000000
+
+  for(x in unique(CPMs$Sample)){
+    Tau$ugCLhr[Tau$Sample == x] <- mean(CPMs$ugCLhr[CPMs$Sample == x])
+  }
+  
+  Tau$log_ugCLhr <- log(Tau$ugCLhr, 10)
+  
+  return(Tau)
+}
+```
+
+```{r}
+Abundance <- function(N, Tau){
+  for(x in unique(N$Sample)){
+    Tau$N[Tau$Sample == x] <- mean(N$N[N$Sample == x])
+  }
+  Tau$log_N <- log(Tau$N, 10)
+  
+  return(Tau)
+}
+```
+
+```{r}
+t_Res_rt75 <- ggplot(EcoPlate_t78,aes(x=Time,y=NumRes))+
+  geom_point(size=2,alpha=0.6)+
+  geom_smooth(method = "lm",formula =y ~ poly(x, 2, raw = TRUE))+
+  xlab("Time (hrs)")+
+  ylab("Resources Used")+
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
+  
+ggsave("./output/t_Res_rt75.pdf")
+ggsave("./output/t_Res_rt75.png")
+
+Tau.mod <- lm(EcoPlate_allrt$NumRes ~ EcoPlate_allrt$Tau)
+Tau.sq.mod <- lm(EcoPlate_allrt$NumRes ~ poly(EcoPlate_allrt$Tau, 2, raw = TRUE))
+Tau.lo <- loess(EcoPlate_allrt$NumRes ~ EcoPlate_allrt$Tau, span = 3)
+plot(Tau.mod)
+AIC(Tau.mod)
+summary(Tau.mod)
+plot(Tau.sq.mod)
+AIC(Tau.sq.mod)
+summary(Tau.sq.mod)
+
+Tau_Res <- ggplot(EcoPlate_allrt,aes(x=Tau,y=NumRes))+
+  geom_point(size=2,alpha=0.6)+
+  geom_smooth(method = "loess", span = 3)+
+  xlab(expression(paste("log(", tau,")")))+
+  ylab("# of Resources Consumed")
+
+Tau_Res
+
+ggsave("./output/Tau_Res.pdf")
+ggsave("./output/Tau_Res.png")
+
+```
+
+
 #Generate and save N vs. Tau pilot figure
 ```{r}
+Tau.mod <- lm(log(RT$N, 10) ~ log(RT$Tau, 10))
+Tau.sq.mod <- lm(log(RT$N, 10) ~ poly(log(RT$Tau,10), 2, raw = TRUE))
+plot(Tau.mod)
+AIC(Tau.mod)
+summary(Tau.mod)
+plot(Tau.sq.mod)
+AIC(Tau.sq.mod)
+summary(Tau.sq.mod)
+
 N <- ggplot(RT,aes(x=log(Tau, 10),y=log(N, 10)))+
   geom_point(size=2,alpha=0.6)+
-  geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
+  geom_smooth(method = "lm",formula =y ~ poly(x, 2, raw = TRUE))+
   xlab(expression(paste("log(", tau,")")))+
   ylab("log(N)") +
   stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
@@ -69,39 +184,70 @@ N <- ggplot(RT,aes(x=log(Tau, 10),y=log(N, 10)))+
 ggsave("./output/Tau_N.pdf")
 ggsave("./output/Tau_N.png")
 
+model_OT <- lm(RT$OT ~ log(RT$Tau, 10))
+summary(model_OT)
+
 OT <- ggplot(RT, aes(x=log(Tau, 10), y = OT))+
   geom_point(size=2, alpha=0.6)+
-  geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
+  geom_smooth(method = "loess", span = 3)+
   xlab(expression(paste("log(", tau,")")))+
-  ylab("Biofilm Formation")+
-  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
+  xlim(c(4,7.5))+
+  ylab("Biofilm Synthesis - Abs at 550 nm")
 
 ggsave("./output/Tau_Biofilm.pdf")
 ggsave("./output/Tau_Biofilm.png")
 
+BR <- ggplot(RT, aes(x=log(Tau, 10), y = BR))+
+  geom_point(size=2, alpha=0.6)+
+  geom_smooth(method = "lm",formula =y ~ poly(x, 2, raw = TRUE))+
+  xlab(expression(paste("log(", tau,")")))+
+  ylab(expression(paste("Bacterial respirtaiton (", mu,"M O2/hr)")))+
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)  
+
+ggsave("./output/Tau_BR.pdf")
+ggsave("./output/Tau_BR.png")
+
+BR_N <- ggplot(RT, aes(x = log(Tau,10), y = BR_N))+
+  geom_point(size=2, alpha=0.6)+
+  geom_smooth(method = "lm",formula =y ~ poly(x, 2, raw = TRUE))+
+  xlab(expression(paste("log(", tau,")")))+
+  ylab(expression(paste("Bacterial respirtaiton (", mu,"M O2/hr)")))+
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE) 
+
+ggsave("./output/Tau_ind.R.pdf")
+ggsave("./output/Tau_ind.R.png")
+
+model_BP_N <- lm(log(RT$BP_N, 10) ~ poly(log(RT$Tau, 10), 2, raw = TRUE))
+summary(model_BP_N)
+
 BP_N <- ggplot(RT, aes(x=log(Tau, 10), y = BP_N))+
   geom_point(size=2, alpha=0.6)+
-  geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
+  geom_smooth(method = "loess", span = 3)+
   xlab(expression(paste("log(", tau,")")))+
-  ylab(expression(paste(mu,"M C/hr/cell")))+
-  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
+  ylab(expression(paste("Individual BP (", mu,"M C/hr/cell)")))
 
 ggsave("./output/Tau_ind.P.pdf")
 ggsave("./output/Tau_ind.P.png")
 
+model_BP <- lm(log(RT$BP, 10) ~ poly(log(RT$Tau, 10), 2, raw = TRUE))
+summary(model_BP)
+
 BP <- ggplot(RT, aes(x=log(Tau, 10), y = BP))+
   geom_point(size=2, alpha=0.6)+
-  geom_smooth(method = "lm",formula =y ~ poly(x, 2))+
+  geom_smooth(method = "loess", span = 3)+
   xlab(expression(paste("log(", tau,")")))+
-  ylab(expression(paste(mu, "M C/hr")))+
-  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
+  ylab(expression(paste("Total BP (",mu, "M C/hr)")))
 
 ggsave("./output/Tau_BP.pdf")
 ggsave("./output/Tau_BP.png")
 
-ggarrange(BP, N, BP_N, labels = c("A", "B", "C"), ncol = 3, nrow = 1)
+ggarrange(N, BP, BP_N, labels = c("A", "B", "C"), ncol = 3, nrow = 1)
 ggsave("./output/Tau_BP_N_BP_N.pdf", width = 15, height = 5)
 ggsave("./output/Tau_BP_N_BP_N.png", width = 15, height = 5)
+
+ggarrange(OT, Tau_Res, labels = c("A", "B"), ncol = 2, nrow = 1)
+ggsave("./output/Traits.pdf", width = 10, height = 5)
+ggsave("./output/Traits.png", width = 10, height = 5)
 ```
 
 
@@ -125,6 +271,8 @@ points(log10(T$P1.Abs..Count[T$Sample=="L"]) ~ T$Day[T$Sample=="L"], col = "red"
 mtext("T (cells/mL)", side = 2, line = 3, cex = 1.4)
 mtext("Time (hrs)", side = 1, line = 3, cex = 1.4)
 box()
+
+plot(log10(T$P1.Abs..Count[T$Day=="9"]) ~ log10(T$Tau[T$Day == "9"]))
 
 ```
 
