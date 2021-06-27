@@ -17,6 +17,7 @@ require("ggplot2")
 require("ggpubr")
 require("cowplot")
 require("ggpmisc")
+require("scales")
 ```
 
 ```{r figure_setup}
@@ -44,81 +45,93 @@ theme_set(theme_classic() +
         strip.background = element_blank()
         ))
 ```
-#Read in data
-# ```{r}
-# #Abundance
-# N <- as.data.frame(read.csv(file.choose(), header = TRUE))
-# Tau$N <- NA
-# Tau$log_N <- NA
-# Tau <- as.data.frame(Abundance(N, Tau))
-#   
-# #BP data
-# CPM_8 <- as.data.frame(read.csv(file.choose(), header = FALSE))
-# CPM_12 <-as.data.frame(read.csv(file.choose(), header = FALSE))
-# Tau$ugCLhr <- NA
-# Tau$log_ugCLhr <- NA
-# Tau <- as.data.frame(BP(CPM_12, Tau))
-# Tau <- as.data.frame(BP(CPM_8, Tau))
-# Tau$ind_P <- Tau$ugCLhr/Tau$N
-# ```
 
 ```{r}
-#Day 20 data from all trials
-RT <- read.csv("data/20200319_RT.csv", sep =",", header = TRUE)
-
-# Pilot time series T data
-T <- read.csv("./data/20190722_EAM_RT_12_UL_D1-9_Samples.csv", header = TRUE, sep = ",")
-
-EcoPlate_t78 <- read.table("./data/eco.data.txt", header = TRUE, sep = "\t")
-EcoPlate_t78$Time <- c(0,6, 27,31,47,54,78)
-
-EcoPlate_allrt <- read.table("./data/eco.data.allrt.txt", header = TRUE, sep = "\t")
-EcoPlate_allrt$Tau <- c(4, 5, 6, 7, 4.5, 5.5, 6.5, 7.5)
-EcoPlate_allrt <- EcoPlate_allrt[!EcoPlate_allrt$Strain == "RT7",]
-
-RT$BP_N <- RT$BP/RT$N
-RT$BR_N <- RT$BR/RT$N
-
-RT <- RT[!RT$Sample =="UL_8_G",]
-
-```
-
-```{r}
-BP <- function(CPMs, Tau){
-  date <- as.Date(strptime(as.character(CPMs[1,2]),"%Y-%m-%d"))
-  date_std <- as.Date(strptime(as.character(CPMs[2,2]), "%Y-%m-%d"))
-  DPM_std <- as.double(as.character(CPMs[3,2]))
-  DPM_curr <- as.double(as.character(CPMs[4,2]))
-  half_life <- as.double(as.character(CPMs[5,2]))
-  kills <- as.double(as.character(CPMs[6,2]))
-  M_Leu <- as.double(as.character(CPMs[7,2]))
-  Voucher <- as.double(as.character(CPMs[8,2]))
+BP_fxn <- function(CPMs, Tau){
+  ##extract whole experiment info from top of csv
   
-  CPMs <- CPMs[-c(1:10),]
-  colnames(CPMs) <- c("Sample", "CPM")
+  #date experiment was run
+  date <- as.Date(as.character(CPMs[1,2]), "%m/%d/%Y")
+  
+  #date the standard was produced
+  date_std <- as.Date(as.character(CPMs[2,2]), "%m/%d/%Y")
+  
+  #DPM of the standard at date of production
+  DPM_std <- as.double(as.character(CPMs[3,2]))
+  
+  #DPM of the standard based on scintillation counter on experiment date
+  DPM_curr <- as.double(as.character(CPMs[4,2]))
+  
+  #half life of tritium - 12.346 years
+  half_life <- as.double(as.character(CPMs[5,2]))
+  
+  #Mols of leucine in each tube based on hot leucine stock concentration
+  M_Leu <- as.double(as.character(CPMs[6,2]))
+  
+  #CPMs of the voucher on experiment date
+  Voucher <- as.double(as.character(CPMs[7,2]))
+  
+  ##remove whole experiment info from top of dataframe
+  CPMs <- CPMs[-c(1:9),]
+  colnames(CPMs) <- c("Sample", "CPM", "Kill")
 
+  ##calculate time from the experiment date to the standard production date
   t <- as.numeric(date - date_std)/365
+  
+  ##calculate the expected DPMs of the standard based on t
   DPM_exp <- (DPM_std)*exp((-0.693/half_life)*t)
+  
+  ##calculate scintillation efficiency as DPM ratio
   efficiency <- DPM_curr/DPM_exp
   
+  #divide CPMs into kill and sample dataframes
+  Kills <- subset(CPMs, Kill == "T")
+  CPMs <- subset(CPMs, Kill == "F")
+  
+  #convert CPMs to DPMs, DPMs = CPMs/efficiency
   CPMs$CPM <- as.numeric(as.character(CPMs$CPM))
   CPMs$DPM <- CPMs$CPM / efficiency
-  CPMs$DPMkills <- CPMs$DPM - (kills / efficiency)
-  CPMs$MLeu <- (M_Leu * CPMs$DPM)/Voucher
-  CPMs$ugCLhr <- CPMs$MLeu * 131.2 * (1/0.073)*0.86*2*1000000
-
+  
+  Kills$CPM <- as.numeric(as.character(Kills$CPM))
+  Kills$DPM <- Kills$CPM / efficiency
+  
+  #average DPMs for each sample and add to Tau
   for(x in unique(CPMs$Sample)){
-    Tau$ugCLhr[Tau$Sample == x] <- mean(CPMs$ugCLhr[CPMs$Sample == x])
+    Tau[Tau$Tau == x, "DPM"] <- as.numeric(mean(CPMs[CPMs$Sample == x, "DPM"]))
   }
   
-  Tau$log_ugCLhr <- log(Tau$ugCLhr, 10)
+  #for each sample, subtract the corresponding kill DPM
+  for (x in unique(Tau$Tau)){
+    Tau[Tau$Tau == x, "DPMKills"] <- Tau[Tau$Tau ==x, "DPM"] - (as.numeric(Kills[Kills$Sample == x, "CPM"])/efficiency)
+  }
+  
+  #Determine Mols Leucine based on MLeu_sample = MLeu * DPM/voucher
+  Tau$MLeu <- (M_Leu * Tau$DPMKills)/Voucher
+  
+  #Convert MLeu to ug C/L/hr
+  Tau$ugCLhr <- Tau$MLeu * 131.2 * (1/0.073)*0.86*2*1000000
+  
+  
+  Tau$uMChr <- Tau$ugCLhr *0.083333
+  
+  Tau$log_uMChr <- log(Tau$uMChr, 10)
   
   return(Tau)
 }
 ```
 
+  BP[[i]]$Leucine <- ((BP[[i]]$DPM / 2.2e12) / 153) / 1000
+  # DPM*1Ci/2.2e12DPM *1mmolLeu/153Ci * 1molLeu/1000mmol
+  BP[[i]]$Leucine.per <- (BP[[i]]$Leucine * (1/1) * (1/0.0015))
+  # Leu incorporated * 1/time (hrs) * 1/vol (L)
+  BP[[i]]$Protein <- ( BP[[i]]$Leucine.per / 0.073 ) * 131.2
+  # mol leu * 1 mol protein/0.073 mol leu * 131.2 g protein/1mol protein
+  BP[[i]]$Carbon <- BP[[i]]$Protein * (1/0.63) * (0.54/1) * (10^6)
+  # g protein * 1 g DW/0.63 g Pro * 0.54 g C/1g DW = gC/l/hr  * 10^6 = ugC/L/Hr
+
+
 ```{r}
-Abundance <- function(N, Tau){
+Abundance_fxn <- function(N, Tau){
   for(x in unique(N$Sample)){
     Tau$N[Tau$Sample == x] <- mean(N$N[N$Sample == x])
   }
@@ -129,12 +142,95 @@ Abundance <- function(N, Tau){
 ```
 
 ```{r}
+OT_fxn <- function(OT, Tau){
+  for(x in unique(OT$Tau)){
+    Tau$OT[Tau$Tau == x] <- mean(OT$OT[OT$Tau == x])-mean(OT$OT[OT$Tau == 0])
+  }
+  
+  return(Tau)
+}
+```
+
+Read in data
+```{r}
+#Tau read in
+Tau <- read.csv("data/RTLC/2021_RTLC_Tau.csv", header = TRUE)
+
+#Abundance data
+N <- read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_N.csv", header = TRUE)
+Tau <- Abundance_fxn(N, Tau)
+
+
+#Biofilm data
+OT <- read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_Otoole.csv", header = TRUE)
+#OT <- cbind(OT, read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_Otoole.csv"))
+Tau <- OT_fxn(OT, Tau)
+
+
+#BP data
+CPM_S1 <- read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_BP.csv", header = FALSE)
+Tau <- as.data.frame(BP_fxn(CPM_S1, Tau))
+#Tau$ind_P <- Tau$ugCLhr/Tau$N
+
+
+#Biolog data
+
+```
+
+```{r}
+Tau$Tau <- as.numeric(Tau$Tau)
+
+OT_lm <- lm(OT ~ Tau, data = Tau)
+OT_lm_2 <- lm(OT ~ poly(Tau, 2, raw = TRUE), data = Tau)
+summary(OT_lm)
+summary(OT_lm_2)
+AIC(OT_lm)
+AIC(OT_lm_2)
+
+OT <- ggplot(Tau, aes(x = Tau, y = OT))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab("Tau")+
+  ylab("Biofilm Formation \n (OD 595 nm)")+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+ggsave("./output/RTLC_OT.pdf")
+ggsave("./output/RTLC_OT.png")
+
+BP_lm <- lm(uMChr ~ Tau, data = Tau)
+BP_lm_2 <- lm(uMChr ~ poly(Tau, 2, raw = TRUE), data = Tau)
+summary(BP_lm)
+summary(BP_lm_2)
+AIC(BP_lm)
+AIC(BP_lm_2)
+
+BP <- ggplot(Tau, aes(x = Tau, y = uMChr))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab("Tau")+
+  ylab("Biomass Production")+
+  geom_smooth(method = "lm", formula = y~poly(x,2, raw = TRUE))+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~poly(x,2,raw = TRUE), parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+ggsave("./output/RTLC_BP.pdf")
+ggsave("./output/RTLC_BP.png")
+
+
+```
+
+
+
+
+```{r}
 t_Res_rt75 <- ggplot(EcoPlate_t78,aes(x=Time,y=NumRes))+
   geom_point(size=2,alpha=0.6)+
   geom_smooth(method = "lm",formula =y ~ poly(x, 2, raw = TRUE))+
   xlab("Time (hrs)")+
   ylab("Resources Used")+
-  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2,p.digits = 3, parse = TRUE)
   
 ggsave("./output/t_Res_rt75.pdf")
 ggsave("./output/t_Res_rt75.png")
@@ -248,31 +344,5 @@ ggsave("./output/Tau_BP_N_BP_N.png", width = 15, height = 5)
 ggarrange(OT, Tau_Res, labels = c("A", "B"), ncol = 2, nrow = 1)
 ggsave("./output/Traits.pdf", width = 10, height = 5)
 ggsave("./output/Traits.png", width = 10, height = 5)
-```
-
-
-#Generate N vs. Time pilot figure
-```{r}
-
-plot(log10(T$P1.Abs..Count[T$Sample=="A"]) ~ T$Day[T$Sample=="A"], col = "red", ylim= c(6,8), type = "b", pch = 16, xlab = "", ylab = "", axes = FALSE, cex = 1.2)
-axis(2, at= c(6,7,8,9,10), labels = c(expression(paste("10"^"6")),expression(paste("10"^"7")), expression(paste("10"^"8")),expression(paste("10"^"9")), expression(paste("10"^"10"))), las = 2)
-axis(1, at= T$Day, labels = ((T$Day)*24))
-points(log10(T$P1.Abs..Count[T$Sample=="B"]) ~ T$Day[T$Sample=="B"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="C"]) ~ T$Day[T$Sample=="C"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="D"]) ~ T$Day[T$Sample=="D"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="E"]) ~ T$Day[T$Sample=="E"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="F"]) ~ T$Day[T$Sample=="F"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="G"]) ~ T$Day[T$Sample=="G"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="H"]) ~ T$Day[T$Sample=="H"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="I"]) ~ T$Day[T$Sample=="I"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="J"]) ~ T$Day[T$Sample=="J"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="K"]) ~ T$Day[T$Sample=="K"], col = "red", type = "b", pch = 16, cex = 1.2)
-points(log10(T$P1.Abs..Count[T$Sample=="L"]) ~ T$Day[T$Sample=="L"], col = "red", type = "b", pch = 16, cex = 1.2)
-mtext("T (cells/mL)", side = 2, line = 3, cex = 1.4)
-mtext("Time (hrs)", side = 1, line = 3, cex = 1.4)
-box()
-
-plot(log10(T$P1.Abs..Count[T$Day=="9"]) ~ log10(T$Tau[T$Day == "9"]))
-
 ```
 
