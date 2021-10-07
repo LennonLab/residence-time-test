@@ -17,6 +17,13 @@ read.ecoplate <- function(input = " ", skip = "32"){
   data <- read.table(input, skip=skip, header=F, row.names=1)
   data <- data[,1:12]
   colnames(data) <- as.character(seq(1, 12, 1))
+  for(column in colnames(data)){
+    for(x in rownames(data)){
+      if(data[x, column] == "OVRFLW"){
+        data[x, column] <- NA
+      }
+    }
+  }
   return(data)
 }
 

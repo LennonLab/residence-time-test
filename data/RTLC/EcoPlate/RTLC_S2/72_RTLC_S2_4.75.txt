@@ -1,0 +1,31 @@
+Software Version	3.03.14													
+														
+Experiment File Path:	C:\Users\Public\Documents\Experiments\Emmi\RTLC_S1\20210701_RTLC_S2.xpt													
+Protocol File Path:	C:\Users\Public\Documents\Protocols\EcoLogPlate_Read_96well.prt													
+Plate Number	Plate 8													
+Date	7/1/2021													
+Time	7:50:07 PM													
+Reader Type:	Synergy H1													
+Reader Serial Number:	1706221C													
+Reading Type	Reader													
+														
+Procedure Details														
+Plate Type	96 WELL PLATE													
+Eject plate on completion														
+Read	Absorbance Endpoint													
+	Full Plate													
+	Wavelengths:  590													
+	"Read Speed: Normal,  Delay: 100 msec,  Measurements/Data Point: 8"													
+														
+Results														
+Actual Temperature:	21.9													
+														
+		1	2	3	4	5	6	7	8	9	10	11	12	
+	A	1.654	2.723	2.793	3.314	1.599	2.786	2.679	3.257	1.67	2.856	2.811	3.601	590
+	B	2.673	2.853	2.982	3.703	2.735	2.534	2.772	3.8	2.667	2.499	2.869	3.598	590
+	C	2.408	1.621	2.16	2.208	2.397	1.736	2.747	2.007	2.431	1.751	2.181	3.44	590
+	D	2.622	3.02	2.892	3.409	2.87	3.086	3.165	3.568	2.74	3.182	2.962	3.202	590
+	E	1.905	3.08	3.626	2.618	1.922	3.16	3.852	3.554	2.032	2.92	3.22	2.53	590
+	F	3.22	2.116	2.581	1.676	3.348	2.219	3.36	1.751	3.237	2.284	2.345	1.758	590
+	G	3.036	1.626	1.622	3.082	3.279	1.639	1.635	3.11	3.111	1.681	1.672	2.987	590
+	H	2.287	1.782	3.106	2.949	2.144	1.748	3.324	2.761	2.031	1.878	2.942	2.604	590

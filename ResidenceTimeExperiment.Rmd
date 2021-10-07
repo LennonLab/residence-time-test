@@ -2,22 +2,23 @@
 title: "Residence Time Experiment"
 author: "Emmi Mueller"
 date: "July 23, 2019"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 ```{r setup, include = FALSE}
 rm(list=ls())
-require("knitr")
 getwd()
 ```
 
 ```{r}
-require("png")
-require("vegan")
-require("ggplot2")
-require("ggpubr")
-require("cowplot")
-require("ggpmisc")
-require("scales")
+package.list <- c("png", "vegan", "ggplot2", "ggpubr", "cowplot", "ggpmisc", "scales", "fitdistrplus", "tidyr", "ade4", "viridis", "gplots", "BiodiversityR", "indicspecies", "knitr", "here", "dplyr")
+
+for (package in package.list) {
+  if (!require(package, character.only=T, quietly=T)) { 
+    install.packages(package)
+    library(package, character.only=T)
+  } }
 ```
 
 ```{r figure_setup}
@@ -39,19 +40,20 @@ theme_set(theme_classic() +
         axis.ticks.y = element_line(size = 1),
         axis.ticks.length = unit(.1, "in"),
         panel.border = element_rect(color = "black", fill = NA, size = 1.5),
+        legend.text = element_text(size = 10),
         legend.title = element_blank(),
-        legend.text = element_text(size = 14),
         strip.text = element_text(size = 14),
         strip.background = element_blank()
         ))
 ```
 
 ```{r}
-BP_fxn <- function(CPMs, Tau){
+BP_fxn <- function(CPMs, Tau, set){
   ##extract whole experiment info from top of csv
   
   #date experiment was run
   date <- as.Date(as.character(CPMs[1,2]), "%m/%d/%Y")
+
   
   #date the standard was produced
   date_std <- as.Date(as.character(CPMs[2,2]), "%m/%d/%Y")
@@ -74,6 +76,7 @@ BP_fxn <- function(CPMs, Tau){
   ##remove whole experiment info from top of dataframe
   CPMs <- CPMs[-c(1:9),]
   colnames(CPMs) <- c("Sample", "CPM", "Kill")
+
 
   ##calculate time from the experiment date to the standard production date
   t <- as.numeric(date - date_std)/365
@@ -99,11 +102,15 @@ BP_fxn <- function(CPMs, Tau){
   for(x in unique(CPMs$Sample)){
     Tau[Tau$Tau == x, "DPM"] <- as.numeric(mean(CPMs[CPMs$Sample == x, "DPM"]))
   }
+
   
   #for each sample, subtract the corresponding kill DPM
   for (x in unique(Tau$Tau)){
-    Tau[Tau$Tau == x, "DPMKills"] <- Tau[Tau$Tau ==x, "DPM"] - (as.numeric(Kills[Kills$Sample == x, "CPM"])/efficiency)
+    if(Tau[Tau$Tau == x, "Set"] == set){
+      Tau[Tau$Tau == x, "DPMKills"] <- Tau[Tau$Tau ==x, "DPM"] - (as.numeric(Kills[Kills$Sample == x, "CPM"])/efficiency)
+    }
   }
+    print(Tau$DPMKills)
   
   #Determine Mols Leucine based on MLeu_sample = MLeu * DPM/voucher
   Tau$MLeu <- (M_Leu * Tau$DPMKills)/Voucher
@@ -151,79 +158,739 @@ OT_fxn <- function(OT, Tau){
 }
 ```
 
+```{r}
+EP_fxn <- function(EP, Tau){
+  EP$Tau <- as.numeric(EP$Tau)
+  for(x in unique(EP$Tau)){
+    Tau$NumRes[Tau$Tau == x] <- EP$NumRes[EP$Tau == x]
+    Tau$AvgRes[Tau$Tau == x] <- EP$Avg[EP$Tau ==x]
+  }
+  
+  return(Tau)
+}
+```
+
 Read in data
 ```{r}
 #Tau read in
 Tau <- read.csv("data/RTLC/2021_RTLC_Tau.csv", header = TRUE)
 
 #Abundance data
-N <- read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_N.csv", header = TRUE)
-Tau <- Abundance_fxn(N, Tau)
+#N <- read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_N.csv", header = TRUE)
+#Tau <- Abundance_fxn(N, Tau)
 
 
 #Biofilm data
-OT <- read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_Otoole.csv", header = TRUE)
-#OT <- cbind(OT, read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_Otoole.csv"))
-Tau <- OT_fxn(OT, Tau)
+Tau <- OT_fxn(read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_Otoole.csv", header = TRUE), Tau)
+Tau <- OT_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_Otoole.csv", header = TRUE), Tau)
+Tau <- OT_fxn(read.csv("data/RTLC/RTLC_S3/20210723_RTLC_S3_Otoole.csv", header = TRUE), Tau)
+Tau <- OT_fxn(read.csv("data/RTLC/RTLC_S4/20210904_RTLC_S4_Otoole.csv", header = TRUE), Tau)
 
 
 #BP data
-CPM_S1 <- read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_BP.csv", header = FALSE)
-Tau <- as.data.frame(BP_fxn(CPM_S1, Tau))
+Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_BP.csv", header = FALSE), Tau, 1))
+Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_BP.csv", header = FALSE), Tau, 2))
+Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S3/20210723_RTLC_S3_BP.csv", header = FALSE), Tau, 3))
+Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S4/20210904_RTLC_S4_BP.csv", header = FALSE), Tau, 4))
 #Tau$ind_P <- Tau$ugCLhr/Tau$N
 
 
 #Biolog data
+Tau <- EP_fxn(read.csv("data/RTLC/eco.data_rt.txt", header = TRUE, sep = "\t"), Tau)
 
+#Format data
+Tau$Tau <- as.numeric(Tau$Tau)
+Tau$Set <- as.character(Tau$Set)
 ```
 
-```{r}
-Tau$Tau <- as.numeric(Tau$Tau)
 
+```{r}
 OT_lm <- lm(OT ~ Tau, data = Tau)
+OT_lm_int <- lm(OT ~ Tau + Set + Tau * Set, data = Tau)
 OT_lm_2 <- lm(OT ~ poly(Tau, 2, raw = TRUE), data = Tau)
 summary(OT_lm)
+summary(OT_lm_int)
 summary(OT_lm_2)
 AIC(OT_lm)
+AIC(OT_lm_int)
 AIC(OT_lm_2)
+
+
+OT_Set <- ggplot(Tau, aes(x = Tau, y = OT, color = Set))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab("Tau")+
+  ylab("Biofilm Formation \n (OD 595 nm)")+
+  geom_smooth(method = "lm")+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  scale_color_manual(values = c("red", "blue", "black", "green"), labels = c("Set 1", "Set 2", "Set 3", "Set 4"))
+
+OT_Set
+
+ggsave("./output/RTLC_OT_Set.pdf")
+ggsave("./output/RTLC_OT_Set.png")
 
 OT <- ggplot(Tau, aes(x = Tau, y = OT))+
   geom_point(size = 2, alpha = 0.6)+
   xlab("Tau")+
   ylab("Biofilm Formation \n (OD 595 nm)")+
-  geom_smooth(method = "lm", formula = y~x)+
+  geom_smooth(method = "lm")+
   stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
                formula = y~x, parse = TRUE, size = 4)+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
 
+OT
+
 ggsave("./output/RTLC_OT.pdf")
 ggsave("./output/RTLC_OT.png")
+```
 
-BP_lm <- lm(uMChr ~ Tau, data = Tau)
+#Bacterial Productivity
+
+```{r}
+BP_lm <- lm(log_uMChr ~ Tau, data = Tau)
 BP_lm_2 <- lm(uMChr ~ poly(Tau, 2, raw = TRUE), data = Tau)
+BP_ne <- 
 summary(BP_lm)
 summary(BP_lm_2)
 AIC(BP_lm)
 AIC(BP_lm_2)
 
-BP <- ggplot(Tau, aes(x = Tau, y = uMChr))+
+BP_poly <- ggplot(Tau, aes(x = Tau, y = uMChr))+
   geom_point(size = 2, alpha = 0.6)+
   xlab("Tau")+
-  ylab("Biomass Production")+
+  ylab("Biomass Production (uM C/hr)")+
   geom_smooth(method = "lm", formula = y~poly(x,2, raw = TRUE))+
   stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
                formula = y~poly(x,2,raw = TRUE), parse = TRUE, size = 4)+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
 
-ggsave("./output/RTLC_BP.pdf")
-ggsave("./output/RTLC_BP.png")
+BP_poly
+
+ggsave("./output/RTLC_BP_poly.pdf")
+ggsave("./output/RTLC_BP_poly.png")
+
+BP_exp <- ggplot(Tau, aes(x = Tau, y = log_uMChr))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab("Tau")+
+  ylab("Biomass Production (uM C/hr)")+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  scale_y_continuous(labels = label_math(expr = 10^.x, format = force))
+
+BP_exp
+
+ggsave("./output/RTLC_BP_exp.pdf")
+ggsave("./output/RTLC_BP_exp.png")
+
+plot(BP_lm)
+plot(BP_lm_2)
+```
+
+#Resource Use
+
+##Total number of resources used at 48 hours
+
+```{r}
+NR_lm <- lm(NumRes ~ Tau, data = Tau)
+NR_lm_2 <- lm(NumRes ~ poly(Tau, 2, raw = TRUE), data = Tau)
+summary(NR_lm)
+summary(NR_lm_2)
+AIC(NR_lm)
+AIC(NR_lm_2)
+
+NumRes <- ggplot(Tau, aes(x = Tau, y = NumRes))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab(expression(tau))+
+  ylab("Number of Resources Used \n at 48 hours")+
+  # geom_smooth(method = "lm", formula = y~x)+
+  # stat_poly_eq(aes(label = paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+  #              formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+NumRes
+
+ggsave("./output/RTLC_NumRes.pdf")
+ggsave("./output/RTLC_NumRes.png")
+```
+
+##Average well response at 48 hours
+
+```{r}
+Avg_lm <- lm(AvgRes ~ Tau, data = Tau)
+Avg_lm_2 <- lm(AvgRes ~ poly(Tau, 2, raw = TRUE), data = Tau)
+summary(Avg_lm)
+summary(Avg_lm_2)
+AIC(Avg_lm)
+AIC(Avg_lm_2)
+
+AvgRes <- ggplot(Tau, aes(x = Tau, y = AvgRes))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab(expression(tau))+
+  ylab("Average Well Response at \n48 hours (OD590)")+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label = paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+
+AvgRes
+
+ggsave("./output/RTLC_AvgRes.pdf")
+ggsave("./output/RTLC_AvgRes.png")
+
+```
+
+##Load Resource Use data for first 72 hours
+
+```{r}
+EcoPlate_72 <- read.csv("data/RTLC/eco.data_rt_S1_0.txt", header = TRUE, sep = "\t")
+file_list <- c("data/RTLC/eco.data_rt_S1_24.txt", "data/RTLC/eco.data_rt_S1_48.txt", "data/RTLC/eco.data_rt_S1_72.txt", "data/RTLC/eco.data_rt_S2_0.txt", "data/RTLC/eco.data_rt_S2_24.txt", "data/RTLC/eco.data_rt_S2_48.txt", "data/RTLC/eco.data_rt_S2_72.txt", "data/RTLC/eco.data_rt_S3_0.txt", "data/RTLC/eco.data_rt_S3_24.txt", "data/RTLC/eco.data_rt_S3_48.txt", "data/RTLC/eco.data_rt_S3_72.txt", "data/RTLC/eco.data_rt_S4_0.txt", "data/RTLC/eco.data_rt_S4_24.txt", "data/RTLC/eco.data_rt_S4_48.txt", "data/RTLC/eco.data_rt_S4_72.txt")
+
+for(file in file_list){
+  EcoPlate_72 <- rbind(EcoPlate_72, read.csv(file, header = TRUE, sep = "\t"))
+}
+
+long_EP <- EcoPlate_72 %>% gather(C_Source, OD, X2.Hydroxy.Benzoic.Acid:Avg)
+
+histogram(log(subset(long_EP, long_EP$C_Source != "Avg" & long_EP$C_Source != "NumRes")$OD), 10)
+```
+
+##Plot resource use vs. Time for all Tau
+
+```{r}
+Avg_Hr <- ggplot(subset(long_EP, long_EP$C_Source =="Avg"), aes(x = Hours, y = OD, group = Tau, color = Tau))+
+  geom_line(size = 1)+
+  geom_point(size = 3)+
+  xlab("Hours")+
+  ylab("Average Well Response (OD590)")+
+  labs(group = "Tau")+
+  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 16))
+  
+Avg_Hr
+
+ggsave("./output/RTLC_AvgRes_Hr.pdf")
+ggsave("./output/RTLC_AvgRes_Hr.png")
+
+```
+
+##Load slopes of resource use data (48-24 hours)
+
+```{r}
+EcoPlate_S1 <- read.csv("data/RTLC/eco.data_rt_S1_48.txt", header = TRUE, sep = "\t")
+EcoPlate_S1 <- cbind(EcoPlate_S1[,1:2], (EcoPlate_S1[,4:34] - read.csv("data/RTLC/eco.data_rt_S1_24.txt", header = TRUE, sep = "\t")[,4:34]))
+EcoPlate_S1[,4:33] <- EcoPlate_S1[,4:33]/48
+
+EcoPlate_S2 <- read.csv("data/RTLC/eco.data_rt_S2_48.txt", header = TRUE, sep = "\t")
+EcoPlate_S2 <- cbind(EcoPlate_S2[,1:2], (EcoPlate_S2[,4:34] - read.csv("data/RTLC/eco.data_rt_S2_24.txt", header = TRUE, sep = "\t")[,4:34]))
+EcoPlate_S2[,4:33] <- EcoPlate_S2[,4:33]/48
+
+EcoPlate_S3 <- read.csv("data/RTLC/eco.data_rt_S3_48.txt", header = TRUE, sep = "\t")
+EcoPlate_S3 <- cbind(EcoPlate_S3[,1:2], (EcoPlate_S3[,4:34] - read.csv("data/RTLC/eco.data_rt_S3_24.txt", header = TRUE, sep = "\t")[,4:34]))
+EcoPlate_S3[,4:33] <- EcoPlate_S3[,4:33]/48
+
+EcoPlate_S4 <- read.csv("data/RTLC/eco.data_rt_S4_48.txt", header = TRUE, sep = "\t")
+EcoPlate_S4 <- cbind(EcoPlate_S4[,1:2], (EcoPlate_S4[,4:34] - read.csv("data/RTLC/eco.data_rt_S4_24.txt", header = TRUE, sep = "\t")[,4:34]))
+EcoPlate_S4[,4:33] <- EcoPlate_S4[,4:33]/48
+
+EcoPlate_Slope <- rbind(EcoPlate_S1, EcoPlate_S2, EcoPlate_S3, EcoPlate_S4)
+
+ResType <- read.csv("code/resource_type.txt", header = TRUE, sep = "\t")
+
+colnames(EcoPlate_Slope) <- c("Tau", "Set", "2-Hydroxy.Benzoic.Acid", "4-Hydroxy.Benzoic.Acid", "alpha-Cyclodextrin", "alpha-D-Lactose", "alpha-Ketobutyric.Acid", "beta-Methyl-D-Glucoside", "D-Cellobiose", "D-Galactonic.Acid.gamma-Lactone", "D-Galacturonic.Acid","D-Glucosaminic.Acid", "D-Malic.Acid", "D-Mannitol", "D-Xylose", "D,L-alpha-Glycerol.Phosphate","gamma-Hydroxybutyric.Acid", "Glucose-1-Phosphate", "Glycogen", "Glycyl-L-Glutamic.Acid", "i-Erythritol","Itaconic.Acid","L-Arginine", "L-Asparagine","L-Phenylalanine", "L-Serine", "L-Threonine","N-Acetyl-D-Glucosamine", "Phenylethylamine", "Putrescine", "Pyruvic.Acid.Methyl.Ester", "Tween.40", "Tween.80")
+
+
+long_EP_slope <- EcoPlate_Slope %>% gather(C_Source, Slope, "2-Hydroxy.Benzoic.Acid":"Tween.80")
+
+ResType <- distinct(ResType)
+
+long_EP_slope$Type <- NA
+
+for(row in rownames(long_EP_slope)){
+  long_EP_slope[row,"Type"] <- ResType$Type[ResType$Resource == long_EP_slope[row,"C_Source"]]
+}
+
+lm.slope.tau <- lm(data = subset(long_EP_slope, long_EP_slope$C_Source == "Pyruvic.Acid.Methyl.Ester"), Slope ~ Tau)
+summary(lm.slope.tau)
+lm.slope.tau.c <- lm(data = long_EP_slope, Slope ~ Tau * C_Source)
+
+summary(lm.slope.tau.c)
+anova(lm.slope.tau)
+
+anova(lm.slope.tau, lm.slope.tau.c)
+AIC(lm.slope.tau)
+AIC(lm.slope.tau.c)
+
+histogram(log(long_EP_slope$Slope, 10))
+
+plot(lm.slope.tau.c)
+
+Res_Slope <- ggplot(long_EP_slope, aes(Slope ~ Tau  C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  theme(legend.position="bottom")
+
+Res_Slope
+```
+
+##Ester
+```{r}
+Res_Slope_Ester <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "ester"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  labs(title = "Ester")+
+  theme(legend.position="bottom")
+
+  
+Res_Slope_Ester
+
+ggsave("./output/RTLC_Res_Slope_ester.pdf", width = 10, height = 8)
+ggsave("./output/RTLC_Res_Slope_ester.png", width = 10, height = 8)
+```
+##Carboxylic Acid 1
+```{r}
+Res_Slope_CarAc <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "carboxylic acid"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  labs(title = "Carboxylic Acid")+
+  theme(legend.position="bottom")
+  
+Res_Slope_CarAc
+
+ggsave("./output/RTLC_Res_Slope_CarAc.pdf", width = 10, height = 8)
+ggsave("./output/RTLC_Res_Slope_CarAc.png", width = 10, height = 8)
+```
+##Carboxylic Acid 2
+```{r}
+Res_Slope_CarAc_2 <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "carboxylic acid" & long_EP_slope$C_Source != "2-Hydroxy.Benzoic.Acid"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  labs(title = "Carboxylic Acid")+
+  theme(legend.position="bottom")
+  
+Res_Slope_CarAc_2
+
+ggsave("./output/RTLC_Res_Slope_CarAc_2.pdf", width = 10, height = 8)
+ggsave("./output/RTLC_Res_Slope_CarAc_2.png", width = 10, height = 8)
+```
+##Carbohydrate
+```{r}
+Res_Slope_carbo <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "carbohydrate"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  labs(title = "Carbohydrate")+
+  theme(legend.position="bottom")
+  
+Res_Slope_carbo
+
+ggsave("./output/RTLC_Res_Slope_Carbo.pdf", width = 10, height = 8)
+ggsave("./output/RTLC_Res_Slope_Carbo.png", width = 10, height = 8)
+```
+
+##Phosphorylated
+```{r}
+Res_Slope_phos <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "phosphorylated"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  labs(title = "Phosphorylated")+
+  theme(legend.position="bottom")
+  
+Res_Slope_phos
+
+ggsave("./output/RTLC_Res_Slope_phos.pdf", width = 10, height = 8)
+ggsave("./output/RTLC_Res_Slope_phos.png", width = 10, height = 8)
+```
+#Amino Acid
+```{r}
+Res_Slope_aa <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "amino acid"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  labs(title = "Amino Acid")+
+  theme(legend.position="bottom")
+  
+Res_Slope_aa
+
+ggsave("./output/RTLC_Res_Slope_aa.pdf", width = 10, height = 8)
+ggsave("./output/RTLC_Res_Slope_aa.png", width = 10, height = 8)
+```
+#Amine
+```{r}
+Res_Slope_am <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "amine"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  labs(title = "Amine")+
+  theme(legend.position="bottom")
+  
+Res_Slope_am
+
+ggsave("./output/RTLC_Res_Slope_am.pdf", width = 10, height = 8)
+ggsave("./output/RTLC_Res_Slope_am.png", width = 10, height = 8)
+```
+
+##Polymer
+```{r}
+Res_Slope_poly <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "polymer"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
+  geom_point(size = 3, show.legend = FALSE)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
+  xlab(expression(tau))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Slope of Resource Use (24-48 hrs)")+
+  labs(title = "Polymer")+
+  theme(legend.position="bottom")
+  
+Res_Slope_poly
+
+ggsave("./output/RTLC_Res_Slope_Poly.pdf", width = 10, height = 8)
+ggsave("./output/RTLC_Res_Slope_Poly.png", width = 10, height = 8)
+```
+
+##Read in all EcoPlate 48 hour data and create a resource by sample matrix (wbs - well response by site) and environmental matrix (env - Tau only)
+
+```{r}
+EcoPlate <- read.csv("data/RTLC/eco.data_rt_S1_48.txt", header = TRUE, sep = "\t")
+EcoPlate <- rbind(EcoPlate, read.csv("data/RTLC/eco.data_rt_S2_48.txt", header = TRUE, sep = "\t"))
+EcoPlate <- rbind(EcoPlate, read.csv("data/RTLC/eco.data_rt_S3_48.txt", header = TRUE, sep = "\t"))
+EcoPlate <- rbind(EcoPlate, read.csv("data/RTLC/eco.data_rt_S4_48.txt", header = TRUE, sep = "\t"))
+EcoPlate_env <- subset(EcoPlate, select = Tau)
+EcoPlate_env_ex <- subset(EcoPlate, select = c(Tau, Set))
+EcoPlate <- subset(EcoPlate, select =-c(Tau, NumRes, Avg, Set, Hours))
 
 
 ```
 
 
+#Jaccard
+```{r}
+EP.db <-vegdist(EcoPlate, method = "bray", binary = TRUE)
+EP.pca <- cmdscale(EP.db, eig = TRUE)
+EP.pca <- add.spec.scores(EP.pca, EcoPlate, method = "pcoa.scores")
+
+explainvar1 <- round(EP.pca$eig[1] / sum(EP.pca$eig), 3) * 100
+explainvar2 <- round(EP.pca$eig[2] / sum(EP.pca$eig), 3) * 100
+explainvar3 <- round(EP.pca$eig[3] / sum(EP.pca$eig), 3) * 100
+
+EP.plot <- as.data.frame(EP.pca$points)
+EP.plot <- cbind(EP.plot, EcoPlate_env_ex)
+EP.cproj <- as.data.frame(EP.pca$cproj)
+EP.cproj <- cbind(EP.cproj, as.data.frame(row.names(EP.pca$cproj)))
+
+Sor <- ggplot(EP.plot, aes(x = V1, y = V2, colour = Tau))+
+  geom_point(cex = 3)+
+  xlab(paste("PCoA 1 (", explainvar1, "%)", sep = ""))+
+  ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
+  labs(color = "Tau")+
+  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 16))
 
 
+Sor
+
+ggsave("./output/RTLC_EP_Sor.pdf")
+ggsave("./output/RTLC_EP_Sor.png")
+
+```
+
+```{r}
+EP.eu <-vegdist(EcoPlate, method = "euclidean")
+EP.pca <- cmdscale(EP.eu, eig = TRUE)
+EP.pca <- add.spec.scores(EP.pca, EcoPlate, method = "pcoa.scores")
+
+explainvar1 <- round(EP.pca$eig[1] / sum(EP.pca$eig), 3) * 100
+explainvar2 <- round(EP.pca$eig[2] / sum(EP.pca$eig), 3) * 100
+explainvar3 <- round(EP.pca$eig[3] / sum(EP.pca$eig), 3) * 100
+
+EP.plot <- as.data.frame(EP.pca$points)
+EP.plot <- cbind(EP.plot, EcoPlate_env_ex)
+EP.cproj <- as.data.frame(EP.pca$cproj)
+EP.cproj <- cbind(EP.cproj, as.data.frame(row.names(EP.pca$cproj)))
+
+PCA <- ggplot(EP.plot, aes(x = V1, y = V2, colour = Set))+
+  geom_point(cex = 3)+
+  xlab(paste("PCA 1 (", explainvar1, "%)", sep = ""))+
+  ylab(paste("PCA 2 (", explainvar2, "%)", sep = ""))+
+  labs(color = "Set")+
+#  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 16))
+
+
+PCA
+
+ggsave("./output/RTLC_EP_PCA.pdf")
+ggsave("./output/RTLC_EP_PCA.png")
+
+```
+
+```{r}
+EP.db <-vegdist(EcoPlate, method = "bray")
+EP.pcoa <- cmdscale(EP.db, eig = TRUE)
+EP.pcoa <- add.spec.scores(EP.pcoa, EcoPlate, method = "pcoa.scores")
+
+explainvar1 <- round(EP.pcoa$eig[1] / sum(EP.pcoa$eig), 3) * 100
+explainvar2 <- round(EP.pcoa$eig[2] / sum(EP.pcoa$eig), 3) * 100
+explainvar3 <- round(EP.pcoa$eig[3] / sum(EP.pcoa$eig), 3) * 100
+
+EP.plot <- as.data.frame(EP.pcoa$points)
+EP.plot <- cbind(EP.plot, EcoPlate_env)
+EP.cproj <- as.data.frame(EP.pcoa$cproj)
+EP.cproj <- cbind(EP.cproj, as.data.frame(row.names(EP.pcoa$cproj)))
+
+Bray <- ggplot(EP.plot, aes(x = V1, y = V2, colour = Tau))+
+  geom_point(cex = 3)+
+  xlab(paste("PCoA 1 (", explainvar1, "%)", sep = ""))+
+  ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
+  labs(color = "Tau")+
+  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 16))
+
+
+Bray
+
+ggsave("./output/RTLC_EP_Bray.pdf")
+ggsave("./output/RTLC_EP_Bray.png")
+
+```
+#
+
+```{r}
+
+PCOA_res <- ggplot(EP.plot, aes(x = V1, y = V2, colour = Tau))+
+  geom_point(pch = 19, cex = 3)+
+  xlab(paste("PCoA 1 (", explainvar1, "%)", sep = ""))+
+  ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
+  labs(color = "Tau")+
+  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 16))+
+  geom_text(data = EP.cproj, aes(x = Dim1, y = Dim2, label = row.names(EP.pcoa$cproj)),col = "black", cex = 2)
+
+
+PCOA_res
+
+ggsave("./output/RTLC_EP_PCoA_resources.pdf")
+ggsave("./output/RTLC_EP_PCoA_resources.png")
+
+```
+
+#Plot axis against Tau running whatever was the most recent to make EP.plot
+
+```{r}
+PC2_lm <- lm(V2 ~ Tau, data = EP.plot)
+summary(PC2_lm)
+
+PC2 <- ggplot(EP.plot, aes(x = Tau, y = V2))+
+  geom_point(pch=19, cex = 3)+
+  ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
+  xlab(expression(tau))+
+  geom_smooth(method = "lm")+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+PC2
+
+ggsave("./output/RTLC_EP_PCA2.pdf")
+ggsave("./output/RTLC_EP_PCA2.png")
+
+PC1_lm <- lm(V1 ~ Tau, data = EP.plot)
+summary(PC1_lm)
+
+PC1 <- ggplot(EP.plot, aes(x = Tau, y = V1))+
+  geom_point(pch = 19, cex = 3)+
+  ylab(paste("PCoA 1 (", explainvar1, "%)", sep = ""))+
+  xlab(expression(tau))+
+  geom_smooth(method = "lm")+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+PC1
+
+ggsave("./output/RTLC_EP_PCA1.pdf")
+ggsave("./output/RTLC_EP_PCA1.png")
+```
+
+
+#dbRDA constrained by Tau (our only environmental variable)
+
+```{r}
+EP.dbrda <- dbrda(EP.db ~ ., EcoPlate_env)
+
+png("./output/RTLC_EP_dbRDA_env.png", width = 800, height = 600)
+fig <- ordiplot(EP.dbrda, choices = c(1,2), type = "points")
+fig
+dev.off()
+
+pdf("./output/RTLC_EP_dbRDA_env.pdf")
+fig <- ordiplot(EP.dbrda, choices = c(1,2), type = "points")
+fig
+dev.off()
+```
+
+#Not sure what is going on here
+
+```{r}
+
+#plot dbRDA
+
+EP.dbrda.mod0 <- dbrda(EP.db ~ 1, EcoPlate)
+ordiplot(EP.dbrda.mod0)
+EP.dbrda.mod1 <- dbrda(EP.db ~ ., EcoPlate)
+EP.dbrda <- ordiR2step(EP.dbrda.mod0, EP.dbrda.mod1, perm.max = 200)
+
+EP.dbrda$call
+EP.dbrda$anova
+ordiplot(EP.dbrda)
+
+permutest(EP.dbrda, permutations = 999)
+envfit(EP.dbrda, EcoPlate_env, perm = 999)
+
+EP.dbrda.exvar1 <- round(EP.dbrda$CCA$eig[1]/sum(c(EP.dbrda$CCA$eig, EP.dbrda$CA$eig)), 3) * 100
+EP.dbrda.exvar2 <- round(EP.dbrda$CCA$eig[2]/sum(c(EP.dbrda$CCA$eig, EP.dbrda$CA$eig)), 3) * 100
+
+EP.dbrda.plot <- as.data.frame(EP.dbrda$CCA$wa)
+EP.dbrda.plot <- cbind(EP.dbrda.plot, EcoPlate_env)
+
+dbRDA <- ggplot(EP.dbrda.plot, aes(x = dbRDA1, y = dbRDA2, colour = Tau))+
+  geom_point(pch = 19, cex = 3)+
+  xlab(paste("dbRDA 1 (", EP.dbrda.exvar1, "%)", sep = ""))+
+  ylab(paste("dbRDA 2 (", EP.dbrda.exvar2, "%)", sep = ""))+
+  labs(color = "Tau")+
+  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 16))
+
+dbRDA
+
+ggsave("./output/RTLC_EP_dbRDA.pdf")
+ggsave("./output/RTLC_EP_dbRDA.png")
+
+
+#plot dbRDA 
+
+png("./output/RTLC_EP_dbRDA_resources.png", width = 1200, height = 900)
+par(mar = c(5,5,4,4) + 0.1)
+
+plot(scores(EP.dbrda, display = "wa"), xlab = paste("dbRDA 1 (", EP.dbrda.exvar1, "%)", sep = ""), ylab = paste("dbRDA 2 (", EP.dbrda.exvar2, "%)", sep = ""), ylim = c(-1.5, 1), xlim = c(-1, 1.5), pch = 16, cex = 2.0, type = "n", cex.lab = 1.5, cex.axis = 1.2, axes = FALSE)
+
+axis(side = 1, labels = T, lwd.ticks = 2, cex.axis = 1.2, las=1)
+axis(side = 2, labels = T, lwd.ticks = 2, cex.axis = 1.2, las=1)
+abline(h = 0, v = 0, lty = 3)
+box(lwd = 2)
+points(scores(EP.dbrda, display = "wa"), pch = 19, cex = 3, bg = "gray", col = "gray")
+text(scores(EP.dbrda, display = "wa"), labels = row.names(scores(EP.dbrda, display = "wa")))
+vectors <- scores(EP.dbrda, display = "bp")
+arrows(0, 0, vectors[,1], vectors[,2], lwd = 2, lty = 1, length = 0.2, col = "red")
+text(vectors[,1], vectors[,2], pos = 3, labels = row.names(vectors))
+axis(side=3, lwd.ticks = 2, cex.axis=1.2, las = 1, col = "red", lwd = 2.2, at = pretty(range(vectors[,1]))*2, labels = pretty(range(vectors[,1])))
+axis(side=4, lwd.ticks = 2, cex.axis=1.2, las = 1, col = "red", lwd = 2.2, at = pretty(range(vectors[,2]))*2, labels = pretty(range(vectors[,2])))
+
+dev.off()
+
+pdf("./output/RTLC_EP_dbRDA_resources.pdf")
+par(mar = c(5,5,4,4) + 0.1)
+
+plot(scores(EP.dbrda, display = "wa"), xlab = paste("dbRDA 1 (", EP.dbrda.exvar1, "%)", sep = ""), ylab = paste("dbRDA 2 (", EP.dbrda.exvar2, "%)", sep = ""), pch = 16, cex = 2.0, type = "n", cex.lab = 1.5, cex.axis = 1.2, axes = FALSE)
+
+axis(side = 1, labels = T, lwd.ticks = 2, cex.axis = 1.2, las=1)
+axis(side = 2, labels = T, lwd.ticks = 2, cex.axis = 1.2, las=1)
+abline(h = 0, v = 0, lty = 3)
+box(lwd = 2)
+points(scores(EP.dbrda, display = "wa"), pch = 19, cex = 3, bg = "gray", col = "gray")
+text(scores(EP.dbrda, display = "wa"), labels = row.names(scores(EP.dbrda, display = "wa")))
+vectors <- scores(EP.dbrda, display = "bp")
+arrows(0, 0, vectors[,1], vectors[,2], lwd = 2, lty = 1, length = 0.2, col = "red")
+text(vectors[,1], vectors[,2], pos = 3, labels = row.names(vectors))
+axis(side=3, lwd.ticks = 2, cex.axis=1.2, las = 1, col = "red", lwd = 2.2, at = pretty(range(vectors[,1]))*2, labels = pretty(range(vectors[,1])))
+axis(side=4, lwd.ticks = 2, cex.axis=1.2, las = 1, col = "red", lwd = 2.2, at = pretty(range(vectors[,2]))*2, labels = pretty(range(vectors[,2])))
+
+dev.off()
+```
+
+#Code from Kuo et al. 2021 for ordiellipse
+```{r}
+all.equal(row.names(Brassica.PCoA$points), rownames(Brassica.div))
+Brassica.points <- data.frame(Brassica.PCoA$points, Brassica.div)
+# Active community
+Brassica.active.rpf <- Brassica.points[ which(Brassica.points$type == "cDNA" &
+                                   Brassica.points$treatment == "Rpf+"), ]
+Brassica.active.no <- Brassica.points[ which(Brassica.points$type == "cDNA" &
+                                   Brassica.points$treatment == "Rpf-"), ]
+# Total community
+Brassica.total.rpf <- Brassica.points[ which(Brassica.points$type == "DNA" &
+                                   Brassica.points$treatment == "Rpf+"), ]
+Brassica.total.no <- Brassica.points[ which(Brassica.points$type == "DNA" &
+                                   Brassica.points$treatment == "Rpf-"), ]
+# Add points
+# Active community Rpf+
+points(Brassica.active.rpf[ ,1], Brassica.active.rpf[ ,2], pch = 21,
+       cex = 3.5, col = "Black", bg = "grey15", lwd= 2.5)
+# Active community Rpf-
+points(Brassica.active.no[ ,1], Brassica.active.no[ ,2], pch = 21,
+       cex = 3.5, col = "Black", bg = "lightgrey", lwd= 2.5)   
+# Total community Rpf+ 
+points(Brassica.total.rpf[ ,1], Brassica.total.rpf[ ,2], pch = 24,
+       cex = 3.5, col = "Black", bg = "grey15", lwd= 2.5)
+# Total community Rpf-
+points(Brassica.total.no[ ,1], Brassica.total.no[ ,2], pch = 24,
+       cex = 3.5, col = "Black", bg = "lightgrey", lwd= 2.5)
+# Add ellipses 
+# Active Rpf+
+ordiellipse(cbind(Brassica.active.rpf[ ,1], Brassica.active.rpf[ ,2]), Brassica.active.rpf$treatment, kind="sd", conf=0.95,
+            lwd=2, lty=3, draw="lines", col="black", label=FALSE)
+# Active Rpf-
+ordiellipse(cbind(Brassica.active.no[ ,1], Brassica.active.no[ ,2]), Brassica.active.no$treatment, kind="sd", conf=0.95,
+            lwd=2, lty=3, draw="lines", col="black", label=FALSE)
+# Total Rpf+
+ordiellipse(cbind(Brassica.total.rpf[ ,1], Brassica.total.rpf[ ,2]), Brassica.total.rpf$treatment, kind="sd", conf=0.95,
+            lwd=2, lty=3, draw="lines", col="black", label=FALSE)
+# Total Rpf- 
+ordiellipse(cbind(Brassica.total.no[ ,1], Brassica.total.no[ ,2]), Brassica.total.no$treatment, kind="sd", conf=0.95,
+            lwd=2, lty=3, draw="lines", col="black", label=FALSE)
+```
+
+
+#Pilot data code
 ```{r}
 t_Res_rt75 <- ggplot(EcoPlate_t78,aes(x=Time,y=NumRes))+
   geom_point(size=2,alpha=0.6)+
@@ -231,7 +898,7 @@ t_Res_rt75 <- ggplot(EcoPlate_t78,aes(x=Time,y=NumRes))+
   xlab("Time (hrs)")+
   ylab("Resources Used")+
   stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2,p.digits = 3, parse = TRUE)
-  
+
 ggsave("./output/t_Res_rt75.pdf")
 ggsave("./output/t_Res_rt75.png")
 
@@ -256,11 +923,7 @@ Tau_Res
 ggsave("./output/Tau_Res.pdf")
 ggsave("./output/Tau_Res.png")
 
-```
 
-
-#Generate and save N vs. Tau pilot figure
-```{r}
 Tau.mod <- lm(log(RT$N, 10) ~ log(RT$Tau, 10))
 Tau.sq.mod <- lm(log(RT$N, 10) ~ poly(log(RT$Tau,10), 2, raw = TRUE))
 plot(Tau.mod)
@@ -298,7 +961,7 @@ BR <- ggplot(RT, aes(x=log(Tau, 10), y = BR))+
   geom_smooth(method = "lm",formula =y ~ poly(x, 2, raw = TRUE))+
   xlab(expression(paste("log(", tau,")")))+
   ylab(expression(paste("Bacterial respirtaiton (", mu,"M O2/hr)")))+
-  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)  
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
 
 ggsave("./output/Tau_BR.pdf")
 ggsave("./output/Tau_BR.png")
@@ -308,7 +971,7 @@ BR_N <- ggplot(RT, aes(x = log(Tau,10), y = BR_N))+
   geom_smooth(method = "lm",formula =y ~ poly(x, 2, raw = TRUE))+
   xlab(expression(paste("log(", tau,")")))+
   ylab(expression(paste("Bacterial respirtaiton (", mu,"M O2/hr)")))+
-  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE) 
+  stat_poly_eq(formula = y ~ poly(x,2, raw = TRUE), rr.digits = 2, parse = TRUE)
 
 ggsave("./output/Tau_ind.R.pdf")
 ggsave("./output/Tau_ind.R.png")
