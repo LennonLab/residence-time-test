@@ -12,13 +12,18 @@ getwd()
 ```
 
 ```{r}
-package.list <- c("png", "vegan", "ggplot2", "ggpubr", "cowplot", "ggpmisc", "scales", "fitdistrplus", "tidyr", "ade4", "viridis", "gplots", "BiodiversityR", "indicspecies", "knitr", "here", "dplyr")
+package.list <- c("png", "vegan", "ggplot2", "ggpubr", "cowplot", "ggpmisc", "scales", "fitdistrplus", "tidyr", "ade4", "viridis", "gplots", "BiodiversityR", "indicspecies", "knitr", "here", "dplyr", "BiocManager", "car", "here", "actuar", "tibble", "scales", "dplyr")
 
 for (package in package.list) {
   if (!require(package, character.only=T, quietly=T)) { 
     install.packages(package)
     library(package, character.only=T)
   } }
+
+BiocManager::valid()
+BiocManager::install("flowCore")
+BiocManager::install("ggcyto")
+BiocManager::install()
 ```
 
 ```{r figure_setup}
@@ -140,7 +145,7 @@ BP_fxn <- function(CPMs, Tau, set){
 ```{r}
 Abundance_fxn <- function(N, Tau){
   for(x in unique(N$Sample)){
-    Tau$N[Tau$Sample == x] <- mean(N$N[N$Sample == x])
+    Tau$N[Tau$Tau == x] <- mean(N$N[N$Sample == x])
   }
   Tau$log_N <- log(Tau$N, 10)
   
@@ -170,14 +175,50 @@ EP_fxn <- function(EP, Tau){
 }
 ```
 
+```{r}
+process <- function(x = "", channel = "", scale = ""){
+  if(scale == TRUE){
+    fcs <- flowCore::read.FCS(file = x, transformation = "scale")
+  }
+  else{
+    fcs <- flowCore::read.FCS(file = x)
+  }
+  flow <- flowCore::exprs(fcs)
+  RSG_H <- as.data.frame(flow[,channel])
+  rac <- RAC(x = RSG_H)
+  return(rac)
+}
+```
+
+```{r}
+Pareto <- function(x = "", pareto_para = ""){
+  head(x)
+  pareto <- fitdist(x[ ,2], "pareto", start = list(shape = 0.1, scale = 10))
+  pareto_para <- rbind(pareto_para, c(pareto$estimate[1], pareto$estimate[2]))
+  return(pareto_para)
+}
+```
+
+```{r}
+RAC <- function(x = ""){
+  x = as.vector(x)
+  x.ab = x[x >0]
+  rac = x.ab[order(x.ab, decreasing = TRUE)]
+  ranks <- as.vector(seq(1,length(rac)))
+  rac <- cbind(ranks, rac)
+  return(as.data.frame(rac))
+}
+
+```
+
 Read in data
 ```{r}
 #Tau read in
 Tau <- read.csv("data/RTLC/2021_RTLC_Tau.csv", header = TRUE)
 
 #Abundance data
-#N <- read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_N.csv", header = TRUE)
-#Tau <- Abundance_fxn(N, Tau)
+Tau <- Abundance_fxn(read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_N.csv", header = TRUE), Tau)
+Tau <- Abundance_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_N.csv", header = TRUE), Tau)
 
 
 #Biofilm data
@@ -192,7 +233,7 @@ Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_BP.csv"
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_BP.csv", header = FALSE), Tau, 2))
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S3/20210723_RTLC_S3_BP.csv", header = FALSE), Tau, 3))
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S4/20210904_RTLC_S4_BP.csv", header = FALSE), Tau, 4))
-#Tau$ind_P <- Tau$ugCLhr/Tau$N
+Tau$ind_P <- Tau$ugCLhr/Tau$N
 
 
 #Biolog data
@@ -201,6 +242,75 @@ Tau <- EP_fxn(read.csv("data/RTLC/eco.data_rt.txt", header = TRUE, sep = "\t"), 
 #Format data
 Tau$Tau <- as.numeric(Tau$Tau)
 Tau$Set <- as.character(Tau$Set)
+```
+
+```{r}
+ra_rac_2875Ra <- process(here("data", "RTLC", "RTLC_S3", "RTLC_S3_RSG", "2.875Ra.fcs"), "B586-H", TRUE)
+ra_rac_325Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "3.25Ra.fcs"), "B586-H", TRUE)
+ra_rac_3875Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "3.875Ra.fcs"), "B586-H", TRUE)
+ra_rac_4125Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.125Ra.fcs"), "B586-H", TRUE)
+ra_rac_4375Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.375Ra.fcs"), "B586-H", TRUE)
+ra_rac_4625Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.625Ra.fcs"), "B586-H", TRUE)
+ra_rac_4875Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.875Ra.fcs"), "B586-H", TRUE)
+ra_rac_5125Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.125Ra.fcs"), "B586-H", TRUE)
+ra_rac_5375Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.375Ra.fcs"), "B586-H", TRUE)
+ra_rac_5625Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.625Ra.fcs"), "B586-H", TRUE)
+
+met <- list(ra_rac_2875Ra, ra_rac_325Ra, ra_rac_3875Ra, ra_rac_4125Ra, ra_rac_4375Ra, ra_rac_4625Ra, ra_rac_4875Ra, ra_rac_5125Ra, ra_rac_5375Ra, ra_rac_5625Ra)
+pareto_para <- data.frame()
+for(x in met){
+  pareto_para <- Pareto(x, pareto_para)
+}
+tau <- c(2.875, 3.25, 3.875, 4.125, 4.375, 4.625, 4.875, 5.125, 5.375, 5.625)
+met_tau <- data.frame(tau, pareto_para)
+names(met_tau) <- c("tau", "shape", "scale")
+
+plot(met_tau$scale ~ met_tau$tau)
+plot(met_tau$shape ~ met_tau$tau)
+```
+
+```{r}
+N_lm <- lm(N ~ Tau, data = Tau)
+N_lm_2 <- lm(N ~ poly(Tau, 2, raw = TRUE), data = Tau)
+summary(N_lm)
+summary(N_lm_2)
+AIC(N_lm)
+AIC(N_lm_2)
+
+N <- ggplot(Tau, aes(x = Tau, y = N))+
+  geom_point(size = 2, alpha = 0.6)+
+  ylim(c(0.5e+07, 3.5e+07))+
+  xlab("Tau")+
+  ylab("N")+
+  geom_smooth(method = "lm")+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+N
+
+ggsave("./output/RTLC_N.pdf")
+ggsave("./output/RTLC_N.png")
+
+IP_lm <- lm(ind_P ~ Tau, data = Tau)
+IP_lm_2 <- lm(ind_P ~ poly(Tau, 2, raw = TRUE), data = Tau)
+summary(IP_lm)
+summary(IP_lm_2)
+AIC(IP_lm)
+AIC(IP_lm_2)
+
+IP <- ggplot(Tau, aes(x = Tau, y = ind_P))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab("Tau")+
+  ylab("IP")+
+  geom_smooth(method = "lm")+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+               formula = y~x, parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  scale_y_continuous(labels = label_math(expr = 10^.x, format = force))
+
+IP
+
 ```
 
 
@@ -355,8 +465,6 @@ for(file in file_list){
 }
 
 long_EP <- EcoPlate_72 %>% gather(C_Source, OD, X2.Hydroxy.Benzoic.Acid:Avg)
-
-histogram(log(subset(long_EP, long_EP$C_Source != "Avg" & long_EP$C_Source != "NumRes")$OD), 10)
 ```
 
 ##Plot resource use vs. Time for all Tau
@@ -376,6 +484,14 @@ Avg_Hr
 ggsave("./output/RTLC_AvgRes_Hr.pdf")
 ggsave("./output/RTLC_AvgRes_Hr.png")
 
+```
+
+```{r}
+p <- c(0.205, 0.001, 0.007, 0.06, 0.041, 0.041, 0.008, 0.074)
+
+p <- p.adjust(p, method = "BH")
+
+p
 ```
 
 ##Load slopes of resource use data (48-24 hours)
@@ -429,9 +545,12 @@ histogram(log(long_EP_slope$Slope, 10))
 
 plot(lm.slope.tau.c)
 
-Res_Slope <- ggplot(long_EP_slope, aes(Slope ~ Tau  C_Source))+
+Res_Slope <- ggplot(long_EP_slope, aes(x = Tau, y = Slope, group = C_Source))+
   geom_point(size = 3, show.legend = FALSE)+
   xlab(expression(tau))+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+      formula = y~x, parse = TRUE, size = 4, label.x = 0.9)+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
   ylab("Slope of Resource Use (24-48 hrs)")+
   theme(legend.position="bottom")
