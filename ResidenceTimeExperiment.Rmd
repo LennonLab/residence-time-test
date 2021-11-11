@@ -164,6 +164,17 @@ OT_fxn <- function(OT, Tau){
 ```
 
 ```{r}
+Met_fxn <- function(Met, Tau){
+  for(x in unique(Met$tau)){
+    Tau$Shape[Tau$Tau == x] <- Met$shape[Met$tau == x]
+    Tau$Scale[Tau$Tau == x] <- Met$scale[Met$tau == x]
+  }
+  
+  return(Tau)
+}
+```
+
+```{r}
 EP_fxn <- function(EP, Tau){
   EP$Tau <- as.numeric(EP$Tau)
   for(x in unique(EP$Tau)){
@@ -211,6 +222,28 @@ RAC <- function(x = ""){
 
 ```
 
+#Cdist function takes in a list of activity values and calculates the CDF and returns the CDF and percentage of cells contributing to CDF
+```{r}
+CDist <- function(x = ""){
+  x <- as.vector(x)
+  sum <- sum(x)
+  rank <- 1
+  total <- length(x)
+  cdist <- as.vector((x[1]/sum)*100)
+  Per <- as.vector((rank/total) * 100)
+  for(num in x){
+    rank <- rank + 1
+    x <- x[-1]
+    current <- cdist[length(cdist)] + ((x[1]/sum)*100)
+    Per <- c(Per, ((rank/total) *100))
+    cdist <- c(cdist, current)
+  }
+  ranked <- cbind(cdist, Per)
+  return(as.data.frame(ranked))
+
+}
+```
+
 Read in data
 ```{r}
 #Tau read in
@@ -246,15 +279,34 @@ Tau$Set <- as.character(Tau$Set)
 
 ```{r}
 ra_rac_2875Ra <- process(here("data", "RTLC", "RTLC_S3", "RTLC_S3_RSG", "2.875Ra.fcs"), "B586-H", TRUE)
+ra_CD_2875Ra <- CDist(ra_rac_2875Ra[,2])
+
 ra_rac_325Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "3.25Ra.fcs"), "B586-H", TRUE)
+ra_CD_325Ra <- CDist(ra_rac_325Ra[,2])
+
 ra_rac_3875Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "3.875Ra.fcs"), "B586-H", TRUE)
+ra_CD_3875Ra <- CDist(ra_rac_3875Ra[,2])
+
 ra_rac_4125Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.125Ra.fcs"), "B586-H", TRUE)
+ra_CD_4125Ra <- CDist(ra_rac_4125Ra[,2])
+
 ra_rac_4375Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.375Ra.fcs"), "B586-H", TRUE)
+ra_CD_4375Ra <- CDist(ra_rac_4375Ra[,2])
+
 ra_rac_4625Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.625Ra.fcs"), "B586-H", TRUE)
+ra_CD_4625Ra <- CDist(ra_rac_4625Ra[,2])
+
 ra_rac_4875Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.875Ra.fcs"), "B586-H", TRUE)
+ra_CD_4875Ra <- CDist(ra_rac_4875Ra[,2])
+
 ra_rac_5125Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.125Ra.fcs"), "B586-H", TRUE)
+ra_CD_5125Ra <- CDist(ra_rac_5125Ra[,2])
+
 ra_rac_5375Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.375Ra.fcs"), "B586-H", TRUE)
+ra_CD_5375Ra <- CDist(ra_rac_5375Ra[,2])
+
 ra_rac_5625Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.625Ra.fcs"), "B586-H", TRUE)
+ra_CD_5625Ra <- CDist(ra_rac_5625Ra[,2])
 
 met <- list(ra_rac_2875Ra, ra_rac_325Ra, ra_rac_3875Ra, ra_rac_4125Ra, ra_rac_4375Ra, ra_rac_4625Ra, ra_rac_4875Ra, ra_rac_5125Ra, ra_rac_5375Ra, ra_rac_5625Ra)
 pareto_para <- data.frame()
@@ -265,8 +317,100 @@ tau <- c(2.875, 3.25, 3.875, 4.125, 4.375, 4.625, 4.875, 5.125, 5.375, 5.625)
 met_tau <- data.frame(tau, pareto_para)
 names(met_tau) <- c("tau", "shape", "scale")
 
-plot(met_tau$scale ~ met_tau$tau)
-plot(met_tau$shape ~ met_tau$tau)
+Tau <- Met_fxn(met_tau, Tau)
+```
+
+```{r}
+
+shape <- ggplot(met_tau, aes(x = tau, y = shape))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab("Tau")+
+  ylab("Shape parameter")+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+shape
+
+ggsave("./output/RTLC_met_shape.pdf")
+ggsave("./output/RTLC_met_shape.png")
+
+shape_BP <- ggplot(Tau, aes(x = uMChr, y = Shape, color = Tau))+
+  geom_point(size = 3)+
+  xlab("Biomass Production (uM C/hr)")+
+  ylab("Shape parameter")+
+  labs(color = "Tau")+
+  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 16))
+
+shape_BP
+
+ggsave("./output/RTLC_met_shape_BP.pdf")
+ggsave("./output/RTLC_met_shape_BP.png")
+
+scale <- ggplot(met_tau, aes(x = tau, y = scale))+
+  geom_point(size = 2, alpha = 0.6)+
+  xlab("Tau")+
+  ylab("Scale parameter")+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+
+scale
+
+ggsave("./output/RTLC_met_scale.pdf")
+ggsave("./output/RTLC_met_scale.png")
+
+scale_BP <- ggplot(Tau, aes(x = uMChr, y = Scale, color = Tau))+
+  geom_point(size = 3)+
+  xlab("Biomass Production (uM C/hr)")+
+  ylab("Scale parameter")+
+  labs(color = "Tau")+
+  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 16))
+
+scale_BP
+
+ggsave("./output/RTLC_met_scale_BP.pdf")
+ggsave("./output/RTLC_met_scale_BP.png")
+```
+
+```{r}
+
+hist <- ggplot(ra_rac_2875Ra, aes(x = rac))+
+  geom_histogram(size = 1, alpha = 0.6, color = "#481567FF")+
+  geom_histogram(data = ra_rac_325Ra, aes(x = rac),size = 1, alpha = 0.6, color = "#453781FF")+
+  geom_histogram(data = ra_rac_3875Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#39568CFF")+
+  geom_histogram(data = ra_rac_4125Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#2D708EFF")+
+  geom_histogram(data = ra_rac_4375Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#238A8DFF")+
+  geom_histogram(data = ra_rac_4625Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#20A387FF")+
+  geom_histogram(data = ra_rac_4875Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#3CBB75FF")+
+  geom_histogram(data = ra_rac_5125Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#73D055FF")+
+  geom_histogram(data = ra_rac_5375Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#B8DE29FF")+
+  geom_histogram(data = ra_rac_5625Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#FDE725FF")+
+  xlab("RSG activity")+
+  ylab("Count")
+
+hist
+
+ggsave("./output/RTLC_met_hist.pdf")
+ggsave("./output/RTLC_met_hist.png")
+
+CD <- ggplot(ra_CD_2875Ra, aes(x = Per, y = cdist))+
+  geom_point(size = 1, alpha = 0.6, color = "#481567FF")+
+  geom_point(data = ra_CD_325Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6, color = "#453781FF")+
+  geom_point(data = ra_CD_3875Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#39568CFF")+
+  geom_point(data = ra_CD_4125Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#2D708EFF")+
+  geom_point(data = ra_CD_4375Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#238A8DFF")+
+  geom_point(data = ra_CD_4625Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#20A387FF")+
+  geom_point(data = ra_CD_4875Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#3CBB75FF")+
+  geom_point(data = ra_CD_5125Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#73D055FF")+
+  geom_point(data = ra_CD_5375Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#B8DE29FF")+
+  geom_point(data = ra_CD_5625Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#FDE725FF")+
+  geom_abline(slope = 1)+
+  xlab("% of rank-ordered cells \ncontributing to activity")+
+  ylab("Cumulative % \nRSG activity")
+
+CD
+
+ggsave("./output/RTLC_met_CD.pdf")
+ggsave("./output/RTLC_met_CD.png")
 ```
 
 ```{r}
