@@ -1,0 +1,37 @@
+#creates 3-column file with sample name, fastq.gz R1, fastq.gz R2
+make.file(inputdir=./raw, outputdir=., type=gz, prefix=RTLC)
+
+#generates trimmed contigs and scraps for each sample. also generates the count, name, group files?
+make.contigs(file=RTLC.files)
+summary.seqs(fasta=RTLC.trim.contigs.fasta, count=RTLC.contigs.count_table)
+
+#removes contigs longer than 275 bp, with any ambiguous bases, and with more than 8 of one base in a row - https://forum.mothur.org/t/how-to-decide-maxlength/2423/2
+screen.seqs(fasta=RTLC.trim.contigs.fasta, count=RTLC.contigs.count_table, maxambig=0, maxlength=275, maxhomop=8)
+
+#removes replicate contigs to decrease computing power necessary in future steps
+unique.seqs(fasta=RTLC.trim.contigs.good.fasta, count=RTLC.trim.contigs.good.count_table)
+summary.seqs(count=RTLC.trim.contigs.good.count_table)
+
+#generate the silva database trimmed to the correct point (s=11894, e=25319) and removes non-unique sequences to conserve space
+pcr.seqs(fasta=silva.nr_v138_1.align, start=11894, end=25319, keepdots=F)
+unique.seqs(silva.nr_v138_1.pcr.align)
+
+#align contigs with reference silva.nr_v138 
+align.seqs(fasta=RTLC.trim.contigs.good.unique.fasta, reference=silva.nr_v138_1.pcr.unqiue.align)
+summary.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trim.contigs.good.count_table)
+
+#check RTLC.trim.contigs.good.unique.summary to determine if correct start and end (should be where 35%-75% start and end)
+screen.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trimcontigs.good.count_table, summary=RTLC.trim.contigs.good.unique.summary, start=1968, end=11550, maxhomop=8)
+summary.seqs(fasta=current, count=current)
+
+#
+filter.seqs(fasta=RTLC.trim.contigs.good.unique.good.align, veritcal=T, trump=.)
+unique.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.fasta, count=RTLC.trim.contigs.good.good.count_table)
+pre.cluster(fasta=RTLC.trim.contigs.good.unique.food.filter.unique.fasta, count=RTLC.trim.contigs.good.unique.good.filter.count_table, diffs=2)
+chimera.vsearch(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t)
+
+#
+remove.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.count_table, accnos=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.accnos)
+summary.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.pick.count_table)
+
+classify.seqs(

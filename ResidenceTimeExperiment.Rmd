@@ -20,7 +20,7 @@ for (package in package.list) {
     library(package, character.only=T)
   } }
 
-BiocManager::valid()
+#BiocManager::valid()
 BiocManager::install("flowCore")
 BiocManager::install("ggcyto")
 BiocManager::install()
@@ -115,7 +115,6 @@ BP_fxn <- function(CPMs, Tau, set){
       Tau[Tau$Tau == x, "DPMKills"] <- Tau[Tau$Tau ==x, "DPM"] - (as.numeric(Kills[Kills$Sample == x, "CPM"])/efficiency)
     }
   }
-    print(Tau$DPMKills)
   
   #Determine Mols Leucine based on MLeu_sample = MLeu * DPM/voucher
   Tau$MLeu <- (M_Leu * Tau$DPMKills)/Voucher
@@ -143,7 +142,7 @@ BP_fxn <- function(CPMs, Tau, set){
 
 
 ```{r}
-Abundance_fxn <- function(N, Tau){
+N_fxn <- function(N, Tau){
   for(x in unique(N$Sample)){
     Tau$N[Tau$Tau == x] <- mean(N$N[N$Sample == x])
   }
@@ -164,17 +163,6 @@ OT_fxn <- function(OT, Tau){
 ```
 
 ```{r}
-Met_fxn <- function(Met, Tau){
-  for(x in unique(Met$tau)){
-    Tau$Shape[Tau$Tau == x] <- Met$shape[Met$tau == x]
-    Tau$Scale[Tau$Tau == x] <- Met$scale[Met$tau == x]
-  }
-  
-  return(Tau)
-}
-```
-
-```{r}
 EP_fxn <- function(EP, Tau){
   EP$Tau <- as.numeric(EP$Tau)
   for(x in unique(EP$Tau)){
@@ -186,72 +174,18 @@ EP_fxn <- function(EP, Tau){
 }
 ```
 
-```{r}
-process <- function(x = "", channel = "", scale = ""){
-  if(scale == TRUE){
-    fcs <- flowCore::read.FCS(file = x, transformation = "scale")
-  }
-  else{
-    fcs <- flowCore::read.FCS(file = x)
-  }
-  flow <- flowCore::exprs(fcs)
-  RSG_H <- as.data.frame(flow[,channel])
-  rac <- RAC(x = RSG_H)
-  return(rac)
-}
-```
-
-```{r}
-Pareto <- function(x = "", pareto_para = ""){
-  head(x)
-  pareto <- fitdist(x[ ,2], "pareto", start = list(shape = 0.1, scale = 10))
-  pareto_para <- rbind(pareto_para, c(pareto$estimate[1], pareto$estimate[2]))
-  return(pareto_para)
-}
-```
-
-```{r}
-RAC <- function(x = ""){
-  x = as.vector(x)
-  x.ab = x[x >0]
-  rac = x.ab[order(x.ab, decreasing = TRUE)]
-  ranks <- as.vector(seq(1,length(rac)))
-  rac <- cbind(ranks, rac)
-  return(as.data.frame(rac))
-}
-
-```
-
-#Cdist function takes in a list of activity values and calculates the CDF and returns the CDF and percentage of cells contributing to CDF
-```{r}
-CDist <- function(x = ""){
-  x <- as.vector(x)
-  sum <- sum(x)
-  rank <- 1
-  total <- length(x)
-  cdist <- as.vector((x[1]/sum)*100)
-  Per <- as.vector((rank/total) * 100)
-  for(num in x){
-    rank <- rank + 1
-    x <- x[-1]
-    current <- cdist[length(cdist)] + ((x[1]/sum)*100)
-    Per <- c(Per, ((rank/total) *100))
-    cdist <- c(cdist, current)
-  }
-  ranked <- cbind(cdist, Per)
-  return(as.data.frame(ranked))
-
-}
-```
-
 Read in data
 ```{r}
+PCR <- read.csv("data/RTLC/PCR_check.csv", header = TRUE)
+
 #Tau read in
 Tau <- read.csv("data/RTLC/2021_RTLC_Tau.csv", header = TRUE)
 
 #Abundance data
-Tau <- Abundance_fxn(read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_N.csv", header = TRUE), Tau)
-Tau <- Abundance_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_N.csv", header = TRUE), Tau)
+Tau <- N_fxn(read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_N.csv", header = TRUE), Tau)
+Tau <- N_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_N_RSG.csv", header = TRUE), Tau)
+Tau <- N_fxn(read.csv("data/RTLC/RTLC_S3/20210723_RTLC_S3_N_RSG.csv", header = TRUE), Tau)
+Tau <- N_fxn(read.csv("data/RTLC/RTLC_S4/20210904_RTLC_S4_N_RSG.csv", header = TRUE), Tau)
 
 
 #Biofilm data
@@ -266,7 +200,7 @@ Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_BP.csv"
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_BP.csv", header = FALSE), Tau, 2))
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S3/20210723_RTLC_S3_BP.csv", header = FALSE), Tau, 3))
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S4/20210904_RTLC_S4_BP.csv", header = FALSE), Tau, 4))
-Tau$ind_P <- Tau$ugCLhr/Tau$N
+Tau$ind_P <- Tau$uMChr/Tau$N
 
 
 #Biolog data
@@ -277,186 +211,57 @@ Tau$Tau <- as.numeric(Tau$Tau)
 Tau$Set <- as.character(Tau$Set)
 ```
 
+
+#Microbial Abundance (N)
 ```{r}
-ra_rac_2875Ra <- process(here("data", "RTLC", "RTLC_S3", "RTLC_S3_RSG", "2.875Ra.fcs"), "B586-H", TRUE)
-ra_CD_2875Ra <- CDist(ra_rac_2875Ra[,2])
-
-ra_rac_325Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "3.25Ra.fcs"), "B586-H", TRUE)
-ra_CD_325Ra <- CDist(ra_rac_325Ra[,2])
-
-ra_rac_3875Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "3.875Ra.fcs"), "B586-H", TRUE)
-ra_CD_3875Ra <- CDist(ra_rac_3875Ra[,2])
-
-ra_rac_4125Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.125Ra.fcs"), "B586-H", TRUE)
-ra_CD_4125Ra <- CDist(ra_rac_4125Ra[,2])
-
-ra_rac_4375Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.375Ra.fcs"), "B586-H", TRUE)
-ra_CD_4375Ra <- CDist(ra_rac_4375Ra[,2])
-
-ra_rac_4625Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.625Ra.fcs"), "B586-H", TRUE)
-ra_CD_4625Ra <- CDist(ra_rac_4625Ra[,2])
-
-ra_rac_4875Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "4.875Ra.fcs"), "B586-H", TRUE)
-ra_CD_4875Ra <- CDist(ra_rac_4875Ra[,2])
-
-ra_rac_5125Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.125Ra.fcs"), "B586-H", TRUE)
-ra_CD_5125Ra <- CDist(ra_rac_5125Ra[,2])
-
-ra_rac_5375Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.375Ra.fcs"), "B586-H", TRUE)
-ra_CD_5375Ra <- CDist(ra_rac_5375Ra[,2])
-
-ra_rac_5625Ra <- process(here("data", "RTLC", "RTLC_S3","RTLC_S3_RSG", "5.625Ra.fcs"), "B586-H", TRUE)
-ra_CD_5625Ra <- CDist(ra_rac_5625Ra[,2])
-
-met <- list(ra_rac_2875Ra, ra_rac_325Ra, ra_rac_3875Ra, ra_rac_4125Ra, ra_rac_4375Ra, ra_rac_4625Ra, ra_rac_4875Ra, ra_rac_5125Ra, ra_rac_5375Ra, ra_rac_5625Ra)
-pareto_para <- data.frame()
-for(x in met){
-  pareto_para <- Pareto(x, pareto_para)
-}
-tau <- c(2.875, 3.25, 3.875, 4.125, 4.375, 4.625, 4.875, 5.125, 5.375, 5.625)
-met_tau <- data.frame(tau, pareto_para)
-names(met_tau) <- c("tau", "shape", "scale")
-
-Tau <- Met_fxn(met_tau, Tau)
-```
-
-```{r}
-
-shape <- ggplot(met_tau, aes(x = tau, y = shape))+
-  geom_point(size = 2, alpha = 0.6)+
-  xlab("Tau")+
-  ylab("Shape parameter")+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
-
-shape
-
-ggsave("./output/RTLC_met_shape.pdf")
-ggsave("./output/RTLC_met_shape.png")
-
-shape_BP <- ggplot(Tau, aes(x = uMChr, y = Shape, color = Tau))+
-  geom_point(size = 3)+
-  xlab("Biomass Production (uM C/hr)")+
-  ylab("Shape parameter")+
-  labs(color = "Tau")+
-  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
-  theme(legend.title = element_text(size = 16))
-
-shape_BP
-
-ggsave("./output/RTLC_met_shape_BP.pdf")
-ggsave("./output/RTLC_met_shape_BP.png")
-
-scale <- ggplot(met_tau, aes(x = tau, y = scale))+
-  geom_point(size = 2, alpha = 0.6)+
-  xlab("Tau")+
-  ylab("Scale parameter")+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
-
-scale
-
-ggsave("./output/RTLC_met_scale.pdf")
-ggsave("./output/RTLC_met_scale.png")
-
-scale_BP <- ggplot(Tau, aes(x = uMChr, y = Scale, color = Tau))+
-  geom_point(size = 3)+
-  xlab("Biomass Production (uM C/hr)")+
-  ylab("Scale parameter")+
-  labs(color = "Tau")+
-  scale_color_continuous(type = "viridis", labels = label_math(expr = 10^.x, format = force))+
-  theme(legend.title = element_text(size = 16))
-
-scale_BP
-
-ggsave("./output/RTLC_met_scale_BP.pdf")
-ggsave("./output/RTLC_met_scale_BP.png")
-```
-
-```{r}
-
-hist <- ggplot(ra_rac_2875Ra, aes(x = rac))+
-  geom_histogram(size = 1, alpha = 0.6, color = "#481567FF")+
-  geom_histogram(data = ra_rac_325Ra, aes(x = rac),size = 1, alpha = 0.6, color = "#453781FF")+
-  geom_histogram(data = ra_rac_3875Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#39568CFF")+
-  geom_histogram(data = ra_rac_4125Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#2D708EFF")+
-  geom_histogram(data = ra_rac_4375Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#238A8DFF")+
-  geom_histogram(data = ra_rac_4625Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#20A387FF")+
-  geom_histogram(data = ra_rac_4875Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#3CBB75FF")+
-  geom_histogram(data = ra_rac_5125Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#73D055FF")+
-  geom_histogram(data = ra_rac_5375Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#B8DE29FF")+
-  geom_histogram(data = ra_rac_5625Ra, aes(x = rac),size = 1, alpha = 0.6,color = "#FDE725FF")+
-  xlab("RSG activity")+
-  ylab("Count")
-
-hist
-
-ggsave("./output/RTLC_met_hist.pdf")
-ggsave("./output/RTLC_met_hist.png")
-
-CD <- ggplot(ra_CD_2875Ra, aes(x = Per, y = cdist))+
-  geom_point(size = 1, alpha = 0.6, color = "#481567FF")+
-  geom_point(data = ra_CD_325Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6, color = "#453781FF")+
-  geom_point(data = ra_CD_3875Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#39568CFF")+
-  geom_point(data = ra_CD_4125Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#2D708EFF")+
-  geom_point(data = ra_CD_4375Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#238A8DFF")+
-  geom_point(data = ra_CD_4625Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#20A387FF")+
-  geom_point(data = ra_CD_4875Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#3CBB75FF")+
-  geom_point(data = ra_CD_5125Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#73D055FF")+
-  geom_point(data = ra_CD_5375Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#B8DE29FF")+
-  geom_point(data = ra_CD_5625Ra, aes(x = Per, y = cdist),size = 1, alpha = 0.6,color = "#FDE725FF")+
-  geom_abline(slope = 1)+
-  xlab("% of rank-ordered cells \ncontributing to activity")+
-  ylab("Cumulative % \nRSG activity")
-
-CD
-
-ggsave("./output/RTLC_met_CD.pdf")
-ggsave("./output/RTLC_met_CD.png")
-```
-
-```{r}
-N_lm <- lm(N ~ Tau, data = Tau)
-N_lm_2 <- lm(N ~ poly(Tau, 2, raw = TRUE), data = Tau)
+N_lm <- lm(log(N, 10) ~ Tau, data = Tau)
+N_lm_2 <- lm(log(N, 10) ~ poly(Tau, 2, raw = TRUE), data = Tau)
 summary(N_lm)
 summary(N_lm_2)
 AIC(N_lm)
 AIC(N_lm_2)
+plot(N_lm_2)
 
-N <- ggplot(Tau, aes(x = Tau, y = N))+
+N <- ggplot(Tau, aes(x = Tau, y = log(N, 10)))+
   geom_point(size = 2, alpha = 0.6)+
-  ylim(c(0.5e+07, 3.5e+07))+
-  xlab("Tau")+
-  ylab("N")+
-  geom_smooth(method = "lm")+
+  xlab(expression(paste(tau, " (mins)")))+
+  ylab("N (cells/mL)")+
+  geom_smooth(method = "lm", formula = y~poly(x,2, raw = TRUE))+
   stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
-               formula = y~x, parse = TRUE, size = 4)+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+               formula = y ~ poly(x, 2, raw = TRUE), parse = TRUE, size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  scale_y_continuous(labels = label_math(expr = 10^.x, format = force))
 
 N
 
 ggsave("./output/RTLC_N.pdf")
-ggsave("./output/RTLC_N.png")
+ggsave("./output/RTLC_N.png", width = 7, height = 5)
 
-IP_lm <- lm(ind_P ~ Tau, data = Tau)
-IP_lm_2 <- lm(ind_P ~ poly(Tau, 2, raw = TRUE), data = Tau)
-summary(IP_lm)
-summary(IP_lm_2)
-AIC(IP_lm)
-AIC(IP_lm_2)
+Y <- subset(PCR, PCR$Y.N == "Y")
+Y <- Y$Tau
 
-IP <- ggplot(Tau, aes(x = Tau, y = ind_P))+
-  geom_point(size = 2, alpha = 0.6)+
-  xlab("Tau")+
-  ylab("IP")+
-  geom_smooth(method = "lm")+
-  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
-               formula = y~x, parse = TRUE, size = 4)+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
-  scale_y_continuous(labels = label_math(expr = 10^.x, format = force))
+N <- subset(PCR, PCR$Y.N == "N")
+N <- N$Tau
 
-IP
+t.test(Y, N)
 
+hist(Y)
+PCR$Date <- as.character(PCR$Date)
+
+PCR_plot <- ggplot(PCR, aes(x = Y.N, y = Tau))+
+  geom_boxplot()+
+  geom_jitter()
+
+PCR_plot
+
+PCR_plot <- ggplot(PCR, aes(x = Date, y = Tau))+
+  geom_boxplot()+
+  geom_jitter()
+
+PCR_plot
 ```
 
+#Biofilm Formation
 
 ```{r}
 OT_lm <- lm(OT ~ Tau, data = Tau)
@@ -484,64 +289,75 @@ OT_Set
 
 ggsave("./output/RTLC_OT_Set.pdf")
 ggsave("./output/RTLC_OT_Set.png")
-
-OT <- ggplot(Tau, aes(x = Tau, y = OT))+
-  geom_point(size = 2, alpha = 0.6)+
-  xlab("Tau")+
-  ylab("Biofilm Formation \n (OD 595 nm)")+
-  geom_smooth(method = "lm")+
-  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
-               formula = y~x, parse = TRUE, size = 4)+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
-
-OT
-
-ggsave("./output/RTLC_OT.pdf")
-ggsave("./output/RTLC_OT.png")
 ```
 
 #Bacterial Productivity
 
+##Biomass Production (uM C/hr)
+
 ```{r}
-BP_lm <- lm(log_uMChr ~ Tau, data = Tau)
-BP_lm_2 <- lm(uMChr ~ poly(Tau, 2, raw = TRUE), data = Tau)
-BP_ne <- 
-summary(BP_lm)
-summary(BP_lm_2)
-AIC(BP_lm)
-AIC(BP_lm_2)
+BP_lm_lin <- lm(uMChr ~ Tau, data = Tau)
+BP_lm_exp <- lm(log_uMChr ~ Tau, data = Tau)
+BP_lm_poly <- lm(log_uMChr ~ poly(Tau, 2, raw = TRUE), data = Tau)
+summary(BP_lm_lin)
+summary(BP_lm_poly)
+summary(BP_lm_exp)
+AIC(BP_lm_lin)
+AIC(BP_lm_poly)
+AIC(BP_lm_exp)
 
-BP_poly <- ggplot(Tau, aes(x = Tau, y = uMChr))+
+plot(BP_lm_poly)
+
+
+BP_poly_log <- ggplot(Tau, aes(x = Tau, y = uMChr))+
   geom_point(size = 2, alpha = 0.6)+
-  xlab("Tau")+
-  ylab("Biomass Production (uM C/hr)")+
-  geom_smooth(method = "lm", formula = y~poly(x,2, raw = TRUE))+
-  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
-               formula = y~poly(x,2,raw = TRUE), parse = TRUE, size = 4)+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
+  xlab(expression(paste(tau, " (mins)")))+
+  ylab(expression(paste("Bacterial Productivity ( ", mu, "M C/hr)")))+
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2, raw = TRUE))+
+  stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label),
+               sep = "")), label.x = "right", label.y = "top", formula = y ~ poly(x, 2, raw = TRUE), parse = TRUE,
+               size = 4)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  scale_y_log10()+
+  geom_abline(slope = 1, intercept = 0)
 
-BP_poly
+BP_poly_log
 
-ggsave("./output/RTLC_BP_poly.pdf")
-ggsave("./output/RTLC_BP_poly.png")
+ggsave("./output/RTLC_BP_poly_log.pdf")
+ggsave("./output/RTLC_BP_poly_log.png", width = 7, height = 5)
+```
 
-BP_exp <- ggplot(Tau, aes(x = Tau, y = log_uMChr))+
+##Individual Productivity (uM C/hr/Cell)
+```{r}
+
+IP_lm <- lm(ind_P ~ Tau, data = Tau)
+IP_lm_2 <- lm(log(ind_P, 10) ~ poly(Tau, 2, raw = TRUE), data = Tau)
+IP_exp <- lm(log(ind_P, 10) ~ Tau, data = Tau)
+summary(IP_lm)
+summary(IP_lm_2)
+summary(IP_exp)
+AIC(IP_lm)
+AIC(IP_lm_2)
+AIC(IP_exp)
+plot(IP_lm_2)
+plot(IP_lm)
+plot(IP_exp)
+
+IP <- ggplot(Tau, aes(x = Tau, y = log(ind_P, 10)))+
   geom_point(size = 2, alpha = 0.6)+
-  xlab("Tau")+
-  ylab("Biomass Production (uM C/hr)")+
-  geom_smooth(method = "lm", formula = y~x)+
+  xlab(expression(tau))+
+  ylab(expression(paste("Biomass Production ( ", mu, "M C/hr/Cell)")))+
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2, raw = TRUE))+
   stat_poly_eq(aes(label =  paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
-               formula = y~x, parse = TRUE, size = 4)+
+               label.x = "right", label.y = "top", formula = y ~ poly(x, 2, raw = TRUE), parse = TRUE, size = 4)+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
   scale_y_continuous(labels = label_math(expr = 10^.x, format = force))
 
-BP_exp
+IP
 
-ggsave("./output/RTLC_BP_exp.pdf")
-ggsave("./output/RTLC_BP_exp.png")
+ggsave("./output/RTLC_IP_poly_log.pdf")
+ggsave("./output/RTLC_IP_poly_log.png")
 
-plot(BP_lm)
-plot(BP_lm_2)
 ```
 
 #Resource Use
@@ -558,11 +374,12 @@ AIC(NR_lm_2)
 
 NumRes <- ggplot(Tau, aes(x = Tau, y = NumRes))+
   geom_point(size = 2, alpha = 0.6)+
+  ylim(c(20, 33))+
   xlab(expression(tau))+
   ylab("Number of Resources Used \n at 48 hours")+
-  # geom_smooth(method = "lm", formula = y~x)+
-  # stat_poly_eq(aes(label = paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
-  #              formula = y~x, parse = TRUE, size = 4)+
+  geom_smooth(method = "lm", formula = y~x)+
+  stat_poly_eq(aes(label = paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
+                label.x = "left", label.y = "top", formula = y~x, parse = TRUE, size = 4)+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
 
 NumRes
@@ -575,19 +392,25 @@ ggsave("./output/RTLC_NumRes.png")
 
 ```{r}
 Avg_lm <- lm(AvgRes ~ Tau, data = Tau)
+Avg_exp <- lm(log(AvgRes, 10) ~ Tau, data = Tau)
 Avg_lm_2 <- lm(AvgRes ~ poly(Tau, 2, raw = TRUE), data = Tau)
 summary(Avg_lm)
 summary(Avg_lm_2)
+summary(Avg_exp)
 AIC(Avg_lm)
 AIC(Avg_lm_2)
+AIC(Avg_exp)
+plot(Avg_lm)
+plot(Avg_lm_2)
+plot(Avg_exp)
 
-AvgRes <- ggplot(Tau, aes(x = Tau, y = AvgRes))+
+AvgRes <- ggplot(Tau, aes(x = Tau, y = AvgRes, 10))+
   geom_point(size = 2, alpha = 0.6)+
-  xlab(expression(tau))+
+  xlab(expression(paste(tau, " (mins)")))+
   ylab("Average Well Response at \n48 hours (OD590)")+
   geom_smooth(method = "lm", formula = y~x)+
   stat_poly_eq(aes(label = paste(stat(rr.label), "*\" and \"*", stat(p.value.label), sep = "")),
-               formula = y~x, parse = TRUE, size = 4)+
+               label.x = "right", label.y = "top", formula = y~x, parse = TRUE, size = 4)+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))
 
 
@@ -674,11 +497,11 @@ for(row in rownames(long_EP_slope)){
   long_EP_slope[row,"Type"] <- ResType$Type[ResType$Resource == long_EP_slope[row,"C_Source"]]
 }
 
-lm.slope.tau <- lm(data = subset(long_EP_slope, long_EP_slope$C_Source == "Pyruvic.Acid.Methyl.Ester"), Slope ~ Tau)
+lm.slope.tau <- lm(data = long_EP_slope, Slope ~ Tau)
 summary(lm.slope.tau)
 lm.slope.tau.c <- lm(data = long_EP_slope, Slope ~ Tau * C_Source)
-
 summary(lm.slope.tau.c)
+
 anova(lm.slope.tau)
 
 anova(lm.slope.tau, lm.slope.tau.c)
@@ -721,6 +544,7 @@ Res_Slope_Ester
 ggsave("./output/RTLC_Res_Slope_ester.pdf", width = 10, height = 8)
 ggsave("./output/RTLC_Res_Slope_ester.png", width = 10, height = 8)
 ```
+
 ##Carboxylic Acid 1
 ```{r}
 Res_Slope_CarAc <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "carboxylic acid"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
@@ -739,6 +563,7 @@ Res_Slope_CarAc
 ggsave("./output/RTLC_Res_Slope_CarAc.pdf", width = 10, height = 8)
 ggsave("./output/RTLC_Res_Slope_CarAc.png", width = 10, height = 8)
 ```
+
 ##Carboxylic Acid 2
 ```{r}
 Res_Slope_CarAc_2 <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "carboxylic acid" & long_EP_slope$C_Source != "2-Hydroxy.Benzoic.Acid"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
@@ -757,6 +582,7 @@ Res_Slope_CarAc_2
 ggsave("./output/RTLC_Res_Slope_CarAc_2.pdf", width = 10, height = 8)
 ggsave("./output/RTLC_Res_Slope_CarAc_2.png", width = 10, height = 8)
 ```
+
 ##Carbohydrate
 ```{r}
 Res_Slope_carbo <- ggplot(subset(long_EP_slope, long_EP_slope$Type == "carbohydrate"), aes(x = Tau, y = Slope, color = C_Source, group = C_Source))+
