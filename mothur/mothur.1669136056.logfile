@@ -1,0 +1,117 @@
+Linux version
+
+Using ReadLine,Boost,HDF5,GSL
+mothur v.1.48.0
+Last updated: 5/20/22
+by
+Patrick D. Schloss
+
+Department of Microbiology & Immunology
+
+University of Michigan
+http://www.mothur.org
+
+When using, please cite:
+Schloss, P.D., et al., Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl Environ Microbiol, 2009. 75(23):7537-41.
+
+Distributed under the GNU General Public License
+
+Type 'help()' for information on the commands that are available
+
+For questions and analysis support, please visit our forum at https://forum.mothur.org
+
+Type 'quit()' to exit program
+
+[NOTE]: Setting random seed to 19760620.
+
+Batch Mode
+
+
+
+mothur > pcr.seqs(fasta=silva.nr_v138_1.align, start=11894, end=25319, keepdots=F)
+
+Using 24 processors.
+[NOTE]: no sequences were bad, removing silva.nr_v138_1.bad.accnos
+
+It took 171 secs to screen 146601 sequences.
+
+Output File Names: 
+silva.nr_v138_1.pcr.align
+
+
+
+mothur > unique.seqs(silva.nr_v138_1.pcr.align)
+[WARNING]: silva.nr_v138_1.pcr.align is not a valid parameter, ignoring.
+The valid parameters are: fasta, name, count, format, output, seed, inputdir, and outputdir.
+Using silva.nr_v138_1.pcr.align as input file for the fasta parameter.
+146601	106991
+
+Output File Names: 
+silva.nr_v138_1.pcr.unique.align
+silva.nr_v138_1.pcr.count_table
+
+
+mothur > summary.seqs(fasta=silva.nr_v138_1.pcr.unique.align)
+
+Using 24 processors.
+
+		Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	1	9877	85	0	3	1
+2.5%-tile:	2	13426	291	0	3	2675
+25%-tile:	2	13426	293	0	4	26748
+Median: 	2	13426	293	0	5	53496
+75%-tile:	2	13426	294	0	5	80244
+97.5%-tile:	2	13426	462	1	6	104317
+Maximum:	4228	13426	1521	5	16	106991
+Mean:	2	13425	315	0	4
+# of Seqs:	106991
+
+It took 24 secs to summarize 106991 sequences.
+
+Output File Names:
+silva.nr_v138_1.pcr.unique.summary
+
+
+mothur > align.seqs(fasta=RTLC.trim.contigs.good.unique.fasta, reference=silva.nr_v138_1.pcr.unqiue.align)
+Unable to open silva.nr_v138_1.pcr.unqiue.align. Trying MOTHUR_FILES directory /N/soft/rhel7/mothur/1.48.0/silva.nr_v138_1.pcr.unqiue.align.
+Unable to open /N/soft/rhel7/mothur/1.48.0/silva.nr_v138_1.pcr.unqiue.align. Trying mothur's executable directory /N/soft/rhel7/mothur/1.48.0/silva.nr_v138_1.pcr.unqiue.align.
+Unable to open /N/soft/rhel7/mothur/1.48.0/silva.nr_v138_1.pcr.unqiue.align.
+Unable to open silva.nr_v138_1.pcr.unqiue.align
+
+Using 24 processors.
+[ERROR]: did not complete align.seqs.
+
+mothur > summary.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trim.contigs.good.count_table)
+Unable to open RTLC.trim.contigs.good.unique.align. Trying MOTHUR_FILES directory /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.unique.align.
+Unable to open /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.unique.align. Trying mothur's executable directory /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.unique.align.
+Unable to open /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.unique.align.
+Unable to open RTLC.trim.contigs.good.unique.align
+
+Using 24 processors.
+[ERROR]: did not complete summary.seqs.
+
+mothur > quit()
+
+
+It took 238 seconds to run 6 commands from /N/u/emamuell/Carbonate/GitHub/residence-time-test/mothur/RTLC.batch batch file.
+
+Logfile : mothur.1669136056.logfile
+
+
+
+************************************************************
+************************************************************
+************************************************************
+Detected 2 [ERROR] messages, please review.
+************************************************************
+************************************************************
+************************************************************
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Detected 1 [WARNING] messages, please review.
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

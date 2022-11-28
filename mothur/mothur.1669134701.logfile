@@ -1,0 +1,86 @@
+Linux version
+
+Using ReadLine,Boost,HDF5,GSL
+mothur v.1.48.0
+Last updated: 5/20/22
+by
+Patrick D. Schloss
+
+Department of Microbiology & Immunology
+
+University of Michigan
+http://www.mothur.org
+
+When using, please cite:
+Schloss, P.D., et al., Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl Environ Microbiol, 2009. 75(23):7537-41.
+
+Distributed under the GNU General Public License
+
+Type 'help()' for information on the commands that are available
+
+For questions and analysis support, please visit our forum at https://forum.mothur.org
+
+Type 'quit()' to exit program
+
+[NOTE]: Setting random seed to 19760620.
+
+Batch Mode
+
+
+
+mothur > screen.seqs(fasta=RTLC.trim.contigs.fasta, count=RTLC.contigs.count_table, maxambig=0, maxlength=275, maxhomop=8)
+
+Using 24 processors.
+
+It took 153 secs to screen 9379210 sequences, removed 1771345.
+
+/******************************************/
+Running command: remove.seqs(accnos=RTLC.trim.contigs.bad.accnos.temp, count=RTLC.contigs.count_table)
+Removed 1771345 sequences from RTLC.contigs.count_table.
+
+Output File Names:
+RTLC.contigs.pick.count_table
+
+/******************************************/
+
+Output File Names:
+RTLC.trim.contigs.good.fasta
+RTLC.trim.contigs.bad.accnos
+RTLC.contigs.good.count_table
+
+
+It took 280 secs to screen 9379210 sequences.
+
+mothur > unique.seqs(fasta=RTLC.trim.contigs.good.fasta, count=RTLC.trim.contigs.good.count_table)
+Unable to open RTLC.trim.contigs.good.count_table. Trying MOTHUR_FILES directory /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.count_table.
+Unable to open /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.count_table. Trying mothur's executable directory /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.count_table.
+Unable to open /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.count_table.
+Unable to open RTLC.trim.contigs.good.count_table
+[ERROR]: did not complete unique.seqs.
+
+mothur > summary.seqs(count=RTLC.trim.contigs.good.count_table)
+Using RTLC.trim.contigs.good.fasta as input file for the fasta parameter.
+Unable to open RTLC.trim.contigs.good.count_table. Trying MOTHUR_FILES directory /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.count_table.
+Unable to open /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.count_table. Trying mothur's executable directory /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.count_table.
+Unable to open /N/soft/rhel7/mothur/1.48.0/RTLC.trim.contigs.good.count_table.
+Unable to open RTLC.trim.contigs.good.count_table
+
+Using 24 processors.
+[ERROR]: did not complete summary.seqs.
+
+mothur > quit()
+
+
+It took 282 seconds to run 4 commands from /N/u/emamuell/Carbonate/GitHub/residence-time-test/mothur/RTLC.batch batch file.
+
+Logfile : mothur.1669134701.logfile
+
+
+
+************************************************************
+************************************************************
+************************************************************
+Detected 2 [ERROR] messages, please review.
+************************************************************
+************************************************************
+************************************************************

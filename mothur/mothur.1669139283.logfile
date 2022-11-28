@@ -1,0 +1,79 @@
+Linux version
+
+Using ReadLine,Boost,HDF5,GSL
+mothur v.1.48.0
+Last updated: 5/20/22
+by
+Patrick D. Schloss
+
+Department of Microbiology & Immunology
+
+University of Michigan
+http://www.mothur.org
+
+When using, please cite:
+Schloss, P.D., et al., Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl Environ Microbiol, 2009. 75(23):7537-41.
+
+Distributed under the GNU General Public License
+
+Type 'help()' for information on the commands that are available
+
+For questions and analysis support, please visit our forum at https://forum.mothur.org
+
+Type 'quit()' to exit program
+
+[NOTE]: Setting random seed to 19760620.
+
+Batch Mode
+
+
+
+mothur > align.seqs(fasta=RTLC.trim.contigs.good.unique.fasta, reference=silva.nr_v138_1.pcr.unique.align)
+
+Using 24 processors.
+
+Reading in the silva.nr_v138_1.pcr.unique.align template sequences...	DONE.
+It took 24 to read  106991 sequences.
+
+Aligning sequences from RTLC.trim.contigs.good.unique.fasta ...
+It took 11709 secs to align 1831109 sequences.
+
+[WARNING]: 12968 of your sequences generated alignments that eliminated too many bases, a list is provided in RTLC.trim.contigs.good.unique.flip.accnos.
+[NOTE]: 5623 of your sequences were reversed to produce a better alignment.
+
+It took 11709 seconds to align 1831109 sequences.
+
+Output File Names: 
+RTLC.trim.contigs.good.unique.align
+RTLC.trim.contigs.good.unique.align_report
+RTLC.trim.contigs.good.unique.flip.accnos
+
+
+mothur > summary.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trim.contigs.good.count_table)
+
+Using 24 processors.
+[ERROR]: Your count file contains 1831109 unique sequences, but your fasta file contains 1642753. File mismatch detected, quitting command.
+
+
+It took 19201 seconds to run 2 commands from /N/u/emamuell/Carbonate/GitHub/residence-time-test/mothur/RTLC.batch batch file.
+
+Logfile : mothur.1669139283.logfile
+
+
+
+************************************************************
+************************************************************
+************************************************************
+Detected 1 [ERROR] messages, please review.
+************************************************************
+************************************************************
+************************************************************
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Detected 1 [WARNING] messages, please review.
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

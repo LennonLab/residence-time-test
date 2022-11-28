@@ -1,0 +1,59 @@
+Linux version
+
+Using ReadLine,Boost,HDF5,GSL
+mothur v.1.48.0
+Last updated: 5/20/22
+by
+Patrick D. Schloss
+
+Department of Microbiology & Immunology
+
+University of Michigan
+http://www.mothur.org
+
+When using, please cite:
+Schloss, P.D., et al., Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl Environ Microbiol, 2009. 75(23):7537-41.
+
+Distributed under the GNU General Public License
+
+Type 'help()' for information on the commands that are available
+
+For questions and analysis support, please visit our forum at https://forum.mothur.org
+
+Type 'quit()' to exit program
+
+[NOTE]: Setting random seed to 19760620.
+
+Batch Mode
+
+
+
+mothur > summary.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trim.contigs.good.count_table)
+
+Using 24 processors.
+
+		Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	0	0	0	0	1	1
+2.5%-tile:	1969	11551	253	0	3	190197
+25%-tile:	1969	11551	253	0	4	1901967
+Median: 	1969	11551	253	0	5	3803933
+75%-tile:	1969	11551	253	0	5	5705899
+97.5%-tile:	1969	11551	254	0	8	7417669
+Maximum:	13426	13426	274	0	8	7607865
+Mean:	1980	11546	252	0	4
+# of unique seqs:	1831109
+total # of seqs:	7607865
+
+It took 479 secs to summarize 7607865 sequences.
+
+Output File Names:
+RTLC.trim.contigs.good.unique.summary
+
+
+mothur > quit()
+
+
+It took 480 seconds to run 2 commands from /N/u/emamuell/Carbonate/GitHub/residence-time-test/mothur/RTLC.batch batch file.
+
+Logfile : mothur.1669219039.logfile
+
