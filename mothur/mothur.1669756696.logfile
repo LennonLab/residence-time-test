@@ -1,0 +1,1005 @@
+Linux version
+
+Using ReadLine,Boost,HDF5,GSL
+mothur v.1.48.0
+Last updated: 5/20/22
+by
+Patrick D. Schloss
+
+Department of Microbiology & Immunology
+
+University of Michigan
+http://www.mothur.org
+
+When using, please cite:
+Schloss, P.D., et al., Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl Environ Microbiol, 2009. 75(23):7537-41.
+
+Distributed under the GNU General Public License
+
+Type 'help()' for information on the commands that are available
+
+For questions and analysis support, please visit our forum at https://forum.mothur.org
+
+Type 'quit()' to exit program
+
+[NOTE]: Setting random seed to 19760620.
+
+Batch Mode
+
+
+
+mothur > make.file(inputdir=raw, type=gz, prefix=RTLC)
+Setting input directories to: 
+	raw/
+
+
+Output File Names: 
+raw/RTLC.files
+
+
+mothur > make.contigs(file=RTLC.files)
+
+Using 24 processors.
+
+[WARNING]: group GSF3365-RTLC contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC to GSF3365_RTLC to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_002_S29_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_002_S29_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_002_S29_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_002_S29_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_003 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_003 to GSF3365_RTLC_003 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_003_S1_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_003_S1_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_003_S1_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_003_S1_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_004 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_004 to GSF3365_RTLC_004 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_004_S58_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_004_S58_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_004_S58_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_004_S58_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_005 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_005 to GSF3365_RTLC_005 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_005_S36_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_005_S36_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_005_S36_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_005_S36_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_008 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_008 to GSF3365_RTLC_008 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_008_S44_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_008_S44_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_008_S44_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_008_S44_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_009 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_009 to GSF3365_RTLC_009 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_009_S21_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_009_S21_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_009_S21_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_009_S21_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_010 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_010 to GSF3365_RTLC_010 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_010_S65_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_010_S65_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_010_S65_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_010_S65_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_011 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_011 to GSF3365_RTLC_011 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_011_S50_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_011_S50_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_011_S50_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_011_S50_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_012 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_012 to GSF3365_RTLC_012 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_012_S10_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_012_S10_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_012_S10_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_012_S10_R2_001.fastq.gz.
+
+[WARNING]: group GSF3365-RTLC_017 contains illegal characters in the name. Group names should not include :, -, or / characters.  The ':' character is a special character used in trees. Using ':' will result in your tree being unreadable by tree reading software.  The '-' character is a special character used by mothur to parse group names.  Using the '-' character will prevent you from selecting groups. The '/' character will created unreadable filenames when mothur includes the group in an output filename.
+
+
+[NOTE] Updating GSF3365-RTLC_017 to GSF3365_RTLC_017 to avoid downstream issues.
+
+Unable to open GSF3365-RTLC_017_S11_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_017_S11_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_017_S11_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_017_S11_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_019_S30_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_019_S30_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_019_S30_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_019_S30_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_020_S66_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_020_S66_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_020_S66_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_020_S66_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_021_S51_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_021_S51_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_021_S51_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_021_S51_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_024_S37_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_024_S37_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_024_S37_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_024_S37_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_026_S2_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_026_S2_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_026_S2_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_026_S2_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_027_S56_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_027_S56_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_027_S56_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_027_S56_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_028_S22_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_028_S22_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_028_S22_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_028_S22_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_030_S67_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_030_S67_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_030_S67_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_030_S67_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_031_S18_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_031_S18_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_031_S18_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_031_S18_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_033_S12_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_033_S12_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_033_S12_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_033_S12_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_034_S7_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_034_S7_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_034_S7_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_034_S7_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_035_S23_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_035_S23_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_035_S23_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_035_S23_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_036_S45_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_036_S45_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_036_S45_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_036_S45_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_038_S59_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_038_S59_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_038_S59_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_038_S59_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_039_S38_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_039_S38_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_039_S38_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_039_S38_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_040_S31_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_040_S31_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_040_S31_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_040_S31_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_041_S52_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_041_S52_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_041_S52_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_041_S52_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_045_S39_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_045_S39_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_045_S39_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_045_S39_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_047_S46_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_047_S46_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_047_S46_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_047_S46_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_048_S32_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_048_S32_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_048_S32_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_048_S32_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_049_S13_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_049_S13_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_049_S13_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_049_S13_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_050_S53_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_050_S53_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_050_S53_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_050_S53_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_051_S60_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_051_S60_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_051_S60_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_051_S60_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_053_S24_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_053_S24_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_053_S24_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_053_S24_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_055_S68_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_055_S68_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_055_S68_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_055_S68_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_060_S25_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_060_S25_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_060_S25_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_060_S25_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_065_S26_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_065_S26_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_065_S26_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_065_S26_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_066_S40_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_066_S40_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_066_S40_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_066_S40_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_068_S33_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_068_S33_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_068_S33_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_068_S33_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_069_S3_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_069_S3_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_069_S3_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_069_S3_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_070_S14_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_070_S14_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_070_S14_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_070_S14_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_073_S8_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_073_S8_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_073_S8_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_073_S8_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_074_S47_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_074_S47_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_074_S47_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_074_S47_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_077_S4_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_077_S4_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_077_S4_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_077_S4_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_078_S34_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_078_S34_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_078_S34_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_078_S34_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_080_S15_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_080_S15_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_080_S15_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_080_S15_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_081_S54_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_081_S54_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_081_S54_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_081_S54_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_082_S41_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_082_S41_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_082_S41_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_082_S41_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_083_S57_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_083_S57_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_083_S57_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_083_S57_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_084_S19_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_084_S19_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_084_S19_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_084_S19_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_085_S27_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_085_S27_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_085_S27_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_085_S27_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_086_S48_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_086_S48_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_086_S48_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_086_S48_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_087_S55_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_087_S55_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_087_S55_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_087_S55_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_088_S61_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_088_S61_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_088_S61_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_088_S61_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_089_S16_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_089_S16_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_089_S16_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_089_S16_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_090_S69_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_090_S69_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_090_S69_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_090_S69_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_093_S5_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_093_S5_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_093_S5_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_093_S5_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_096_S62_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_096_S62_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_096_S62_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_096_S62_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_097_S42_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_097_S42_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_097_S42_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_097_S42_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_099_S63_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_099_S63_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_099_S63_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_099_S63_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_100_S9_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_100_S9_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_100_S9_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_100_S9_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_101_S28_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_101_S28_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_101_S28_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_101_S28_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_102_S20_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_102_S20_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_102_S20_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_102_S20_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_103_S6_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_103_S6_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_103_S6_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_103_S6_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_105_S43_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_105_S43_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_105_S43_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_105_S43_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_106_S49_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_106_S49_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_106_S49_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_106_S49_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_107_S64_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_107_S64_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_107_S64_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_107_S64_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_108_S17_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_108_S17_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_108_S17_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_108_S17_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_111_S35_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_111_S35_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_111_S35_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_111_S35_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_113_S70_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_113_S70_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_113_S70_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_113_S70_R2_001.fastq.gz.
+Unable to open GSF3365-RTLC_114_S71_R1_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_114_S71_R1_001.fastq.gz.
+Unable to open GSF3365-RTLC_114_S71_R2_001.fastq.gz. Trying input directory raw/GSF3365-RTLC_114_S71_R2_001.fastq.gz.
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_002_S29_R1_001.fastq.gz - raw/GSF3365-RTLC_002_S29_R2_001.fastq.gz (files 1 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_034_S7_R1_001.fastq.gz - raw/GSF3365-RTLC_034_S7_R2_001.fastq.gz (files 21 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_038_S59_R1_001.fastq.gz - raw/GSF3365-RTLC_038_S59_R2_001.fastq.gz (files 24 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_041_S52_R1_001.fastq.gz - raw/GSF3365-RTLC_041_S52_R2_001.fastq.gz (files 27 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_048_S32_R1_001.fastq.gz - raw/GSF3365-RTLC_048_S32_R2_001.fastq.gz (files 30 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_030_S67_R1_001.fastq.gz - raw/GSF3365-RTLC_030_S67_R2_001.fastq.gz (files 18 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_051_S60_R1_001.fastq.gz - raw/GSF3365-RTLC_051_S60_R2_001.fastq.gz (files 33 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_060_S25_R1_001.fastq.gz - raw/GSF3365-RTLC_060_S25_R2_001.fastq.gz (files 36 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_068_S33_R1_001.fastq.gz - raw/GSF3365-RTLC_068_S33_R2_001.fastq.gz (files 39 of 71)	<<<<<
+Making contigs...
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_073_S8_R1_001.fastq.gz - raw/GSF3365-RTLC_073_S8_R2_001.fastq.gz (files 42 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_078_S34_R1_001.fastq.gz - raw/GSF3365-RTLC_078_S34_R2_001.fastq.gz (files 45 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_026_S2_R1_001.fastq.gz - raw/GSF3365-RTLC_026_S2_R2_001.fastq.gz (files 15 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_082_S41_R1_001.fastq.gz - raw/GSF3365-RTLC_082_S41_R2_001.fastq.gz (files 48 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_085_S27_R1_001.fastq.gz - raw/GSF3365-RTLC_085_S27_R2_001.fastq.gz (files 51 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_088_S61_R1_001.fastq.gz - raw/GSF3365-RTLC_088_S61_R2_001.fastq.gz (files 54 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_093_S5_R1_001.fastq.gz - raw/GSF3365-RTLC_093_S5_R2_001.fastq.gz (files 57 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_099_S63_R1_001.fastq.gz - raw/GSF3365-RTLC_099_S63_R2_001.fastq.gz (files 60 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_102_S20_R1_001.fastq.gz - raw/GSF3365-RTLC_102_S20_R2_001.fastq.gz (files 63 of 71)	<<<<<
+Making contigs...
+Making contigs...
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_106_S49_R1_001.fastq.gz - raw/GSF3365-RTLC_106_S49_R2_001.fastq.gz (files 66 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_111_S35_R1_001.fastq.gz - raw/GSF3365-RTLC_111_S35_R2_001.fastq.gz (files 69 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_020_S66_R1_001.fastq.gz - raw/GSF3365-RTLC_020_S66_R2_001.fastq.gz (files 12 of 71)	<<<<<
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_012_S10_R1_001.fastq.gz - raw/GSF3365-RTLC_012_S10_R2_001.fastq.gz (files 9 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_009_S21_R1_001.fastq.gz - raw/GSF3365-RTLC_009_S21_R2_001.fastq.gz (files 6 of 71)	<<<<<
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_004_S58_R1_001.fastq.gz - raw/GSF3365-RTLC_004_S58_R2_001.fastq.gz (files 3 of 71)	<<<<<
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Making contigs...
+Done.
+
+It took 1361 secs to assemble 60455 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_096_S62_R1_001.fastq.gz - raw/GSF3365-RTLC_096_S62_R2_001.fastq.gz (files 58 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 1886 secs to assemble 83014 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_035_S23_R1_001.fastq.gz - raw/GSF3365-RTLC_035_S23_R2_001.fastq.gz (files 22 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2076 secs to assemble 91982 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_017_S11_R1_001.fastq.gz - raw/GSF3365-RTLC_017_S11_R2_001.fastq.gz (files 10 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2287 secs to assemble 101006 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_074_S47_R1_001.fastq.gz - raw/GSF3365-RTLC_074_S47_R2_001.fastq.gz (files 43 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2386 secs to assemble 105261 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_027_S56_R1_001.fastq.gz - raw/GSF3365-RTLC_027_S56_R2_001.fastq.gz (files 16 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2730 secs to assemble 120010 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_080_S15_R1_001.fastq.gz - raw/GSF3365-RTLC_080_S15_R2_001.fastq.gz (files 46 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2766 secs to assemble 121262 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_089_S16_R1_001.fastq.gz - raw/GSF3365-RTLC_089_S16_R2_001.fastq.gz (files 55 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2800 secs to assemble 122817 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_049_S13_R1_001.fastq.gz - raw/GSF3365-RTLC_049_S13_R2_001.fastq.gz (files 31 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2829 secs to assemble 124196 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_065_S26_R1_001.fastq.gz - raw/GSF3365-RTLC_065_S26_R2_001.fastq.gz (files 37 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2955 secs to assemble 129579 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_045_S39_R1_001.fastq.gz - raw/GSF3365-RTLC_045_S39_R2_001.fastq.gz (files 28 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3016 secs to assemble 131856 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_086_S48_R1_001.fastq.gz - raw/GSF3365-RTLC_086_S48_R2_001.fastq.gz (files 52 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3081 secs to assemble 131304 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_003_S1_R1_001.fastq.gz - raw/GSF3365-RTLC_003_S1_R2_001.fastq.gz (files 2 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3127 secs to assemble 136873 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_021_S51_R1_001.fastq.gz - raw/GSF3365-RTLC_021_S51_R2_001.fastq.gz (files 13 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3139 secs to assemble 137533 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_113_S70_R1_001.fastq.gz - raw/GSF3365-RTLC_113_S70_R2_001.fastq.gz (files 70 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3313 secs to assemble 143404 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_031_S18_R1_001.fastq.gz - raw/GSF3365-RTLC_031_S18_R2_001.fastq.gz (files 19 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3321 secs to assemble 145293 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_053_S24_R1_001.fastq.gz - raw/GSF3365-RTLC_053_S24_R2_001.fastq.gz (files 34 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3412 secs to assemble 149278 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_100_S9_R1_001.fastq.gz - raw/GSF3365-RTLC_100_S9_R2_001.fastq.gz (files 61 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3421 secs to assemble 145063 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_107_S64_R1_001.fastq.gz - raw/GSF3365-RTLC_107_S64_R2_001.fastq.gz (files 67 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3447 secs to assemble 150641 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_069_S3_R1_001.fastq.gz - raw/GSF3365-RTLC_069_S3_R2_001.fastq.gz (files 40 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3451 secs to assemble 148802 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_103_S6_R1_001.fastq.gz - raw/GSF3365-RTLC_103_S6_R2_001.fastq.gz (files 64 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3727 secs to assemble 162659 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_039_S38_R1_001.fastq.gz - raw/GSF3365-RTLC_039_S38_R2_001.fastq.gz (files 25 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3878 secs to assemble 169215 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_010_S65_R1_001.fastq.gz - raw/GSF3365-RTLC_010_S65_R2_001.fastq.gz (files 7 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3963 secs to assemble 173160 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_083_S57_R1_001.fastq.gz - raw/GSF3365-RTLC_083_S57_R2_001.fastq.gz (files 49 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2766 secs to assemble 112181 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_019_S30_R1_001.fastq.gz - raw/GSF3365-RTLC_019_S30_R2_001.fastq.gz (files 11 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3554 secs to assemble 146717 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_097_S42_R1_001.fastq.gz - raw/GSF3365-RTLC_097_S42_R2_001.fastq.gz (files 59 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3061 secs to assemble 125056 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_036_S45_R1_001.fastq.gz - raw/GSF3365-RTLC_036_S45_R2_001.fastq.gz (files 23 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2363 secs to assemble 94407 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_081_S54_R1_001.fastq.gz - raw/GSF3365-RTLC_081_S54_R2_001.fastq.gz (files 47 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 5122 secs to assemble 222413 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_005_S36_R1_001.fastq.gz - raw/GSF3365-RTLC_005_S36_R2_001.fastq.gz (files 4 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 1777 secs to assemble 67927 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_070_S14_R1_001.fastq.gz - raw/GSF3365-RTLC_070_S14_R2_001.fastq.gz (files 41 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2153 secs to assemble 84092 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_055_S68_R1_001.fastq.gz - raw/GSF3365-RTLC_055_S68_R2_001.fastq.gz (files 35 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2066 secs to assemble 80354 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_101_S28_R1_001.fastq.gz - raw/GSF3365-RTLC_101_S28_R2_001.fastq.gz (files 62 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3119 secs to assemble 125703 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_028_S22_R1_001.fastq.gz - raw/GSF3365-RTLC_028_S22_R2_001.fastq.gz (files 17 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2861 secs to assemble 114410 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_050_S53_R1_001.fastq.gz - raw/GSF3365-RTLC_050_S53_R2_001.fastq.gz (files 32 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2887 secs to assemble 113387 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_066_S40_R1_001.fastq.gz - raw/GSF3365-RTLC_066_S40_R2_001.fastq.gz (files 38 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3597 secs to assemble 145303 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_077_S4_R1_001.fastq.gz - raw/GSF3365-RTLC_077_S4_R2_001.fastq.gz (files 44 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2637 secs to assemble 103007 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_105_S43_R1_001.fastq.gz - raw/GSF3365-RTLC_105_S43_R2_001.fastq.gz (files 65 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3213 secs to assemble 127002 reads.
+
+Done.
+
+It took 2990 secs to assemble 117136 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_033_S12_R1_001.fastq.gz - raw/GSF3365-RTLC_033_S12_R2_001.fastq.gz (files 20 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3452 secs to assemble 137011 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_047_S46_R1_001.fastq.gz - raw/GSF3365-RTLC_047_S46_R2_001.fastq.gz (files 29 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3023 secs to assemble 118556 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_108_S17_R1_001.fastq.gz - raw/GSF3365-RTLC_108_S17_R2_001.fastq.gz (files 68 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3459 secs to assemble 137152 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_087_S55_R1_001.fastq.gz - raw/GSF3365-RTLC_087_S55_R2_001.fastq.gz (files 53 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3440 secs to assemble 136334 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_114_S71_R1_001.fastq.gz - raw/GSF3365-RTLC_114_S71_R2_001.fastq.gz (files 71 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3821 secs to assemble 153088 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_090_S69_R1_001.fastq.gz - raw/GSF3365-RTLC_090_S69_R2_001.fastq.gz (files 56 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 1860 secs to assemble 77764 reads.
+
+Done.
+
+It took 3966 secs to assemble 157973 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_024_S37_R1_001.fastq.gz - raw/GSF3365-RTLC_024_S37_R2_001.fastq.gz (files 14 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3468 secs to assemble 136370 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_040_S31_R1_001.fastq.gz - raw/GSF3365-RTLC_040_S31_R2_001.fastq.gz (files 26 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3523 secs to assemble 138492 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_011_S50_R1_001.fastq.gz - raw/GSF3365-RTLC_011_S50_R2_001.fastq.gz (files 8 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 4011 secs to assemble 166358 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_084_S19_R1_001.fastq.gz - raw/GSF3365-RTLC_084_S19_R2_001.fastq.gz (files 50 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 3233 secs to assemble 136531 reads.
+
+Done.
+
+It took 2707 secs to assemble 116393 reads.
+
+Done.
+
+It took 3136 secs to assemble 128848 reads.
+
+
+>>>>>	Processing file pair raw/GSF3365-RTLC_008_S44_R1_001.fastq.gz - raw/GSF3365-RTLC_008_S44_R2_001.fastq.gz (files 5 of 71)	<<<<<
+Making contigs...
+Done.
+
+It took 2595 secs to assemble 112050 reads.
+
+Done.
+
+It took 3060 secs to assemble 134056 reads.
+
+Done.
+
+It took 2421 secs to assemble 109335 reads.
+
+Done.
+
+It took 3641 secs to assemble 161068 reads.
+
+Done.
+
+It took 3854 secs to assemble 168444 reads.
+
+Done.
+
+It took 2253 secs to assemble 103284 reads.
+
+Done.
+
+It took 3156 secs to assemble 144341 reads.
+
+Done.
+
+It took 3377 secs to assemble 152432 reads.
+
+Done.
+
+It took 2892 secs to assemble 138680 reads.
+
+Done.
+
+It took 3357 secs to assemble 158829 reads.
+
+Done.
+
+It took 4223 secs to assemble 197114 reads.
+
+Done.
+
+It took 2514 secs to assemble 126892 reads.
+
+Done.
+
+It took 2741 secs to assemble 142823 reads.
+
+Done.
+
+It took 2743 secs to assemble 146117 reads.
+
+Done.
+
+It took 2755 secs to assemble 150576 reads.
+
+Done.
+
+It took 2048 secs to assemble 123271 reads.
+
+Done.
+
+It took 2187 secs to assemble 136537 reads.
+
+Done.
+
+It took 1965 secs to assemble 157963 reads.
+
+Done.
+
+It took 1436 secs to assemble 154402 reads.
+
+Done.
+
+It took 1165 secs to assemble 156368 reads.
+
+
+Group count: 
+GSF3365_RTLC	131304
+GSF3365_RTLC_003	127002
+GSF3365_RTLC_004	222413
+GSF3365_RTLC_005	128848
+GSF3365_RTLC_008	156368
+GSF3365_RTLC_009	169215
+GSF3365_RTLC_010	138492
+GSF3365_RTLC_011	157963
+GSF3365_RTLC_012	91982
+GSF3365_RTLC_017	112181
+GSF3365_RTLC_019	197114
+GSF3365_RTLC_020	136873
+GSF3365_RTLC_021	157973
+GSF3365_RTLC_024	136537
+GSF3365_RTLC_026	105261
+GSF3365_RTLC_027	125703
+GSF3365_RTLC_028	152432
+GSF3365_RTLC_030	143404
+GSF3365_RTLC_031	117136
+GSF3365_RTLC_033	109335
+GSF3365_RTLC_034	83014
+GSF3365_RTLC_035	125056
+GSF3365_RTLC_036	136531
+GSF3365_RTLC_038	162659
+GSF3365_RTLC_039	136370
+GSF3365_RTLC_040	123271
+GSF3365_RTLC_041	129579
+GSF3365_RTLC_045	137011
+GSF3365_RTLC_047	142823
+GSF3365_RTLC_048	122817
+GSF3365_RTLC_049	114410
+GSF3365_RTLC_050	158829
+GSF3365_RTLC_051	145293
+GSF3365_RTLC_053	84092
+GSF3365_RTLC_055	134056
+GSF3365_RTLC_060	124196
+GSF3365_RTLC_065	113387
+GSF3365_RTLC_066	144341
+GSF3365_RTLC_068	150641
+GSF3365_RTLC_069	67927
+GSF3365_RTLC_070	77764
+GSF3365_RTLC_073	101006
+GSF3365_RTLC_074	145303
+GSF3365_RTLC_077	112050
+GSF3365_RTLC_078	120010
+GSF3365_RTLC_080	94407
+GSF3365_RTLC_081	161068
+GSF3365_RTLC_082	173160
+GSF3365_RTLC_083	166358
+GSF3365_RTLC_084	154402
+GSF3365_RTLC_085	131856
+GSF3365_RTLC_086	137152
+GSF3365_RTLC_087	150576
+GSF3365_RTLC_088	121262
+GSF3365_RTLC_089	153088
+GSF3365_RTLC_090	126892
+GSF3365_RTLC_093	60455
+GSF3365_RTLC_096	146717
+GSF3365_RTLC_097	168444
+GSF3365_RTLC_099	149278
+GSF3365_RTLC_100	80354
+GSF3365_RTLC_101	116393
+GSF3365_RTLC_102	148802
+GSF3365_RTLC_103	103007
+GSF3365_RTLC_105	138680
+GSF3365_RTLC_106	145063
+GSF3365_RTLC_107	118556
+GSF3365_RTLC_108	146117
+GSF3365_RTLC_111	137533
+GSF3365_RTLC_113	136334
+GSF3365_RTLC_114	103284
+
+Total of all groups is 9379210
+
+It took 9508 secs to process 9379210 sequences.
+
+Output File Names: 
+raw/RTLC.trim.contigs.fasta
+raw/RTLC.scrap.contigs.fasta
+raw/RTLC.contigs_report
+raw/RTLC.contigs.count_table
+
+
+mothur > summary.seqs(fasta=RTLC.trim.contigs.fasta, count=RTLC.contigs.count_table)
+
+Using 24 processors.
+
+		Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	1	243	243	0	3	1
+2.5%-tile:	1	253	253	0	3	234481
+25%-tile:	1	253	253	0	4	2344803
+Median: 	1	253	253	0	5	4689606
+75%-tile:	1	253	253	0	5	7034408
+97.5%-tile:	1	319	319	8	8	9144730
+Maximum:	1	500	500	110	250	9379210
+Mean:	1	257	257	0	4
+# of unique seqs:	9379210
+total # of seqs:	9379210
+
+It took 323 secs to summarize 9379210 sequences.
+
+Output File Names:
+raw/RTLC.trim.contigs.summary
+
+
+mothur > screen.seqs(fasta=RTLC.trim.contigs.fasta, count=RTLC.contigs.count_table, maxambig=0, maxlength=275, maxhomop=8)
+
+Using 24 processors.
+
+It took 132 secs to screen 9379210 sequences, removed 1771345.
+
+/******************************************/
+Running command: remove.seqs(accnos=raw/RTLC.trim.contigs.bad.accnos.temp, count=raw/RTLC.contigs.count_table)
+Removed 1771345 sequences from raw/RTLC.contigs.count_table.
+
+Output File Names:
+raw/RTLC.contigs.pick.count_table
+
+/******************************************/
+
+Output File Names:
+raw/RTLC.trim.contigs.good.fasta
+raw/RTLC.trim.contigs.bad.accnos
+raw/RTLC.contigs.good.count_table
+
+
+It took 245 secs to screen 9379210 sequences.
+
+mothur > unique.seqs(fasta=RTLC.trim.contigs.good.fasta, count=RTLC.contigs.good.count_table)
+7607865	1831109
+
+Output File Names: 
+raw/RTLC.trim.contigs.good.unique.fasta
+raw/RTLC.trim.contigs.good.count_table
+
+
+mothur > summary.seqs(count=RTLC.trim.contigs.good.count_table)
+Using raw/RTLC.trim.contigs.good.unique.fasta as input file for the fasta parameter.
+
+Using 24 processors.
+
+		Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	1	249	249	0	3	1
+2.5%-tile:	1	253	253	0	3	190197
+25%-tile:	1	253	253	0	4	1901967
+Median: 	1	253	253	0	5	3803933
+75%-tile:	1	253	253	0	5	5705899
+97.5%-tile:	1	254	254	0	8	7417669
+Maximum:	1	275	275	0	8	7607865
+Mean:	1	253	253	0	4
+# of unique seqs:	1831109
+total # of seqs:	7607865
+
+It took 79 secs to summarize 7607865 sequences.
+
+Output File Names:
+raw/RTLC.trim.contigs.good.unique.summary
+
+
+mothur > pcr.seqs(fasta=silva.nr_v138_1.align, start=11894, end=25319, keepdots=F)
+
+Using 24 processors.
+[NOTE]: no sequences were bad, removing silva.nr_v138_1.bad.accnos
+
+It took 140 secs to screen 146601 sequences.
+
+Output File Names: 
+silva.nr_v138_1.pcr.align
+
+
+
+mothur > unique.seqs(silva.nr_v138_1.pcr.align)
+[WARNING]: silva.nr_v138_1.pcr.align is not a valid parameter, ignoring.
+The valid parameters are: fasta, name, count, format, output, seed, inputdir, and outputdir.
+Using silva.nr_v138_1.pcr.align as input file for the fasta parameter.
+146601	106991
+
+Output File Names: 
+silva.nr_v138_1.pcr.unique.align
+silva.nr_v138_1.pcr.count_table
+
+
+mothur > summary.seqs(fasta=silva.nr_v138_1.pcr.unique.align)
+
+Using 24 processors.
+
+		Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	1	9877	85	0	3	1
+2.5%-tile:	2	13426	291	0	3	2675
+25%-tile:	2	13426	293	0	4	26748
+Median: 	2	13426	293	0	5	53496
+75%-tile:	2	13426	294	0	5	80244
+97.5%-tile:	2	13426	462	1	6	104317
+Maximum:	4228	13426	1521	5	16	106991
+Mean:	2	13425	315	0	4
+# of Seqs:	106991
+
+It took 21 secs to summarize 106991 sequences.
+
+Output File Names:
+silva.nr_v138_1.pcr.unique.summary
+
+
+mothur > align.seqs(fasta=RTLC.trim.contigs.good.unique.fasta, reference=silva.nr_v138_1.pcr.unique.align)
+
+Using 24 processors.
+
+Reading in the silva.nr_v138_1.pcr.unique.align template sequences...	DONE.
+It took 19 to read  106991 sequences.
+
+Aligning sequences from raw/RTLC.trim.contigs.good.unique.fasta ...
+It took 10145 secs to align 1831109 sequences.
+
+[WARNING]: 12968 of your sequences generated alignments that eliminated too many bases, a list is provided in raw/RTLC.trim.contigs.good.unique.flip.accnos.
+[NOTE]: 5626 of your sequences were reversed to produce a better alignment.
+
+It took 10145 seconds to align 1831109 sequences.
+
+Output File Names: 
+raw/RTLC.trim.contigs.good.unique.align
+raw/RTLC.trim.contigs.good.unique.align_report
+raw/RTLC.trim.contigs.good.unique.flip.accnos
+
+
+mothur > summary.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trim.contigs.good.count_table)
+
+Using 24 processors.
+
+		Start	End	NBases	Ambigs	Polymer	NumSeqs
+Minimum:	0	0	0	0	1	1
+2.5%-tile:	1969	11551	253	0	3	190197
+25%-tile:	1969	11551	253	0	4	1901967
+Median: 	1969	11551	253	0	5	3803933
+75%-tile:	1969	11551	253	0	5	5705899
+97.5%-tile:	1969	11551	254	0	8	7417669
+Maximum:	13426	13426	274	0	8	7607865
+Mean:	1980	11546	252	0	4
+# of unique seqs:	1831109
+total # of seqs:	7607865
+
+It took 419 secs to summarize 7607865 sequences.
+
+Output File Names:
+raw/RTLC.trim.contigs.good.unique.summary
+
+
+mothur > quit()
+
+
+It took 21204 seconds to run 12 commands from /N/u/emamuell/Carbonate/GitHub/residence-time-test/mothur/RTLC.batch batch file.
+
+Logfile : mothur.1669756696.logfile
+
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Detected 73 [WARNING] messages, please review.
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<^>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

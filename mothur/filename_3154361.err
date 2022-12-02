@@ -1,0 +1,995 @@
+mothur version 1.48.0 loaded.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp21.temp 100%
+1976507 nt in 7811 seqs, min 247, max 259, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp19.temp 100%
+4161370 nt in 16445 seqs, min 241, max 272, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp14.temp 100%
+5043498 nt in 19930 seqs, min 237, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp7.temp 100%
+5258048 nt in 20778 seqs, min 227, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp20.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp3.temp 100%
+6567540 nt in 25953 seqs, min 241, max 273, avg 253
+Masking 100%
+6589449 nt in 26040 seqs, min 237, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp15.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp5.temp 100%
+6929411 nt in 27383 seqs, min 245, max 271, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp4.temp 100%
+6962398 nt in 27513 seqs, min 243, max 273, avg 253
+Masking 100%
+7084917 nt in 27997 seqs, min 242, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp18.temp 100%
+7568086 nt in 29908 seqs, min 241, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp22.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp9.temp 100%
+7925866 nt in 31321 seqs, min 242, max 272, avg 253
+Masking 100%
+7918584 nt in 31293 seqs, min 239, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp23.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp17.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+ 100%
+8533590 nt in 33722 seqs, min 241, max 265, avg 253
+MaskingReading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp 100%
+8509577 nt in 33630 seqs, min 227, max 273, avg 253
+Masking 100%
+8551739 nt in 33794 seqs, min 227, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp11.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+ 100%
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp12.temp8917995 nt in 35241 seqs, min 241, max 272, avg 253
+Masking 100%
+9036576 nt in 35712 seqs, min 228, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp6.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp2.temp 100%
+9604803 nt in 37956 seqs, min 227, max 273, avg 253
+Masking 100%
+9765609 nt in 38593 seqs, min 227, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp13.temp 100%
+10142462 nt in 40082 seqs, min 227, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp8.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp16.temp 100%
+10333337 nt in 40836 seqs, min 227, max 273, avg 253
+Masking 100%
+10568185 nt in 41762 seqs, min 232, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp1.temp 100%
+13164339 nt in 52020 seqs, min 226, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Counting k-mers 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Detecting chimeras 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp10.temp 100%
+9070556 nt in 35845 seqs, min 232, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 3206 (41.0%) chimeras, 4525 (57.9%) non-chimeras,
+and 80 (1.0%) borderline sequences in 7811 unique sequences.
+Taking abundance information into account, this corresponds to
+4724 (4.0%) chimeras, 114150 (95.9%) non-chimeras,
+and 100 (0.1%) borderline sequences in 118974 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp21.temp 100%
+2930560 nt in 11581 seqs, min 228, max 261, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 6805 (41.4%) chimeras, 9503 (57.8%) non-chimeras,
+and 137 (0.8%) borderline sequences in 16445 unique sequences.
+Taking abundance information into account, this corresponds to
+8052 (16.4%) chimeras, 40927 (83.3%) non-chimeras,
+and 175 (0.4%) borderline sequences in 49154 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp19.temp 100%
+8904202 nt in 35188 seqs, min 228, max 273, avg 253
+Masking 100%
+Found 5786 (50.0%) chimeras, 5694 (49.2%) non-chimeras,
+and 101 (0.9%) borderline sequences in 11581 unique sequences.
+Taking abundance information into account, this corresponds to
+7930 (9.7%) chimeras, 73306 (90.0%) non-chimeras,
+and 172 (0.2%) borderline sequences in 81408 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp21.temp 100%
+9726407 nt in 38436 seqs, min 240, max 273, avg 253
+Masking 100%
+Found 10676 (53.6%) chimeras, 9070 (45.5%) non-chimeras,
+and 184 (0.9%) borderline sequences in 19930 unique sequences.
+Taking abundance information into account, this corresponds to
+14413 (17.6%) chimeras, 67205 (82.0%) non-chimeras,
+and 316 (0.4%) borderline sequences in 81934 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp14.temp 100%
+6756619 nt in 26701 seqs, min 239, max 261, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 8406 (40.5%) chimeras, 12185 (58.6%) non-chimeras,
+and 187 (0.9%) borderline sequences in 20778 unique sequences.
+Taking abundance information into account, this corresponds to
+10516 (15.6%) chimeras, 56600 (84.0%) non-chimeras,
+and 235 (0.3%) borderline sequences in 67351 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp7.temp 100%
+8230588 nt in 32526 seqs, min 232, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 14690 (56.6%) chimeras, 11024 (42.5%) non-chimeras,
+and 239 (0.9%) borderline sequences in 25953 unique sequences.
+Taking abundance information into account, this corresponds to
+20811 (17.1%) chimeras, 100348 (82.6%) non-chimeras,
+and 388 (0.3%) borderline sequences in 121547 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp20.temp 100%
+3665003 nt in 14483 seqs, min 239, max 267, avg 253
+Masking 100%
+Found 13173 (50.6%) chimeras, 12674 (48.7%) non-chimeras,
+and 193 (0.7%) borderline sequences in 26040 unique sequences.
+Taking abundance information into account, this corresponds to
+16085 (21.3%) chimeras, 59140 (78.4%) non-chimeras,
+and 230 (0.3%) borderline sequences in 75455 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp3.temp 100%
+4637156 nt in 18325 seqs, min 241, max 261, avg 253
+Masking 100%
+Found 15272 (55.8%) chimeras, 11815 (43.1%) non-chimeras,
+and 296 (1.1%) borderline sequences in 27383 unique sequences.
+Taking abundance information into account, this corresponds to
+18524 (18.2%) chimeras, 82996 (81.4%) non-chimeras,
+and 402 (0.4%) borderline sequences in 101922 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 15097 (54.9%) chimeras, 12108 (44.0%) non-chimeras,
+and 308 (1.1%) borderline sequences in 27513 unique sequences.
+Taking abundance information into account, this corresponds to
+18073 (21.2%) chimeras, 66835 (78.3%) non-chimeras,
+and 425 (0.5%) borderline sequences in 85333 total sequences.
+ 100%
+Found 15182 (54.2%) chimeras, 12568 (44.9%) non-chimeras,
+and 247 (0.9%) borderline sequences in 27997 unique sequences.
+Taking abundance information into account, this corresponds to
+19114 (17.3%) chimeras, 91043 (82.4%) non-chimeras,
+and 344 (0.3%) borderline sequences in 110501 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp4.temp 100%
+10234488 nt in 40443 seqs, min 225, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp15.temp 100%
+7289541 nt in 28806 seqs, min 241, max 272, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp5.temp 100%
+8915535 nt in 35231 seqs, min 241, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 14661 (49.0%) chimeras, 14970 (50.1%) non-chimeras,
+and 277 (0.9%) borderline sequences in 29908 unique sequences.
+Taking abundance information into account, this corresponds to
+18074 (18.5%) chimeras, 79048 (81.1%) non-chimeras,
+and 388 (0.4%) borderline sequences in 97510 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 18103 (57.8%) chimeras, 12936 (41.3%) non-chimeras,
+and 282 (0.9%) borderline sequences in 31321 unique sequences.
+Taking abundance information into account, this corresponds to
+21828 (25.2%) chimeras, 64342 (74.4%) non-chimeras,
+and 361 (0.4%) borderline sequences in 86531 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp18.temp 100%
+9971611 nt in 39407 seqs, min 227, max 273, avg 253
+Masking 100%
+Found 15546 (49.7%) chimeras, 15528 (49.6%) non-chimeras,
+and 219 (0.7%) borderline sequences in 31293 unique sequences.
+Taking abundance information into account, this corresponds to
+19602 (18.4%) chimeras, 86678 (81.3%) non-chimeras,
+and 291 (0.3%) borderline sequences in 106571 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp22.temp 100%
+7512223 nt in 29685 seqs, min 244, max 261, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp9.temp 100%
+6995249 nt in 27642 seqs, min 227, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 19036 (56.4%) chimeras, 14315 (42.5%) non-chimeras,
+and 371 (1.1%) borderline sequences in 33722 unique sequences.
+Taking abundance information into account, this corresponds to
+23110 (20.2%) chimeras, 90916 (79.4%) non-chimeras,
+and 478 (0.4%) borderline sequences in 114504 total sequences.
+ 100%
+Found 17432 (51.8%) chimeras, 15904 (47.3%) non-chimeras,
+and 294 (0.9%) borderline sequences in 33630 unique sequences.
+Taking abundance information into account, this corresponds to
+21240 (20.8%) chimeras, 80258 (78.8%) non-chimeras,
+and 388 (0.4%) borderline sequences in 101886 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp23.temp 100%
+3131810 nt in 12377 seqs, min 239, max 256, avg 253
+Masking 100%
+Found 17303 (51.2%) chimeras, 16221 (48.0%) non-chimeras,
+and 270 (0.8%) borderline sequences in 33794 unique sequences.
+Taking abundance information into account, this corresponds to
+21072 (19.6%) chimeras, 86130 (80.1%) non-chimeras,
+and 363 (0.3%) borderline sequences in 107565 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp 100%
+7754798 nt in 30646 seqs, min 246, max 273, avg 253
+Masking 100%
+Found 20002 (56.8%) chimeras, 14899 (42.3%) non-chimeras,
+and 340 (1.0%) borderline sequences in 35241 unique sequences.
+Taking abundance information into account, this corresponds to
+24183 (20.6%) chimeras, 92657 (78.9%) non-chimeras,
+and 624 (0.5%) borderline sequences in 117464 total sequences.
+ 100%
+Found 19148 (53.6%) chimeras, 16269 (45.6%) non-chimeras,
+and 295 (0.8%) borderline sequences in 35712 unique sequences.
+Taking abundance information into account, this corresponds to
+23647 (23.0%) chimeras, 78695 (76.6%) non-chimeras,
+and 390 (0.4%) borderline sequences in 102732 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp11.temp 100%
+6708391 nt in 26510 seqs, min 241, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp17.temp 100%
+8841654 nt in 34942 seqs, min 243, max 273, avg 253
+Masking 100%
+Found 7044 (48.6%) chimeras, 7287 (50.3%) non-chimeras,
+and 152 (1.0%) borderline sequences in 14483 unique sequences.
+Taking abundance information into account, this corresponds to
+10985 (16.9%) chimeras, 53694 (82.7%) non-chimeras,
+and 263 (0.4%) borderline sequences in 64942 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp20.temp 100%
+4296908 nt in 16980 seqs, min 233, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 20974 (58.5%) chimeras, 14566 (40.6%) non-chimeras,
+and 305 (0.9%) borderline sequences in 35845 unique sequences.
+Taking abundance information into account, this corresponds to
+25288 (25.2%) chimeras, 74605 (74.4%) non-chimeras,
+and 380 (0.4%) borderline sequences in 100273 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp12.temp 100%
+7072739 nt in 27950 seqs, min 245, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp10.temp 100%
+6238191 nt in 24651 seqs, min 248, max 257, avg 253
+Masking 100%
+Found 20279 (53.4%) chimeras, 17368 (45.8%) non-chimeras,
+and 309 (0.8%) borderline sequences in 37956 unique sequences.
+Taking abundance information into account, this corresponds to
+24807 (21.1%) chimeras, 92434 (78.6%) non-chimeras,
+and 393 (0.3%) borderline sequences in 117634 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp6.temp 100%
+7962937 nt in 31468 seqs, min 240, max 273, avg 253
+Masking 100%
+Found 20268 (52.5%) chimeras, 18001 (46.6%) non-chimeras,
+and 324 (0.8%) borderline sequences in 38593 unique sequences.
+Taking abundance information into account, this corresponds to
+25921 (19.2%) chimeras, 108404 (80.4%) non-chimeras,
+and 423 (0.3%) borderline sequences in 134748 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp2.temp 100%
+Found 10219 (55.8%) chimeras, 7928 (43.3%) non-chimeras,
+and 178 (1.0%) borderline sequences in 18325 unique sequences.
+Taking abundance information into account, this corresponds to
+15665 (17.4%) chimeras, 74083 (82.1%) non-chimeras,
+and 455 (0.5%) borderline sequences in 90203 total sequences.
+ 100%
+8963039 nt in 35419 seqs, min 233, max 274, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 22217 (55.4%) chimeras, 17518 (43.7%) non-chimeras,
+and 347 (0.9%) borderline sequences in 40082 unique sequences.
+Taking abundance information into account, this corresponds to
+27451 (22.7%) chimeras, 92927 (76.9%) non-chimeras,
+and 477 (0.4%) borderline sequences in 120855 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp13.temp 100%
+4549651 nt in 17979 seqs, min 243, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Found 22182 (54.3%) chimeras, 18325 (44.9%) non-chimeras,
+and 329 (0.8%) borderline sequences in 40836 unique sequences.
+Taking abundance information into account, this corresponds to
+27643 (21.0%) chimeras, 103386 (78.7%) non-chimeras,
+and 392 (0.3%) borderline sequences in 131421 total sequences.
+ 100%
+Detecting chimeras 100%
+Found 25540 (61.2%) chimeras, 15784 (37.8%) non-chimeras,
+and 438 (1.0%) borderline sequences in 41762 unique sequences.
+Taking abundance information into account, this corresponds to
+30814 (21.7%) chimeras, 110477 (77.8%) non-chimeras,
+and 709 (0.5%) borderline sequences in 142000 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 15445 (57.8%) chimeras, 10961 (41.1%) non-chimeras,
+and 295 (1.1%) borderline sequences in 26701 unique sequences.
+Taking abundance information into account, this corresponds to
+20606 (17.2%) chimeras, 98743 (82.4%) non-chimeras,
+and 464 (0.4%) borderline sequences in 119813 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp14.temp 100%
+4655691 nt in 18398 seqs, min 245, max 268, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp8.temp 100%
+8756866 nt in 34606 seqs, min 226, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp3.temp 100%
+8870062 nt in 35051 seqs, min 228, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp16.temp 100%
+10651478 nt in 42091 seqs, min 233, max 273, avg 253
+Masking 100%
+Found 7933 (64.1%) chimeras, 4301 (34.7%) non-chimeras,
+and 143 (1.2%) borderline sequences in 12377 unique sequences.
+Taking abundance information into account, this corresponds to
+20828 (18.7%) chimeras, 89853 (80.9%) non-chimeras,
+and 433 (0.4%) borderline sequences in 111114 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp23.temp 100%
+4820036 nt in 19048 seqs, min 241, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 17887 (50.8%) chimeras, 16975 (48.2%) non-chimeras,
+and 326 (0.9%) borderline sequences in 35188 unique sequences.
+Taking abundance information into account, this corresponds to
+22224 (18.7%) chimeras, 96402 (81.0%) non-chimeras,
+and 440 (0.4%) borderline sequences in 119066 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp19.temp 100%
+11383406 nt in 44987 seqs, min 227, max 273, avg 253
+Masking 100%
+Found 16969 (52.2%) chimeras, 15328 (47.1%) non-chimeras,
+and 229 (0.7%) borderline sequences in 32526 unique sequences.
+Taking abundance information into account, this corresponds to
+20970 (20.9%) chimeras, 79034 (78.8%) non-chimeras,
+and 289 (0.3%) borderline sequences in 100293 total sequences.
+ 100%
+Found 8570 (50.5%) chimeras, 8255 (48.6%) non-chimeras,
+and 155 (0.9%) borderline sequences in 16980 unique sequences.
+Taking abundance information into account, this corresponds to
+12138 (13.1%) chimeras, 80406 (86.6%) non-chimeras,
+and 270 (0.3%) borderline sequences in 92814 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp7.temp 100%
+8318123 nt in 32872 seqs, min 241, max 273, avg 253
+Masking 100%
+Found 22971 (59.8%) chimeras, 15060 (39.2%) non-chimeras,
+and 405 (1.1%) borderline sequences in 38436 unique sequences.
+Taking abundance information into account, this corresponds to
+27623 (24.2%) chimeras, 85865 (75.3%) non-chimeras,
+and 555 (0.5%) borderline sequences in 114043 total sequences.
+ 100%
+Found 15989 (55.5%) chimeras, 12532 (43.5%) non-chimeras,
+and 285 (1.0%) borderline sequences in 28806 unique sequences.
+Taking abundance information into account, this corresponds to
+18927 (24.1%) chimeras, 59257 (75.4%) non-chimeras,
+and 377 (0.5%) borderline sequences in 78561 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp15.temp 100%
+8457858 nt in 33422 seqs, min 232, max 272, avg 253
+Masking 100%
+Found 15903 (57.5%) chimeras, 11477 (41.5%) non-chimeras,
+and 262 (0.9%) borderline sequences in 27642 unique sequences.
+Taking abundance information into account, this corresponds to
+20357 (18.2%) chimeras, 90976 (81.4%) non-chimeras,
+and 495 (0.4%) borderline sequences in 111828 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 29108 (56.0%) chimeras, 22487 (43.2%) non-chimeras,
+and 425 (0.8%) borderline sequences in 52020 unique sequences.
+Taking abundance information into account, this corresponds to
+35442 (19.1%) chimeras, 149295 (80.6%) non-chimeras,
+and 565 (0.3%) borderline sequences in 185302 total sequences.
+ 100%
+Found 7428 (41.3%) chimeras, 10443 (58.1%) non-chimeras,
+and 108 (0.6%) borderline sequences in 17979 unique sequences.
+Taking abundance information into account, this corresponds to
+9060 (17.2%) chimeras, 43441 (82.5%) non-chimeras,
+and 141 (0.3%) borderline sequences in 52642 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp9.temp 100%
+8094094 nt in 31986 seqs, min 243, max 272, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp1.tempvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp13.temp 100%
+8733233 nt in 34511 seqs, min 247, max 273, avg 253
+Masking 100%
+5299274 nt in 20942 seqs, min 233, max 273, avg 253
+Masking 100%
+Found 16091 (54.2%) chimeras, 13298 (44.8%) non-chimeras,
+and 296 (1.0%) borderline sequences in 29685 unique sequences.
+Taking abundance information into account, this corresponds to
+19417 (20.1%) chimeras, 76865 (79.5%) non-chimeras,
+and 437 (0.5%) borderline sequences in 96719 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 9502 (51.6%) chimeras, 8689 (47.2%) non-chimeras,
+and 207 (1.1%) borderline sequences in 18398 unique sequences.
+Taking abundance information into account, this corresponds to
+11708 (12.6%) chimeras, 80765 (87.1%) non-chimeras,
+and 301 (0.3%) borderline sequences in 92774 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 13936 (52.6%) chimeras, 12339 (46.5%) non-chimeras,
+and 235 (0.9%) borderline sequences in 26510 unique sequences.
+Taking abundance information into account, this corresponds to
+16439 (23.6%) chimeras, 52828 (75.9%) non-chimeras,
+and 308 (0.4%) borderline sequences in 69575 total sequences.
+ 100%
+Found 11589 (60.8%) chimeras, 7277 (38.2%) non-chimeras,
+and 182 (1.0%) borderline sequences in 19048 unique sequences.
+Taking abundance information into account, this corresponds to
+21515 (26.7%) chimeras, 58619 (72.8%) non-chimeras,
+and 340 (0.4%) borderline sequences in 80474 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp11.temp 100%
+8369524 nt in 33073 seqs, min 232, max 273, avg 253
+Masking 100%
+Found 12051 (48.9%) chimeras, 12351 (50.1%) non-chimeras,
+and 249 (1.0%) borderline sequences in 24651 unique sequences.
+Taking abundance information into account, this corresponds to
+14441 (15.0%) chimeras, 81810 (84.7%) non-chimeras,
+and 343 (0.4%) borderline sequences in 96594 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp10.temp 100%
+8357476 nt in 33026 seqs, min 231, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 20191 (57.3%) chimeras, 14730 (41.8%) non-chimeras,
+and 310 (0.9%) borderline sequences in 35231 unique sequences.
+Taking abundance information into account, this corresponds to
+24057 (23.4%) chimeras, 78257 (76.2%) non-chimeras,
+and 418 (0.4%) borderline sequences in 102732 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp22.temp 100%
+10049057 nt in 39711 seqs, min 232, max 271, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 15974 (52.1%) chimeras, 14445 (47.1%) non-chimeras,
+and 227 (0.7%) borderline sequences in 30646 unique sequences.
+Taking abundance information into account, this corresponds to
+20101 (19.4%) chimeras, 83136 (80.3%) non-chimeras,
+and 308 (0.3%) borderline sequences in 103545 total sequences.
+ 100%
+Found 13835 (49.5%) chimeras, 13879 (49.7%) non-chimeras,
+and 236 (0.8%) borderline sequences in 27950 unique sequences.
+Taking abundance information into account, this corresponds to
+16529 (21.2%) chimeras, 61138 (78.4%) non-chimeras,
+and 290 (0.4%) borderline sequences in 77957 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp12.temp 100%
+9610040 nt in 37978 seqs, min 227, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimerasvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp5.temp 100%
+10301120 nt in 40708 seqs, min 233, max 273, avg 253
+Masking 100%
+Found 23955 (59.2%) chimeras, 16048 (39.7%) non-chimeras,
+and 440 (1.1%) borderline sequences in 40443 unique sequences.
+Taking abundance information into account, this corresponds to
+28764 (22.0%) chimeras, 101330 (77.5%) non-chimeras,
+and 573 (0.4%) borderline sequences in 130667 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp4.temp 100%
+9249872 nt in 36553 seqs, min 243, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 21350 (54.2%) chimeras, 17713 (44.9%) non-chimeras,
+and 344 (0.9%) borderline sequences in 39407 unique sequences.
+Taking abundance information into account, this corresponds to
+26464 (21.3%) chimeras, 97008 (78.3%) non-chimeras,
+and 484 (0.4%) borderline sequences in 123956 total sequences.
+ 100%
+Found 15922 (50.6%) chimeras, 15314 (48.7%) non-chimeras,
+and 232 (0.7%) borderline sequences in 31468 unique sequences.
+Taking abundance information into account, this corresponds to
+19539 (21.1%) chimeras, 72769 (78.6%) non-chimeras,
+and 283 (0.3%) borderline sequences in 92591 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 18377 (52.6%) chimeras, 16227 (46.4%) non-chimeras,
+and 338 (1.0%) borderline sequences in 34942 unique sequences.
+Taking abundance information into account, this corresponds to
+22741 (20.9%) chimeras, 85480 (78.6%) non-chimeras,
+and 551 (0.5%) borderline sequences in 108772 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp18.temp 100%
+9080373 nt in 35884 seqs, min 240, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp6.temp 100%
+7200333 nt in 28454 seqs, min 232, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp17.temp 100%
+8712410 nt in 34430 seqs, min 243, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 18660 (52.7%) chimeras, 16472 (46.5%) non-chimeras,
+and 287 (0.8%) borderline sequences in 35419 unique sequences.
+Taking abundance information into account, this corresponds to
+22821 (20.3%) chimeras, 89065 (79.3%) non-chimeras,
+and 374 (0.3%) borderline sequences in 112260 total sequences.
+ 100%
+Found 22331 (63.7%) chimeras, 12368 (35.3%) non-chimeras,
+and 352 (1.0%) borderline sequences in 35051 unique sequences.
+Taking abundance information into account, this corresponds to
+31262 (19.5%) chimeras, 128022 (80.0%) non-chimeras,
+and 650 (0.4%) borderline sequences in 159934 total sequences.
+ 100%
+Found 8968 (42.8%) chimeras, 11810 (56.4%) non-chimeras,
+and 164 (0.8%) borderline sequences in 20942 unique sequences.
+Taking abundance information into account, this corresponds to
+10742 (16.8%) chimeras, 52818 (82.8%) non-chimeras,
+and 193 (0.3%) borderline sequences in 63753 total sequences.
+ 100%
+Found 17903 (51.7%) chimeras, 16431 (47.5%) non-chimeras,
+and 272 (0.8%) borderline sequences in 34606 unique sequences.
+Taking abundance information into account, this corresponds to
+22122 (19.8%) chimeras, 89172 (79.9%) non-chimeras,
+and 333 (0.3%) borderline sequences in 111627 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp8.temp 100%
+7878859 nt in 31136 seqs, min 233, max 273, avg 253
+Maskingvsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp2.temp 100%
+11101796 nt in 43871 seqs, min 226, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 25006 (59.4%) chimeras, 16647 (39.6%) non-chimeras,
+and 438 (1.0%) borderline sequences in 42091 unique sequences.
+Taking abundance information into account, this corresponds to
+29964 (21.8%) chimeras, 107127 (77.8%) non-chimeras,
+and 590 (0.4%) borderline sequences in 137681 total sequences.
+ 100%
+Found 17077 (51.9%) chimeras, 15520 (47.2%) non-chimeras,
+and 275 (0.8%) borderline sequences in 32872 unique sequences.
+Taking abundance information into account, this corresponds to
+21488 (19.8%) chimeras, 86664 (79.9%) non-chimeras,
+and 375 (0.3%) borderline sequences in 108527 total sequences.
+ 100%
+Found 17937 (53.7%) chimeras, 15146 (45.3%) non-chimeras,
+and 339 (1.0%) borderline sequences in 33422 unique sequences.
+Taking abundance information into account, this corresponds to
+21573 (16.5%) chimeras, 109067 (83.2%) non-chimeras,
+and 462 (0.4%) borderline sequences in 131102 total sequences.
+ 100%
+Found 18429 (57.6%) chimeras, 13209 (41.3%) non-chimeras,
+and 348 (1.1%) borderline sequences in 31986 unique sequences.
+Taking abundance information into account, this corresponds to
+22696 (19.5%) chimeras, 92994 (80.1%) non-chimeras,
+and 477 (0.4%) borderline sequences in 116167 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp16.temp 100%
+10161383 nt in 40155 seqs, min 241, max 273, avg 253
+Masking 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 17902 (51.9%) chimeras, 16295 (47.2%) non-chimeras,
+and 314 (0.9%) borderline sequences in 34511 unique sequences.
+Taking abundance information into account, this corresponds to
+21938 (21.3%) chimeras, 80723 (78.3%) non-chimeras,
+and 431 (0.4%) borderline sequences in 103092 total sequences.
+ 100%
+Found 18202 (55.0%) chimeras, 14568 (44.0%) non-chimeras,
+and 303 (0.9%) borderline sequences in 33073 unique sequences.
+Taking abundance information into account, this corresponds to
+21419 (19.9%) chimeras, 85763 (79.7%) non-chimeras,
+and 401 (0.4%) borderline sequences in 107583 total sequences.
+ 100%
+Found 18567 (56.2%) chimeras, 14091 (42.7%) non-chimeras,
+and 368 (1.1%) borderline sequences in 33026 unique sequences.
+Taking abundance information into account, this corresponds to
+22279 (17.5%) chimeras, 104420 (82.1%) non-chimeras,
+and 541 (0.4%) borderline sequences in 127240 total sequences.
+vsearch v2.17.1_linux_x86_64, 251.1GB RAM, 24 cores
+https://github.com/torognes/vsearch
+
+Reading file RTLC.trim.contigs.good.unique.good.filter.unique.precluster.temp1.temp 100%
+10010943 nt in 39562 seqs, min 243, max 273, avg 253
+Masking 100%
+Found 25815 (57.4%) chimeras, 18789 (41.8%) non-chimeras,
+and 383 (0.9%) borderline sequences in 44987 unique sequences.
+Taking abundance information into account, this corresponds to
+32041 (24.0%) chimeras, 101000 (75.6%) non-chimeras,
+and 557 (0.4%) borderline sequences in 133598 total sequences.
+ 100%
+Sorting by abundance 100%
+Counting k-mers 100%
+Detecting chimeras 100%
+Found 13592 (47.8%) chimeras, 14629 (51.4%) non-chimeras,
+and 233 (0.8%) borderline sequences in 28454 unique sequences.
+Taking abundance information into account, this corresponds to
+16613 (19.1%) chimeras, 69903 (80.5%) non-chimeras,
+and 292 (0.3%) borderline sequences in 86808 total sequences.
+ 100%
+Found 24112 (60.7%) chimeras, 15261 (38.4%) non-chimeras,
+and 338 (0.9%) borderline sequences in 39711 unique sequences.
+Taking abundance information into account, this corresponds to
+29225 (25.1%) chimeras, 86675 (74.5%) non-chimeras,
+and 502 (0.4%) borderline sequences in 116402 total sequences.
+ 100%
+Found 20404 (53.7%) chimeras, 17257 (45.4%) non-chimeras,
+and 317 (0.8%) borderline sequences in 37978 unique sequences.
+Taking abundance information into account, this corresponds to
+25102 (21.5%) chimeras, 91069 (78.1%) non-chimeras,
+and 390 (0.3%) borderline sequences in 116561 total sequences.
+ 100%
+Found 20961 (57.3%) chimeras, 15254 (41.7%) non-chimeras,
+and 338 (0.9%) borderline sequences in 36553 unique sequences.
+Taking abundance information into account, this corresponds to
+25029 (22.3%) chimeras, 86554 (77.3%) non-chimeras,
+and 444 (0.4%) borderline sequences in 112027 total sequences.
+ 100%
+Found 17079 (49.6%) chimeras, 17075 (49.6%) non-chimeras,
+and 276 (0.8%) borderline sequences in 34430 unique sequences.
+Taking abundance information into account, this corresponds to
+21256 (17.7%) chimeras, 98224 (81.9%) non-chimeras,
+and 397 (0.3%) borderline sequences in 119877 total sequences.
+ 100%
+Found 19033 (53.0%) chimeras, 16556 (46.1%) non-chimeras,
+and 295 (0.8%) borderline sequences in 35884 unique sequences.
+Taking abundance information into account, this corresponds to
+22967 (22.3%) chimeras, 79586 (77.3%) non-chimeras,
+and 433 (0.4%) borderline sequences in 102986 total sequences.
+ 100%
+Found 23720 (58.3%) chimeras, 16602 (40.8%) non-chimeras,
+and 386 (0.9%) borderline sequences in 40708 unique sequences.
+Taking abundance information into account, this corresponds to
+28629 (22.7%) chimeras, 97014 (76.9%) non-chimeras,
+and 533 (0.4%) borderline sequences in 126176 total sequences.
+ 100%
+Found 15502 (49.8%) chimeras, 15370 (49.4%) non-chimeras,
+and 264 (0.8%) borderline sequences in 31136 unique sequences.
+Taking abundance information into account, this corresponds to
+19258 (19.7%) chimeras, 78134 (79.9%) non-chimeras,
+and 357 (0.4%) borderline sequences in 97749 total sequences.
+ 100%
+Found 24203 (55.2%) chimeras, 19335 (44.1%) non-chimeras,
+and 333 (0.8%) borderline sequences in 43871 unique sequences.
+Taking abundance information into account, this corresponds to
+30162 (22.8%) chimeras, 101511 (76.8%) non-chimeras,
+and 425 (0.3%) borderline sequences in 132098 total sequences.
+ 100%
+Found 23726 (59.1%) chimeras, 16026 (39.9%) non-chimeras,
+and 403 (1.0%) borderline sequences in 40155 unique sequences.
+Taking abundance information into account, this corresponds to
+28742 (22.6%) chimeras, 97644 (76.9%) non-chimeras,
+and 564 (0.4%) borderline sequences in 126950 total sequences.
+ 100%
+Found 22239 (56.2%) chimeras, 17026 (43.0%) non-chimeras,
+and 297 (0.8%) borderline sequences in 39562 unique sequences.
+Taking abundance information into account, this corresponds to
+28487 (22.1%) chimeras, 99814 (77.6%) non-chimeras,
+and 376 (0.3%) borderline sequences in 128677 total sequences.
