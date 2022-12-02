@@ -24,13 +24,13 @@
 #summary.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trim.contigs.good.count_table)
 
 #check RTLC.trim.contigs.good.unique.summary to determine if correct start and end (should be where 35%-75% start and end)
-#screen.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trim.contigs.good.count_table, summary=RTLC.trim.contigs.good.unique.summary, start=1968, end=11511, maxhomop=8)
+#screen.seqs(fasta=RTLC.trim.contigs.good.unique.align, count=RTLC.trim.contigs.good.count_table, summary=RTLC.trim.contigs.good.unique.summary, start=1969, end=11551, maxhomop=8)
 #summary.seqs(fasta=current, count=current)
 
 #Remove overhangs at both ends, remove redundancy, and pre-cluster the sequences
-#filter.seqs(fasta=RTLC.trim.contigs.good.unique.good.align, vertical=T, trump=.)
-#unique.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.fasta, count=RTLC.trim.contigs.good.good.count_table)
-#pre.cluster(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.fasta, count=RTLC.trim.contigs.good.unique.good.filter.count_table, diffs=2)
+filter.seqs(fasta=RTLC.trim.contigs.good.unique.good.align, vertical=T, trump=.)
+unique.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.fasta, count=RTLC.trim.contigs.good.good.count_table)
+pre.cluster(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.fasta, count=RTLC.trim.contigs.good.unique.good.filter.count_table, diffs=2)
 
 #remove chimeras (update from older version auto-removes chimeras instead of requiring an additional remove.seqs step)
 chimera.vsearch(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t)
