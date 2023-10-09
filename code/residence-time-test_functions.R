@@ -122,7 +122,7 @@ S_fxn <- function(S, Tau){
 SimpE.cal <- function(x = ""){
   S <- S.cal(x)
   x = as.data.frame(x)
-  D <- diversity(x, index = "invsimpson")
+  D <- diversity(x, index = "inv")
   E <- (D)/S
   return(E)
 }
