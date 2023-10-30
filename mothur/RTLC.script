@@ -2,14 +2,15 @@
 
 #SBATCH -J RTLC
 #SBATCH -p general
-#SBATCH -o filename_%j.txt
-#SBATCH -e filename_%j.err
+#SBATCH -o RTLC_%j.txt
+#SBATCH -e RTLC_%j.err
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=emamuell@iu.edu
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=96:00:00
 #SBATCH --mem=50G
+#SBATCH -A r00324
 
 cd /N/project/Lennon_Sequences/RTLC
 
