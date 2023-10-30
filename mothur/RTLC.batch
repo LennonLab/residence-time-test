@@ -28,17 +28,17 @@
 #summary.seqs(fasta=current, count=current)
 
 #Remove overhangs at both ends, remove redundancy, and pre-cluster the sequences
-filter.seqs(fasta=RTLC.trim.contigs.good.unique.good.align, vertical=T, trump=.)
-unique.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.fasta, count=RTLC.trim.contigs.good.good.count_table)
-pre.cluster(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.fasta, count=RTLC.trim.contigs.good.unique.good.filter.count_table, diffs=2)
+#filter.seqs(fasta=RTLC.trim.contigs.good.unique.good.align, vertical=T, trump=.)
+#unique.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.fasta, count=RTLC.trim.contigs.good.good.count_table)
+#pre.cluster(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.fasta, count=RTLC.trim.contigs.good.unique.good.filter.count_table, diffs=2)
 
 #remove chimeras (update from older version auto-removes chimeras instead of requiring an additional remove.seqs step)
-chimera.vsearch(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t)
-summary.seqs(fasta=current, count=current)
+#chimera.vsearch(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t)
+#summary.seqs(fasta=current, count=current)
 
-#classify sequences with a Bayesian classifer and remove Chloroplast-Mitochondria-unknown-Archaea-Eukaryota
-classify.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, reference=silva.nr_v138_1.align, taxonomy=silva.nr_v138_1.tax)
-remove.lineage(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, taxonomy=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.nr_v138_1.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota)
+#classify sequences with a Bayesian classifer and remove Chloroplast-Mitochondria-unknown-Eukaryota
+#classify.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, reference=silva.nr_v138_1.align, taxonomy=silva.nr_v138_1.tax)
+remove.lineage(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, taxonomy=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.nr_v138_1.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Eukaryota)
 summary.tax(taxonomy=current, count=current)
 
 #rename the files and split into otus at 0.03 cutoff, make shared file, and classify the otus
