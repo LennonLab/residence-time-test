@@ -14,7 +14,7 @@ editor_options:
 rm(list=ls())
 getwd()
 
-package.list <- c("Matrix", "jpeg", "cli", "png", "vegan", "ggplot2", "ggpubr", "cowplot", "ggpmisc", "scales", "fitdistrplus", "tidyr", "ade4", "viridis", "gplots", "BiodiversityR", "indicspecies", "knitr", "here", "dplyr", "BiocManager", "car", "here", "actuar", "tibble", "scales", "dplyr", "stringr", "iNEXT", "lmtest", "betapart", "reshape2", "mgcv", "modelr", "purrr", "lme4", "tidymv", "merTools", "MuMIn", "htmltools", "ggrepel", "broom", "tidyverse", "pander")
+package.list <- c("Matrix", "jpeg", "cli", "png", "vegan", "ggplot2", "ggpubr", "cowplot", "ggpmisc", "scales", "fitdistrplus", "tidyr", "ade4", "viridis", "gplots", "BiodiversityR", "indicspecies", "knitr", "here", "dplyr", "BiocManager", "car", "here", "actuar", "tibble", "scales", "dplyr", "stringr", "iNEXT", "lmtest", "betapart", "reshape2", "mgcv", "modelr", "purrr", "lme4", "tidymv", "merTools", "MuMIn", "htmltools", "ggrepel", "broom", "tidyverse", "pander", "spaa")
 
 for (package in package.list) {
   if (!require(package, character.only=T, quietly=T)) { 
@@ -417,20 +417,18 @@ ggsave("./output/CommStr_Cstat_ASV.pdf")
 ggsave("./output/CommStr_Cstat_ASV.png", width = 5, height = 10)
 ```
 ```{r}
-install.packages("spaa")
-library("spaa")
 niche.overlap <- c()
 
-print(mean(niche.overlap(as.data.frame(OTU_t), method = "czech")))
+print(mean(niche.overlap(as.data.frame(OTUs.90), method = "pianka")))
+print(paste(x, " : ", mean(niche.overlap(as.data.frame(OTUs.90), method = "pianka"))))
 
-OTU_t <- OTUsREL_20[,1:1000]
 x <- 1
 while(x < 100){
-  for(col in 1:ncol(OTU_t)){
-    OTU_t[,col] <- sample(OTU_t[,col])
+  for(col in 1:ncol(OTUs.90)){
+    OTUs.90[,col] <- sample(OTUs.90[,col])
   }
-  print(mean(niche.overlap(as.data.frame(OTU_t), method = "pianka")))
-  niche.overlap <- c(niche.overlap, mean(niche.overlap(as.data.frame(OTU_t), method = "pianka")))
+  print(paste(x, " : ", mean(niche.overlap(as.data.frame(OTUs.90), method = "pianka"))))
+  niche.overlap <- c(niche.overlap, mean(niche.overlap(as.data.frame(OTUs.90), method = "pianka")))
   x = x + 1
 }
 ```
@@ -477,6 +475,7 @@ imp.otus$Tau <- log(((10^as.numeric(imp.otus$Tau))/60), 10)
 
 ```{r}
 OTUs.90 <- cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in% colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 28))])
+write.csv(OTUs.90, ".")
 colnames(OTUs.90) <- c("Tau", colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 28)))
 OTUs.90 <- as.data.frame(OTUs.90) %>% gather(OTU, REL, Otu00001:Otu04427)
 
