@@ -167,3 +167,8 @@ S.ace <- function(x = "", thresh = 10){
   S.ace <- S.abund + (S.rare/C.ace) + (singlt/C.ace) * max(G.ace,0)
   return(S.ace)
 }
+
+scientific_10 <- function(x) {
+  x <- 10^x
+  parse(text=gsub("e[+]?", " %*% 10^", scientific_format()(x)))
+}
