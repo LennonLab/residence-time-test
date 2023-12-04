@@ -228,7 +228,7 @@ rm(ASVs)
 
 ASVsr_20 <- ASV_r[rownames(ASV_r) %in% unique(Tau$Day_20_Seq),]
 ASVsr_20 <- ASVsr_20[,which(colSums(ASVsr_20) >0)]
-rownames(ASVsr_20) <- log(((10^subset(Tau_Seq, Day == 20)$Tau)/60), 10)
+rownames(ASVsr_20) <- log(((10^as.numeric(subset(Tau_Seq, Day == 20)$Tau))/60), 10)
 
 Tau_20 <- subset(Tau[is.na(Tau$Day_20_Seq) == 0,])
 Tau_Seq$Day <- as.factor(Tau_Seq$Day)
@@ -475,7 +475,8 @@ imp.otus$Tau <- log(((10^as.numeric(imp.otus$Tau))/60), 10)
 
 ```{r}
 OTUs.90 <- cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in% colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 28))])
-write.csv(OTUs.90, ".")
+write.csv(OTUs.90, "./data/OTUs_80.csv", row.names = TRUE)
+
 colnames(OTUs.90) <- c("Tau", colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 28)))
 OTUs.90 <- as.data.frame(OTUs.90) %>% gather(OTU, REL, Otu00001:Otu04427)
 
