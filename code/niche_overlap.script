@@ -1,18 +1,19 @@
 #!/bin/bash
 
 #SBATCH -J RTLC_niche
-#SBATCH -p debug
+#SBATCH -p general
 #SBATCH -o RTLC_niche%j.txt
 #SBATCH -e RTLC_niche%j.err
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=emamuell@iu.edu
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --time=1:00:00
+#SBATCH --time=6:00:00
 #SBATCH --mem=50G
+#SBATCH -A r00324
 
-cd /N/u/emamuell/Quartz/github/residence-time-test/code/
+cd /N/u/emamuell/Carbonate/GitHub/residence-time-test/code/
 
 module load r
 
-srun r /N/u/emamuell/Quartz/github/residence-time-test/code/niche_overlap.batch
+srun Rscript /N/u/emamuell/Carbonate/GitHub/residence-time-test/code/niche_overlap.R

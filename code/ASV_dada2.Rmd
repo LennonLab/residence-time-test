@@ -1,0 +1,97 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-11-28"
+---
+
+```{r setup, include=FALSE}
+library("dada2")
+```
+
+```{r}
+path <- "/N/project/Lennon_Sequences/RTLC/raw"
+fnFs <- sort(list.files(path, pattern = "_R1_001.fastq", full.names = TRUE))
+fnRs <- sort(list.files(path, pattern="_R2_001.fastq", full.names = TRUE))
+sample.names <- sapply(strsplit(basename(fnFs), "_S"), `[`, 1)
+
+plotQualityProfile(fnFs[1:2])
+plotQualityProfile(fnRs[1:2])
+```
+
+```{r}
+filtFs <- file.path(path, "filtered", paste0(sample.names, "_F_filt.fastq.gz"))
+filtRs <- file.path(path, "filtered", paste0(sample.names, "_R_filt.fastq.gz"))
+names(filtFs) <- sample.names
+names(filtRs) <- sample.names
+
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(240,170),
+                     maxN = 0, maxEE = c(2,2), truncQ=2, rm.phix = TRUE,
+                     compress = TRUE, multithread = FALSE)
+
+head(out)
+
+errF <-learnErrors(filtFs, multithread = FALSE)
+errR <- learnErrors(filtRs, multithread = FALSE)
+
+plotErrors(errF, nominalQ = TRUE)
+```
+
+```{r}
+dadaFs <- dada(filtFs, err=errF, multithread = FALSE)
+dadaRs <- dada(filtRs, err=errR, multithread = FALSE)
+
+dadaFs[[1]]
+
+mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose = TRUE)
+head(mergers[[1]])
+```
+
+```{r}
+seqtab <- makeSequenceTable(mergers)
+dim(seqtab)
+
+table(nchar(getSequences(seqtab)))
+rownames(seqtab.nochim)
+colnames(seqtab.nochim[,1:5])
+
+seqtab.nochim <- removeBimeraDenovo(seqtab, method = "consensus", multithread = FALSE, verbose = TRUE)
+
+table(nchar(getSequences(seqtab.nochim)))
+
+dim(seqtab.nochim)
+sum(seqtab.nochim)/sum(seqtab)
+```
+
+
+```{r}
+getN <- function(x) sum(getUniques(x))
+track <- cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab.nochim))
+
+colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
+rownames(track) <- sample.names
+head(track)
+```
+
+```{r}
+taxa <- assignTaxonomy(seqtab.nochim, "/N/project/Lennon_Sequences/RTLC/raw/silva_nr99_v138.1_train_set.fa.gz", multithread = FALSE)
+#taxa <- assignSpecies(taxa, "~/tax/silva_species_assignment_v132.fa.gz")
+taxa.print <- taxa
+rownames(taxa.print) <- NULL
+head(taxa.print)
+```
+
+```{r}
+write.csv(taxa, "/N/project/Lennon_Sequences/RTLC/RTLC_ASV_taxa_rawseq.csv", row.names=TRUE)
+write.csv(seqtab.nochim, "/N/project/Lennon_Sequences/RTLC/RTLC_ASV_rawseq.csv", row.names=TRUE)
+
+taxa_ASVs <- taxa
+rownames(taxa_ASVs) <- paste0("ASV", seq(nrow(taxa_ASVs)))
+head(taxa_ASVs)
+
+seqtab_ASVs <- seqtab.nochim
+colnames(seqtab_ASVs) <- paste0("ASV", seq(ncol(seqtab_ASVs)))
+head(seqtab_ASVs[,1:10])
+
+write.csv(taxa_ASVs, "/N/project/Lennon_Sequences/RTLC/RTLC_ASV_taxa.csv", row.names=TRUE)
+write.csv(seqtab_ASVs, "/N/project/Lennon_Sequences/RTLC/RTLC_ASV.csv", row.names=TRUE)
+```
