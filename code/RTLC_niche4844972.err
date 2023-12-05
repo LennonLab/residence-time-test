@@ -1,0 +1,7 @@
+Curl version 7.54.0 loaded.
+Sun/Oracle Java SE Development Kit version 11.0.2 loaded.
+gcc version 12.1.0 unloaded.
+gcc version 9.3.0 loaded.
+r version 4.2.1 loaded.
+slurmstepd: error: execve(): r: No such file or directory
+srun: error: c1: task 0: Exited with exit code 2

@@ -1,14 +1,16 @@
 #! /bin/bash
 
-library("spaa")
+print("IT WORKS")
 
-OTUs <- read.csv("/N/u/emamuell/Quartz/github/residence-time-test/data/OTUsREL_20.csv", header = TRUE)
-rownames(OTUs) <- OTUs$X
-OTUs <- OTUs[,-1]
+#library("spaa")
 
-niche.overlap <- c()
+#OTUs <- read.csv("/N/u/emamuell/Carbonate/GitHub/residence-time-test/data/OTUsREL_20.csv", header = TRUE)
+#rownames(OTUs) <- OTUs$X
+#OTUs <- OTUs[,-1]
 
-print(mean(niche.overlap(as.data.frame(OTUs[,1:1000]), method = "pianka")))
+#niche.overlap <- c()
+
+#print(mean(niche.overlap(as.data.frame(OTUs[,1:1000]), method = "pianka")))
 
 # x <- 1
 # while(x < 100){

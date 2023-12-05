@@ -1,0 +1,9 @@
+Curl version 7.54.0 unloaded.
+Curl version 7.54.0 loaded.
+Sun/Oracle Java SE Development Kit version 11.0.2 loaded.
+gcc version 9.3.0 unloaded.
+gcc version 9.3.0 loaded.
+r version 4.2.1 loaded.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 4845029.0 ON c1 CANCELLED AT 2023-12-04T17:23:23 ***
+slurmstepd: error: *** JOB 4845029 ON c1 CANCELLED AT 2023-12-04T17:23:23 ***
