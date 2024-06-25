@@ -38,20 +38,22 @@
 
 #classify sequences with a Bayesian classifer and remove Chloroplast-Mitochondria-unknown-Eukaryota
 #classify.seqs(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, reference=silva.nr_v138_1.align, taxonomy=silva.nr_v138_1.tax)
-remove.lineage(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, taxonomy=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.nr_v138_1.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Eukaryota)
-summary.tax(taxonomy=current, count=current)
+#remove.lineage(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, taxonomy=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.nr_v138_1.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Eukaryota)
+#summary.tax(taxonomy=current, count=current)
 
 #rename the files and split into otus at 0.03 cutoff, make shared file, and classify the otus
-rename.file(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table, taxonomy=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.nr_v138_1.wang.pick.taxonomy, prefix=RTLC.final)
-cluster.split(fasta=RTLC.final.fasta, count=RTLC.final.count_table, taxonomy=RTLC.final.taxonomy, taxlevel=4, cutoff=0.03)
-make.shared(list=RTLC.final.opti_mcc.list, count=RTLC.final.count_table, label=0.03)
-classify.otu(list=RTLC.final.opti_mcc.list, count=RTLC.final.count_table, taxonomy=RTLC.final.taxonomy, label=0.03)
+#rename.file(fasta=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta, count=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table, taxonomy=RTLC.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.nr_v138_1.wang.pick.taxonomy, prefix=RTLC.final)
+#cluster.split(fasta=RTLC.final.fasta, count=RTLC.final.count_table, taxonomy=RTLC.final.taxonomy, taxlevel=4, cutoff=0.03)
+#make.shared(list=RTLC.final.opti_mcc.list, count=RTLC.final.count_table, label=0.03)
+#classify.otu(list=RTLC.final.opti_mcc.list, count=RTLC.final.count_table, taxonomy=RTLC.final.taxonomy, label=0.03)
 
 #get a representative sequence for each otu and generate fasta file from those sequences
-get.oturep(list=RTLC.final.opti_mcc.list, fasta=RTLC.final.fasta, count=RTLC.final.count_table, method=abundance)
+#get.oturep(list=RTLC.final.opti_mcc.list, fasta=RTLC.final.fasta, count=RTLC.final.count_table, method=abundance)
 
 #copy the files and rename them
-system(cp ./RTLC.final.opti_mcc.shared ./RTLC.final.shared)
-system(cp ./RTLC.final.opti_mcc.0.03.cons.taxonomy ./RTLC.final.taxonomy)
-system(cp ./RTLC.final.opti_mcc.0.03.rep.fasta ./RTLC.final.rep.fasta)
+#system(cp ./RTLC.final.opti_mcc.shared ./RTLC.final.shared)
+#system(cp ./RTLC.final.opti_mcc.0.03.cons.taxonomy ./RTLC.final.taxonomy)
+#system(cp ./RTLC.final.opti_mcc.0.03.rep.fasta ./RTLC.final.rep.fasta)
 
+dist.seqs(fasta = RTLC.final.fasta, output = lt)
+clearcut(phylip = final.phylip.dist)
