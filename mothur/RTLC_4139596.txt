@@ -1,0 +1,60 @@
+Linux version
+
+Using ReadLine,Boost,HDF5,GSL
+mothur v.1.48.1
+Last updated: 5/15/24
+by
+Patrick D. Schloss
+
+Department of Microbiology & Immunology
+
+University of Michigan
+http://www.mothur.org
+
+When using, please cite:
+Schloss, P.D., et al., Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl Environ Microbiol, 2009. 75(23):7537-41.
+
+Distributed under the GNU General Public License
+
+Type 'help()' for information on the commands that are available
+
+For questions and analysis support, please visit our forum at https://forum.mothur.org
+
+Type 'quit()' to exit program
+
+[NOTE]: Setting random seed to 19760620.
+
+Batch Mode
+
+
+
+mothur > dist.seqs(fasta = niche_oturep.fasta, output = lt)
+
+Using 128 processors.
+[ERROR]: your sequences are not the same length, aborting.
+
+mothur > clearcut(phylip = final.phylip.dist)
+Unable to open final.phylip.dist. Trying MOTHUR_FILES directory /N/soft/rhel8/mothur/1.48.1/final.phylip.dist.
+Unable to open /N/soft/rhel8/mothur/1.48.1/final.phylip.dist. Trying mothur's executable directory /N/soft/rhel8/mothur/1.48.1/final.phylip.dist.
+Unable to open /N/soft/rhel8/mothur/1.48.1/final.phylip.dist.
+Unable to open final.phylip.dist
+Using niche_oturep.fasta as input file for the fasta parameter.
+You must specify the type of sequences you are using: DNA or protein.
+[ERROR]: did not complete clearcut.
+
+mothur > quit()
+
+
+It took 1 seconds to run 3 commands from /N/u/emamuell/Quartz/github/residence-time-test/mothur/RTLC.batch batch file.
+
+Logfile : mothur.1719606117.logfile
+
+
+
+************************************************************
+************************************************************
+************************************************************
+Detected 2 [ERROR] messages, please review.
+************************************************************
+************************************************************
+************************************************************

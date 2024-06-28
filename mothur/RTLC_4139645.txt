@@ -1,0 +1,218 @@
+Linux version
+
+Using ReadLine,Boost,HDF5,GSL
+mothur v.1.48.1
+Last updated: 5/15/24
+by
+Patrick D. Schloss
+
+Department of Microbiology & Immunology
+
+University of Michigan
+http://www.mothur.org
+
+When using, please cite:
+Schloss, P.D., et al., Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl Environ Microbiol, 2009. 75(23):7537-41.
+
+Distributed under the GNU General Public License
+
+Type 'help()' for information on the commands that are available
+
+For questions and analysis support, please visit our forum at https://forum.mothur.org
+
+Type 'quit()' to exit program
+
+[NOTE]: Setting random seed to 19760620.
+
+Batch Mode
+
+
+
+mothur > dist.seqs(fasta = niche_oturep.fasta, output = lt)
+
+Using 128 processors.
+
+Sequence	Time	Num_Dists_Below_Cutoff
+0	0	0
+1200	0	1200
+200	1	1379
+300	2	7475
+100	3	5050
+400	3	4734
+1700	4	5097
+1900	4	5697
+2100	5	6297
+900	5	8064
+1000	5	7972
+1500	5	7490
+1800	7	8990
+600	7	10064
+2000	7	9990
+500	8	11724
+1300	8	11664
+1600	8	11179
+2200	9	13185
+1400	10	13955
+1805	11	18005
+2032	12	18252
+2185	12	17452
+800	12	17369
+1083	12	18275
+1532	12	18318
+891	12	18501
+1773	12	17685
+2141	12	17100
+700	12	18549
+992	12	18677
+1100	12	18564
+1507	12	18018
+1985	12	17829
+1134	12	18024
+1151	12	19431
+1167	12	18552
+1334	12	18585
+1305	12	18179
+1430	12	18512
+1403	12	18161
+727	12	18577
+1456	13	18850
+1569	13	18762
+1628	13	17853
+1029	13	18369
+1674	13	18359
+1663	13	18238
+1719	13	18854
+2097	13	18837
+1697	13	18612
+1730	13	18975
+1443	13	18681
+1836	13	18315
+1887	13	18825
+1857	13	18525
+1877	13	18725
+1826	13	18215
+193	13	18721
+1956	13	17568
+2069	13	18585
+2004	13	18000
+2106	13	18918
+2078	13	18666
+2124	13	19080
+2060	13	18504
+2177	13	19557
+2023	13	18171
+2133	13	19161
+1199	13	19064
+388	13	18850
+1617	13	19338
+336	13	18941
+1557	13	18618
+802	13	18972
+2051	13	18423
+1246	13	18585
+870	13	18909
+514	13	18829
+1867	13	18625
+274	13	18954
+550	13	19170
+912	13	18942
+2150	13	19314
+673	13	18466
+476	13	19131
+583	13	18711
+848	13	19251
+753	13	19253
+778	13	19150
+825	13	18722
+933	13	19383
+973	13	19270
+953	13	18870
+434	13	18929
+1215	13	19320
+2115	13	18999
+701	13	19250
+1011	13	19038
+1048	13	19741
+1362	13	18977
+1927	13	19225
+1101	13	19665
+1469	13	19019
+1118	13	18870
+1066	13	19035
+1482	13	19188
+1545	13	20007
+1183	13	18808
+1763	13	19338
+1752	13	19217
+1741	13	19096
+1231	13	19576
+1276	13	19035
+1417	13	19747
+1348	13	18781
+1261	13	18810
+1640	13	19614
+1376	13	19173
+1581	13	18906
+1708	13	18733
+1520	13	19682
+1495	13	19357
+645	13	18915
+1291	13	19260
+2014	13	20095
+1652	13	19758
+1593	13	19050
+1605	13	19194
+1907	13	19025
+1847	13	20262
+1937	13	19325
+1784	13	19569
+1816	13	19921
+1917	13	19125
+1947	13	19425
+1897	13	18925
+2042	13	20375
+1966	13	19615
+2203	13	19791
+1976	13	19715
+1995	13	19905
+615	13	19184
+2168	13	19476
+2159	13	19395
+2194	13	19710
+1320	13	19695
+1795	13	19690
+1390	13	19369
+2088	13	20835
+1686	13	20166
+
+It took 15 secs to find distances for 2204 sequences. 2427706 distances below cutoff 1.
+
+
+Output File Names: 
+niche_oturep.phylip.dist
+
+
+mothur > clearcut(phylip = final.phylip.dist)
+Unable to open final.phylip.dist. Trying MOTHUR_FILES directory /N/soft/rhel8/mothur/1.48.1/final.phylip.dist.
+Unable to open /N/soft/rhel8/mothur/1.48.1/final.phylip.dist. Trying mothur's executable directory /N/soft/rhel8/mothur/1.48.1/final.phylip.dist.
+Unable to open /N/soft/rhel8/mothur/1.48.1/final.phylip.dist.
+Unable to open final.phylip.dist
+Using niche_oturep.phylip.dist as input file for the phylip parameter.
+[ERROR]: did not complete clearcut.
+
+mothur > quit()
+
+
+It took 15 seconds to run 3 commands from /N/u/emamuell/Quartz/github/residence-time-test/mothur/RTLC.batch batch file.
+
+Logfile : mothur.1719608589.logfile
+
+
+
+************************************************************
+************************************************************
+************************************************************
+Detected 1 [ERROR] messages, please review.
+************************************************************
+************************************************************
+************************************************************

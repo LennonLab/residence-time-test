@@ -1,0 +1,57 @@
+Linux version
+
+Using ReadLine,Boost,HDF5,GSL
+mothur v.1.48.1
+Last updated: 5/15/24
+by
+Patrick D. Schloss
+
+Department of Microbiology & Immunology
+
+University of Michigan
+http://www.mothur.org
+
+When using, please cite:
+Schloss, P.D., et al., Introducing mothur: Open-source, platform-independent, community-supported software for describing and comparing microbial communities. Appl Environ Microbiol, 2009. 75(23):7537-41.
+
+Distributed under the GNU General Public License
+
+Type 'help()' for information on the commands that are available
+
+For questions and analysis support, please visit our forum at https://forum.mothur.org
+
+Type 'quit()' to exit program
+
+[NOTE]: Setting random seed to 19760620.
+
+Batch Mode
+
+
+
+mothur > filter.seqs(fasta = niche_oturep.fasta)
+
+Using 128 processors.
+Creating Filter...
+17
+[ERROR]: Sequences are not all the same length, please correct.
+9
+[ERROR]: Sequences are not all the same length, please correct.
+5
+It took 1 secs to create filter for 31 sequences.
+
+
+
+
+It took 1 seconds to run 1 commands from /N/u/emamuell/Quartz/github/residence-time-test/mothur/RTLC.batch batch file.
+
+Logfile : mothur.1719606513.logfile
+
+
+
+************************************************************
+************************************************************
+************************************************************
+Detected 2 [ERROR] messages, please review.
+************************************************************
+************************************************************
+************************************************************
