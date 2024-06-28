@@ -55,5 +55,6 @@
 #system(cp ./RTLC.final.opti_mcc.0.03.cons.taxonomy ./RTLC.final.taxonomy)
 #system(cp ./RTLC.final.opti_mcc.0.03.rep.fasta ./RTLC.final.rep.fasta)
 
-dist.seqs(fasta = RTLC.final.fasta, output = lt)
-clearcut(phylip = final.phylip.dist)
+#filter.seqs(fasta = niche_oturep.fasta)
+dist.seqs(fasta = niche_oturep.fasta, output = lt)
+clearcut(phylip = niche_oturep.phylip.dist)
