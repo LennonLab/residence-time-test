@@ -14,7 +14,9 @@ editor_options:
 rm(list=ls())
 getwd()
 
-package.list <- c("Matrix", "jpeg", "cli", "png", "vegan", "ggplot2", "ggpubr", "cowplot", "ggpmisc", "scales", "fitdistrplus", "tidyr", "ade4", "viridis", "gplots", "BiodiversityR", "indicspecies", "knitr", "here", "dplyr", "BiocManager", "car", "here", "actuar", "tibble", "scales", "dplyr", "stringr", "iNEXT", "lmtest", "betapart", "reshape2", "mgcv", "modelr", "purrr", "lme4", "tidymv", "merTools", "MuMIn", "htmltools", "ggrepel", "broom", "tidyverse", "pander", "spaa", "lsr", "fpc", "table1")
+#package.list <- c("ggplot2", "vegan", "mgcv", "scales", "tidymv", "cowplot", "dplyr", "table1")
+
+package.list <- c("Matrix", "jpeg", "cli", "png", "vegan", "ggplot2", "ggpubr", "cowplot", "ggpmisc", "scales", "fitdistrplus", "tidyr", "ade4", "viridis", "gplots", "BiodiversityR", "indicspecies", "knitr", "here", "dplyr", "BiocManager", "car", "here", "actuar", "tibble", "scales", "dplyr", "stringr", "iNEXT", "lmtest", "betapart", "reshape2", "mgcv", "modelr", "purrr", "lme4", "tidymv", "merTools", "MuMIn", "htmltools", "ggrepel", "broom", "tidyverse", "pander", "spaa", "lsr", "fpc", "table1", "ape", "devtools", "phytools", "phylobase", "diptest")
 
 for (package in package.list) {
   if (!require(package, character.only=T, quietly=T)) { 
@@ -22,8 +24,8 @@ for (package in package.list) {
     library(package, character.only=T)
   } }
 
-#BiocManager::install()
-#BiocManager::install(c("flowCore", "ggcyto"))
+# BiocManager::install()
+BiocManager::install(c("flowCore", "ggcyto", "ggtree"))
 
 #devtools::install_github("BlakeRMills/MoMAColors")
 library(MoMAColors)
@@ -99,30 +101,33 @@ Tau <- OT_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_Otoole.csv", header =
 Tau <- OT_fxn(read.csv("data/RTLC/RTLC_S3/20210723_RTLC_S3_Otoole.csv", header = TRUE), Tau)
 Tau <- OT_fxn(read.csv("data/RTLC/RTLC_S4/20210904_RTLC_S4_Otoole.csv", header = TRUE), Tau)
 
-
 #BP data
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S1/20210602_RTLC_S1_BP.csv", header = FALSE), Tau, 1))
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S2/20210628_RTLC_S2_BP.csv", header = FALSE), Tau, 2))
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S3/20210723_RTLC_S3_BP.csv", header = FALSE), Tau, 3))
 Tau <- as.data.frame(BP_fxn(read.csv("data/RTLC/RTLC_S4/20210904_RTLC_S4_BP.csv", header = FALSE), Tau, 4))
 Tau$ind_P <- Tau$uMChr/Tau$N
+Tau$ind_P_g <- (Tau$gCLhr/1000)/Tau$N
+Tau$turnover_t <- (26e-15)/Tau$ind_P_g
 
 
 #Biolog data
 Tau <- EP_fxn(read.csv("data/RTLC/eco.data_rt.txt", header = TRUE, sep = "\t"), Tau)
 
 Tau$Set <- as.factor(Tau$Set)
+Tau_Seq$Tau <- as.numeric(Tau_Seq$Tau)
 
 
 Tau$Tau <- log(((10^Tau$Tau)/60), 10)
+Tau_Seq$Tau <- log(((10^Tau_Seq$Tau)/60), 10)
 
-Tau$N_turn <- (20 * 24)/(10^Tau$Tau)
-
-turnover <- log(20*24, 10)
-
-Tau$Turn <- Tau$Tau <= log(24*20, 10)
-
-Tau$Pump <- Tau$Tau < 1.6
+# Tau$N_turn <- (20 * 24)/(10^Tau$Tau)
+# 
+# turnover <- log(20*24, 10)
+# 
+# Tau$Turn <- Tau$Tau <= log(24*20, 10)
+# 
+# Tau$Pump <- Tau$Tau < 1.6
 ```
 
 
@@ -165,22 +170,6 @@ long_EP <- EcoPlate_72 %>% gather(C_Source, OD, X2.Hydroxy.Benzoic.Acid:Avg)
 
 ##Load slopes of resource use data (48-24 hours)
 ```{r}
-# EcoPlate_S1 <- read.csv("data/RTLC/eco.data_rt_S1_48.txt", header = TRUE, sep = "\t")
-# EcoPlate_S1 <- cbind(EcoPlate_S1[,1:2], (EcoPlate_S1[,4:34] - read.csv("data/RTLC/eco.data_rt_S1_24.txt", header = TRUE, sep = "\t")[,4:34]))
-# EcoPlate_S1[,4:33] <- EcoPlate_S1[,4:33]/2
-# 
-# EcoPlate_S2 <- read.csv("data/RTLC/eco.data_rt_S2_48.txt", header = TRUE, sep = "\t")
-# EcoPlate_S2 <- cbind(EcoPlate_S2[,1:2], (EcoPlate_S2[,4:34] - read.csv("data/RTLC/eco.data_rt_S2_24.txt", header = TRUE, sep = "\t")[,4:34]))
-# EcoPlate_S2[,4:33] <- EcoPlate_S2[,4:33]/2
-# 
-# EcoPlate_S3 <- read.csv("data/RTLC/eco.data_rt_S3_48.txt", header = TRUE, sep = "\t")
-# EcoPlate_S3 <- cbind(EcoPlate_S3[,1:2], (EcoPlate_S3[,4:34] - read.csv("data/RTLC/eco.data_rt_S3_24.txt", header = TRUE, sep = "\t")[,4:34]))
-# EcoPlate_S3[,4:33] <- EcoPlate_S3[,4:33]/2
-# 
-# EcoPlate_S4 <- read.csv("data/RTLC/eco.data_rt_S4_48.txt", header = TRUE, sep = "\t")
-# EcoPlate_S4 <- cbind(EcoPlate_S4[,1:2], (EcoPlate_S4[,4:34] - read.csv("data/RTLC/eco.data_rt_S4_24.txt", header = TRUE, sep = "\t")[,4:34]))
-# EcoPlate_S4[,4:33] <- EcoPlate_S4[,4:33]/2
-
 EcoPlate_S1 <- read.csv("data/RTLC/eco.data_rt_S1_48.txt", header = TRUE, sep = "\t")
 EcoPlate_S1 <- cbind(EcoPlate_S1[,1:2], EcoPlate_S1[,4:34])
 
@@ -252,7 +241,7 @@ rm(ASVs)
 
 ASVsr_20 <- ASV_r[rownames(ASV_r) %in% unique(Tau$Day_20_Seq),]
 ASVsr_20 <- ASVsr_20[,which(colSums(ASVsr_20) >0)]
-rownames(ASVsr_20) <- log(((10^as.numeric(subset(Tau_Seq, Day == 20)$Tau))/60), 10)
+rownames(ASVsr_20) <- subset(Tau_Seq, Day == 20)$Tau
 
 Tau_20 <- subset(Tau[is.na(Tau$Day_20_Seq) == 0,])
 Tau_Seq$Day <- as.factor(Tau_Seq$Day)
@@ -262,17 +251,17 @@ Tau_Seq$Tau <- as.numeric(Tau_Seq$Tau)
 OTUsREL <-decostand(OTU_r, method = "total")
 OTUsREL_20 <- OTUsREL[rownames(OTUsREL) %in% unique(Tau$Day_20_Seq),]
 OTUsREL_20 <- OTUsREL_20[,which(colSums(OTUsREL_20) > 0)]
-rownames(OTUsREL_20) <- log(((10^subset(Tau_Seq, Day == 20)$Tau)/60), 10)
+rownames(OTUsREL_20) <- subset(Tau_Seq, Day == 20)$Tau
 # 
 OTUs.PA <- decostand(OTU_r, method = "pa")
 OTUsPA_20<- OTUs.PA[rownames(OTUs.PA) %in% unique(Tau$Day_20_Seq),]
 OTUsPA_20 <- OTUsPA_20[,which(colSums(OTUsPA_20) > 0)]
-rownames(OTUsPA_20) <- log(((10^subset(Tau_Seq, Day == 20)$Tau)/60), 10)
+rownames(OTUsPA_20) <- subset(Tau_Seq, Day == 20)$Tau
 
 
 OTUsr_20 <- OTU_r[rownames(OTU_r) %in% unique(Tau$Day_20_Seq),]
 OTUsr_20 <- OTUsr_20[,which(colSums(OTUsr_20) >0)]
-rownames(OTUsr_20) <- log(((10^subset(Tau_Seq, Day == 20)$Tau)/60), 10)
+rownames(OTUsr_20) <- subset(Tau_Seq, Day == 20)$Tau
 
 OTU.tax.20 <- OTU.tax[OTU.tax$OTU %in% unique(colnames(OTUsr_20)),]
 
@@ -284,7 +273,8 @@ S_ASV <- as.data.frame(cbind(row.names(ASV_r), unname(S.cal(ASV_r))))
 SimpE <- as.data.frame(cbind(row.names(OTU_r), unname(SimpE.cal(OTU_r))))
 SimpE_ASV <- as.data.frame(cbind(row.names(ASV_r), unname(SimpE.cal(ASV_r))))
 ```
-
+#Figure S2. Diversity metrics with ASVs
+##Observed richness - ASVs
 ```{r}
 Tau <- S_fxn(S_ASV, Tau)
 Tau$Day_20.S <- as.numeric(Tau$Day_20.S)
@@ -319,7 +309,10 @@ S.ob_Tau_ASV <- predict_gam(S_gam) %>%
   theme(plot.margin = unit(c(0.2, 0.2, 0.2, 0.5), "cm"))
 
 S.ob_Tau_ASV
+```
 
+##Species evenness - ASVs
+```{r}
 SimpE_gam <- gam(Day_20.SimpE ~ s(Tau, k = 15), family = gaussian(link = "identity"), data = Tau, method = "REML")
 SimpE_gam_re <- gam(Day_20.SimpE ~ s(Tau) + s(Set, bs = "re"), family = gaussian(link = "identity"), data = Tau, method = "REML")
 
@@ -344,7 +337,10 @@ SimpE_Tau_ASV <- predict_gam(SimpE_gam_re, exclude_terms = "s(Set)") %>%
   labs(title = bquote("Deviance explained =" ~ .(signif(summary(SimpE_gam_re)$dev, 2))))
 
 SimpE_Tau_ASV
+```
 
+##Draw figure
+```{r}
 ggdraw()+
   draw_plot(S.ob_Tau_ASV, x = 0, y = 0.55, width = 1, height = 0.45)+
   draw_plot(SimpE_Tau_ASV, x = 0.04, y = 0, width = 0.96, height = 0.55)+
@@ -354,18 +350,12 @@ ggdraw()+
 ggsave("./output/CommStr_Cstat_ASV.pdf")
 ggsave("./output/CommStr_Cstat_ASV.png", width = 5, height = 6)
 
-
-Tau <- S_fxn(S, Tau)
-Tau$Day_20.S <- as.numeric(Tau$Day_20.S)
-Tau$Day_0.S <- as.numeric(Tau$Day_0.S)
-
-Tau <- SimpE_fxn(SimpE, Tau)
-Tau$Day_0.SimpE <- as.numeric(Tau$Day_0.SimpE)
-Tau$Day_20.SimpE <- as.numeric(Tau$Day_20.SimpE)
 ```
-#Figure 1. Community Structure
 
-##Cstat - Microbial abundance
+
+
+#Figure 1. Community Function
+##Microbial abundance
 ```{r}
 # test <- as.data.frame(seq(0, 0.1, 0.0001))
 # colnames(test) <- "n"
@@ -426,7 +416,114 @@ ggsave("./output/RTLC_N.pdf")
 ggsave("./output/RTLC_N.png")
 ```
 
-##Cstat - Observed Richness
+##Biomass Production (uM C/hr)
+```{r}
+# BP_lm <- lm(uMChr ~ Tau, data = Tau)
+# BP_poly <- lm(uMChr ~ poly(Tau, 2, raw = TRUE), data = Tau)
+# BP_gam <- gam(uMChr ~ s(Tau), family = gaussian(link = "identity"), data = Tau, method = "REML")
+# BP_gam_gm <- gam(uMChr ~ s(Tau), family = Gamma(link = "log"), data = Tau, method = "REML")
+# 
+# AIC(BP_lm, BP_poly, BP_gam, BP_gam_gm)
+
+BP_gam_re <- gam(log(uMChr, 10) ~ s(Tau) + s(Set, bs = "re"), family = gaussian(link = "identity"), data = Tau, method = "REML")
+BP_gam <- gam(log(uMChr, 10) ~ s(Tau), family = gaussian(link = "identity"), data = Tau, method = "REML")
+anova(BP_gam, BP_gam_re, test = "Chisq")
+
+summary(BP_gam_re)
+mean(summary(BP_gam_re)$s.table[,4])
+k.check(BP_gam_re)
+gam.check(BP_gam_re)
+
+BP_Tau <- predict_gam(BP_gam_re, exclude_terms = "s(Set)") %>%
+  filter(Set == "1") %>% 
+  ggplot(aes(Tau, fit))+
+#  geom_vline(xintercept = turnover, linetype = "dashed", color = "blue", size = 1)+
+  geom_smooth_ci(color = "#008d98", cex = 2, ci_alpha= 0.2)+
+  geom_point(data = Tau, aes(x = Tau, y = log(uMChr, 10)))+
+  xlab(expression(paste("Residence time (", tau, ", h)")))+
+  ylab(expression(atop("Bacterial productivity", paste("(", mu, "mol C/hr)"))))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  scale_y_continuous(limits = c(-3, -1), breaks = c(-1, -2, -3), labels = label_math(expr = 10^.x, format = force))+
+  labs(title = bquote("Deviance explained =" ~ .(signif(summary(BP_gam_re)$dev, 2))))
+
+BP_Tau
+
+ggsave("./output/RTLC_BP.pdf")
+ggsave("./output/RTLC_BP.png", width = 6.5, height = 5)
+```
+
+##Average well response at 48 hours
+```{r}
+
+#cor.test(Tau_20$Tau, tau.plot$NumRes, method="spearman", exact=FALSE)
+
+Avg_lm <- lm(AvgRes ~ Tau, data = Tau)
+Avg_gam <- gam(AvgRes ~ s(Tau), data = Tau, family = gaussian(link = "identity"), method = "REML")
+Avg_gam_re <- gam(AvgRes ~ s(Tau) + s(Set, bs = "re"), data = Tau, family = gaussian(link = "identity"), method = "REML")
+
+anova(Avg_gam, Avg_gam_re, test = "Chisq")
+AIC(Avg_lm, Avg_gam, Avg_gam_re)
+
+summary(Avg_gam_re)
+mean(summary(Avg_gam_re)$s.table[,4])
+
+AvgRes <- predict_gam(Avg_gam_re, exclude_terms = "s(Set)") %>%
+  filter(Set == "1") %>% 
+  ggplot(aes(Tau, fit))+
+  geom_smooth_ci(color = "#008d98", cex = 2, ci_alpha= 0.2)+
+  geom_point(data = Tau, aes(x = Tau, y = AvgRes))+
+  xlab(expression(paste("Residence time (", tau, ", h)")))+
+  ylab("Average resource use\n(OD590)")+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  labs(title = bquote("Deviance explained =" ~ .(signif(summary(Avg_gam_re)$dev, 2))))+
+  theme(plot.margin = unit(c(0.2, 0.2, 0.2, 0.8), "cm"))+
+  theme(axis.title.y = element_text(vjust = 6))
+
+AvgRes
+
+ggsave("./output/RTLC_AvgRes.pdf")
+ggsave("./output/RTLC_AvgRes.png", width = 6.5, height = 5)
+
+```
+
+##Draw Figure
+```{r}
+ggdraw()+
+  draw_plot(N_Tau, x = 0.5, y = 0.55, width = 0.5, height = 0.45)+ 
+  draw_plot(BP_Tau, x = 0, y = 0, width = 0.5, height = 0.55)+ 
+  draw_plot(AvgRes, x = 0.5, y = 0, width = 0.5, height = 0.55)+
+  draw_plot_label(label = c("(a)", "(b)", "(c)", "(d)"), size = 20, x = c(0,0.5,0,0.5), y = c(1,1,0.55,0.55))+
+  theme(plot.background = element_rect(fill="white", color = NA))
+
+ggsave("./output/N_productivity_Cstat.pdf")
+ggsave("./output/N_productivity_Cstat.png", width = 12, height = 8)
+```
+
+
+
+#Figure 2. Microbial diversity
+```{r}
+Tau <- S_fxn(S, Tau)
+Tau$Day_20.S <- as.numeric(Tau$Day_20.S)
+Tau$Day_0.S <- as.numeric(Tau$Day_0.S)
+
+Tau <- SimpE_fxn(SimpE, Tau)
+Tau$Day_0.SimpE <- as.numeric(Tau$Day_0.SimpE)
+Tau$Day_20.SimpE <- as.numeric(Tau$Day_20.SimpE)
+```
+
+
+
+```{r}
+ggplot(data = Tau, aes(x = Day_20.S, y = uMChr, color = Tau))+
+  geom_point()+
+  xlab(expression(paste("Observed richness")))+
+  ylab(expression(atop("Bacterial productivity", paste("(", mu, "mol C/hr)"))))+
+  scale_color_gradientn(colors = moma.colors("ustwo"), labels = label_math(expr = 10^.x, format = force))
+
+```
+
+##Observed Richness - OTUs
 ```{r}
 # test <- as.data.frame(seq(0, 0.1, 0.0001))
 # colnames(test) <- "n"
@@ -472,7 +569,7 @@ ggsave("./output/RTLC_S.pdf")
 ggsave("./output/RTLC_S.png")
 ```
 
-##Cstat - Simpson's Evenness (E[1/D])
+##Simpson's Evenness (E[1/D]) - OTUs
 ```{r}
 # test <- as.data.frame(seq(0, 0.1, 0.0001))
 # colnames(test) <- "n"
@@ -515,114 +612,8 @@ ggsave("./output/RTLC_SimpE.png")
 
 ```
 
-
-##Cstat - Biomass Production (uM C/hr)
+##Draw figure
 ```{r}
-# BP_lm <- lm(uMChr ~ Tau, data = Tau)
-# BP_poly <- lm(uMChr ~ poly(Tau, 2, raw = TRUE), data = Tau)
-# BP_gam <- gam(uMChr ~ s(Tau), family = gaussian(link = "identity"), data = Tau, method = "REML")
-# BP_gam_gm <- gam(uMChr ~ s(Tau), family = Gamma(link = "log"), data = Tau, method = "REML")
-# 
-# AIC(BP_lm, BP_poly, BP_gam, BP_gam_gm)
-
-BP_gam_re <- gam(log(uMChr, 10) ~ s(Tau) + s(Set, bs = "re"), family = gaussian(link = "identity"), data = Tau, method = "REML")
-BP_gam <- gam(log(uMChr, 10) ~ s(Tau), family = gaussian(link = "identity"), data = Tau, method = "REML")
-anova(BP_gam, BP_gam_re, test = "Chisq")
-
-summary(BP_gam_re)
-mean(summary(BP_gam_re)$s.table[,4])
-k.check(BP_gam_re)
-gam.check(BP_gam_re)
-
-BP_Tau <- predict_gam(BP_gam_re, exclude_terms = "s(Set)") %>%
-  filter(Set == "1") %>% 
-  ggplot(aes(Tau, fit))+
-#  geom_vline(xintercept = turnover, linetype = "dashed", color = "blue", size = 1)+
-  geom_smooth_ci(color = "#008d98", cex = 2, ci_alpha= 0.2)+
-  geom_point(data = Tau, aes(x = Tau, y = log(uMChr, 10)))+
-#  xlab(expression(paste(tau, " (h)")))+
-  ylab(expression(atop("Bacterial productivity", paste("(", mu, "mol C/hr)"))))+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
-  scale_y_continuous(limits = c(-3, -1), breaks = c(-1, -2, -3), labels = label_math(expr = 10^.x, format = force))+
-  labs(title = bquote("Deviance explained =" ~ .(signif(summary(BP_gam_re)$dev, 2))))+
-  theme(axis.title.x = element_blank())
-
-BP_Tau
-
-ggsave("./output/RTLC_BP.pdf")
-ggsave("./output/RTLC_BP.png", width = 6.5, height = 5)
-```
-
-
-##Cstat - Average well response at 48 hours
-```{r}
-
-#cor.test(Tau_20$Tau, tau.plot$NumRes, method="spearman", exact=FALSE)
-
-Avg_lm <- lm(AvgRes ~ Tau, data = Tau)
-Avg_gam <- gam(AvgRes ~ s(Tau), data = Tau, family = gaussian(link = "identity"), method = "REML")
-Avg_gam_re <- gam(AvgRes ~ s(Tau) + s(Set, bs = "re"), data = Tau, family = gaussian(link = "identity"), method = "REML")
-
-anova(Avg_gam, Avg_gam_re, test = "Chisq")
-AIC(Avg_lm, Avg_gam, Avg_gam_re)
-
-summary(Avg_gam_re)
-mean(summary(Avg_gam_re)$s.table[,4])
-
-AvgRes <- predict_gam(Avg_gam_re, exclude_terms = "s(Set)") %>%
-  filter(Set == "1") %>% 
-  ggplot(aes(Tau, fit))+
-  geom_smooth_ci(color = "#008d98", cex = 2, ci_alpha= 0.2)+
-  geom_point(data = Tau, aes(x = Tau, y = AvgRes))+
-  xlab(expression(paste("Residence time (", tau, ", h)")))+
-  ylab("Average resource use\n(OD590)")+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
-  labs(title = bquote("Deviance explained =" ~ .(signif(summary(Avg_gam_re)$dev, 2))))+
-  theme(plot.margin = unit(c(0.2, 0.2, 0.2, 0.8), "cm"))+
-  theme(axis.title.y = element_text(vjust = 6))
-
-AvgRes
-
-ggsave("./output/RTLC_AvgRes.pdf")
-ggsave("./output/RTLC_AvgRes.png", width = 6.5, height = 5)
-
-```
-##Draw Figure
-```{r}
-ggdraw()+
-  draw_plot(N_Tau, x = 0, y = 0.65, width = 1, height = 0.3) + 
-  draw_plot(S.ob_Tau, x = 0, y = 0.35, width = 1, height = 0.3) + 
-  draw_plot(SimpE_Tau, x = 0, y = 0.0, width = 1, height = 0.35)+
-  draw_plot_label(label = c("A", "B", "C"), size = 30, x = c(0.06,0.06,0.06), y = c(0.96,0.65,0.35))+
-  theme(plot.background = element_rect(fill="white", color = NA))
-
-ggsave("./output/CommStr_Cstat.pdf")
-ggsave("./output/CommStr_Cstat.png", width = 5, height = 10)
-
-
-ggdraw()+
-  draw_plot(N_Tau, x = 0, y = 0.68, width = 0.5, height = 0.31) + 
-  draw_plot(S.ob_Tau, x = 0, y = 0.36, width = 0.5, height = 0.32) + 
-  draw_plot(SimpE_Tau, x = 0, y = 0.0, width = 0.5, height = 0.36)+
-  draw_plot(BP_Tau, x = 0.5, y = 0.53, width = 0.5, height = 0.46)+
-  draw_plot(AvgRes, x = 0.5, y = 0, width = 0.5, height = 0.53)+
-  draw_plot_label(label = c("(a)", "(b)", "(c)", "(d)", "(e)"), size = 20, x = c(0.01,0.01,0.01, 0.51, 0.51), y = c(1,0.7,0.4, 1, 0.55))+
-  theme(plot.background = element_rect(fill="white", color = NA))
-
-ggsave("./output/CommStrFun.pdf")
-ggsave("./output/CommStrFun.png", width = 12, height = 10)
-
-
-ggdraw()+
-  draw_plot(N_Tau, x = 0, y = 0.65, width = 1, height = 0.3)+ 
-  draw_plot(BP_Tau, x = 0, y = 0.35, width = 1, height = 0.3)+ 
-  draw_plot(AvgRes, x = 0, y = 0.0, width = 1, height = 0.35)+
-  draw_plot_label(label = c("(a)", "(b)", "(c)"), size = 20, x = c(0,0,0), y = c(0.96,0.68,0.38))+
-  theme(plot.background = element_rect(fill="white", color = NA))
-
-ggsave("./output/N_productivity_Cstat.pdf")
-ggsave("./output/N_productivity_Cstat.png", width = 5, height = 10)
-
 ggdraw()+
   draw_plot(S.ob_Tau, x = 0, y = 0.55, width = 1, height = 0.45)+
   draw_plot(SimpE_Tau, x = 0, y = 0, width = 1, height = 0.55)+
@@ -634,8 +625,38 @@ ggsave("./output/Diversity_Cstat.png", width = 5, height = 6)
 ```
 
 
+```{r}
+tau.db <- vegdist(OTU_r, method = "bray", upper = TRUE, diag = TRUE)
 
-#Figure 2. Community composition & PCoA axes
+tau.pcoa <- cmdscale(tau.db, eig = TRUE, k = 3)
+explainvar1 <- round(tau.pcoa$eig[1] / sum(tau.pcoa$eig), 3) *100
+explainvar2 <- round(tau.pcoa$eig[2] / sum(tau.pcoa$eig), 3) *100
+explainvar3 <- round(tau.pcoa$eig[3] / sum(tau.pcoa$eig), 3) *100
+sum.eig <- sum(explainvar3, explainvar2, explainvar1)
+
+tau.plot <- as.data.frame(tau.pcoa$points)
+tau.plot <- cbind(tau.plot, Tau_Seq)
+
+
+PCoA_D0 <- ggplot(tau.plot, aes(x = V1, y = V2))+
+  geom_point(cex = 3, aes(color = as.numeric(Tau), shape = Day))+
+  xlab(paste("PCoA 1 (", explainvar1, "%)", sep = ""))+
+  ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
+  labs(color = expression(paste(tau,  " (h)")))+
+  scale_color_gradientn(colors = moma.colors("ustwo"), labels = label_math(expr = 10^.x, format = force))+
+  xlim(c(-0.35, 0.3))+
+#  scale_color_viridis(direction = -1, labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_text(size = 15), legend.position = c(0.1, 0.5), legend.text = element_text(size = 15))
+
+PCoA_D0
+
+ggsave("./output/RTLC_BC_PCoA_D0.pdf")
+ggsave("./output/RTLC_BC_PCoA_D0.png", width = 10, height = 10)
+
+```
+
+
+#Figure 3. Community composition & PCoA axes
 ```{r}
 tau.db <- vegdist(OTUsr_20, method = "bray", upper = TRUE, diag = TRUE)
 
@@ -650,58 +671,19 @@ tau.plot <- cbind(tau.plot, Tau_20)
 tau.plot$Pump <- factor(tau.plot$Pump, levels=c("TRUE", "FALSE"))
 tau.plot$Turn <- factor(tau.plot$Turn, levels=c("TRUE", "FALSE"))
 
-spe.corr <- add.spec.scores(tau.pcoa, OTUsREL_20, method = "cor.scores")$cproj
-corrcut <- 0.7
-imp.spp <- as.data.frame(spe.corr[abs(spe.corr[,1]) >= corrcut | abs(spe.corr[,2]) >= corrcut,])
-imp.spp <- na.omit(imp.spp)
-
-imp.tax <- subset(OTU.tax, OTU == rownames(imp.spp)[1])
-
-x <- 2                        
-while (x <= nrow(imp.spp)){
-  imp.tax <- rbind(imp.tax, subset(OTU.tax, OTU == rownames(imp.spp)[x]))
-  x <- x + 1
-}
-
-imp.spp <- cbind(imp.spp, imp.tax)
-
-imp.otus <- as.data.frame(row.names(OTUsREL_20))
-imp.spp.otu <- c()
-for(otu in unique(imp.spp$OTU)){
-    imp.otus <- cbind(imp.otus, OTUsREL_20[,otu])
-    imp.spp.otu <- c(imp.spp.otu, otu)
-}
-colnames(imp.otus) <- c("Tau", imp.spp.otu)
-imp.otus$Tau <- log(((10^as.numeric(imp.otus$Tau))/60), 10)
-
-
-
-
-anova(betadisper(tau.db, group= Tau_20$Turn))
-permutest(betadisper(tau.db, group= Tau_20$Turn))
-
-Dim1 <- c()
-Dim2 <- c()
-Dim3 <- c()
-for(x in unique(imp.spp$Phylum)){
-  Dim1 <- c(Dim1, mean(as.numeric(subset(imp.spp, imp.spp$Phylum == x)$Dim1)))
-  Dim2 <- c(Dim2, mean(as.numeric(subset(imp.spp, imp.spp$Phylum == x)$Dim2)))
-  Dim3 <- c(Dim3, mean(as.numeric(subset(imp.spp, imp.spp$Phylum == x)$Dim3)))
-}
-
-spe.corr.means <- as.data.frame(unique(imp.spp$Phylum))
-spe.corr.means <- cbind(spe.corr.means, as.vector(Dim1), as.vector(Dim2), as.vector(Dim3))
-colnames(spe.corr.means) <- c("Phylum", "Dim1", "Dim2", "Dim3")
 
 tau.plot.order <- tau.plot[order(as.numeric(tau.plot$Tau)),]
 OTUsr_20.order <- OTUsr_20[order(as.numeric(row.names(OTUsr_20))),]
+
+cor.test(x =tau.plot.order$Tau, y = tau.plot.order$V1)
+cor.test(x = tau.plot.order$Tau, y = tau.plot.order$V2)
 
 PCoA <- ggplot(tau.plot.order, aes(x = V1, y = V2))+
   geom_path(linewidth = 1.25, color = alpha("black", 0.2))+
   geom_point(cex = 3, aes(color = as.numeric(Tau)))+
   xlab(paste("PCoA 1 (", explainvar1, "%)", sep = ""))+
   ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
-  labs(shape = "Full Turnover", color = expression(paste(tau,  " (h)")))+
+  labs(color = expression(paste(tau,  " (h)")))+
   scale_color_gradientn(colors = moma.colors("ustwo"), labels = label_math(expr = 10^.x, format = force))+
 #  scale_color_viridis(direction = -1, labels = label_math(expr = 10^.x, format = force))+
   theme(legend.title = element_text(size = 15), legend.position = c(0.8, 0.2), legend.text = element_text(size = 15))
@@ -747,7 +729,7 @@ PCoA2 <- predict_gam(PCoA2_gam) %>%
   geom_smooth_ci(color = "#008d98", cex = 2, ci_alpha= 0.2)+
   geom_point(data = tau.plot, aes(x = Tau, y = V2))+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
-  xlab(expression(paste(tau, " (h)")))+
+  xlab(expression(paste("Residence time (", tau, ", h)")))+
   ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
   labs(title = bquote("Deviance explained =" ~ .(signif(summary(PCoA2_gam)$dev, 2))))+
   theme(plot.margin = unit(c(0.2, 0.2, 0.2, 0.5), "cm"))
@@ -756,102 +738,6 @@ PCoA2
 
 ggsave("./output/RTLC_BC_PCoA2.pdf")
 ggsave("./output/RTLC_BC_PCoA2.png", width = 6.5, height = 5)
-```
-
-
-```{r}
-OTUs.70 <- as.data.frame(cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in% colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 25))]))[, -1]
-
-rownames(OTUs.70)
-Dim1_sites <- tau.plot$V1
-Dim2_sites <- tau.plot$V2
-
-DNA_corr <- as.data.frame(matrix(NA, dim(OTUs.70)[2], 4))
-row.names(DNA_corr) <- colnames(OTUs.70)
-colnames(DNA_corr)  <- c("V1_rho", "V1_p.value", "V2_rho", "V2_p.value")
-
-for (i in 1:dim(OTUs.70)[2]){
-  out.i <- cor.test(OTUs.70[,i], tau.plot$V1, method="spearman",
-                    exact=FALSE)
-  DNA_corr[i,1] <- out.i$estimate
-  DNA_corr[i,2] <- out.i$p.value
-  
-  out.i <- cor.test(OTUs.70[,i], tau.plot$V2, method="spearman",
-                    exact=FALSE)
-  DNA_corr[i,3] <- out.i$estimate
-  DNA_corr[i,4] <- out.i$p.value
-}
-
-DNA_corr$Niche <- niche.taxa[order(niche.taxa$OTU), ]$Niche
-DNA_corr     <- na.omit(DNA_corr)
-DNA_corr$V1_BH <- p.adjust(DNA_corr$V1_p.value, method = "BH")
-DNA_corr$V2_BH <- p.adjust(DNA_corr$V2_p.value, method = "BH")
-DNA_corr_V2 <- DNA_corr[abs(DNA_corr$V2_rho) > 0.7, ]
-DNA_corr_V1 <- DNA_corr[abs(DNA_corr$V1_rho) > 0.7, ]
-
-V1.tax <- subset(OTU.tax, OTU == rownames(DNA_corr_V1)[1])
-V2.tax <- subset(OTU.tax, OTU == rownames(DNA_corr_V2)[1])
-
-x <- 2                        
-while (x <= nrow(DNA_corr_V1)){
-  V1.tax <- rbind(V1.tax, subset(OTU.tax, OTU == rownames(DNA_corr_V1)[x]))
-  x <- x + 1
-}
-DNA_corr_V1 <- cbind(DNA_corr_V1, V1.tax)
-
-x <- 2                        
-while (x <= nrow(DNA_corr_V2)){
-  V2.tax <- rbind(V2.tax, subset(OTU.tax, OTU == rownames(DNA_corr_V2)[x]))
-  x <- x + 1
-}
-
-DNA_corr_V2 <- cbind(DNA_corr_V2, V2.tax)
-
-DNA_corr_V2_neg <- subset(DNA_corr_V2, DNA_corr_V2$V2_rho < -0.7)
-DNA_corr_V2_neg <- DNA_corr_V2_neg[,c("OTU","V2_rho", "Domain", "Phylum", "Class", "Order", "Family", "Genus")]
-#write.csv(DNA_corr_V2_neg, "./data/DNA_corr_V2_neg.csv")
-DNA_corr_V2_pos <- subset(DNA_corr_V2, DNA_corr_V2$V2_rho > 0.7)
-DNA_corr_V2_pos <- DNA_corr_V2_pos[,c("OTU","V2_rho", "Domain", "Phylum", "Class", "Order", "Family", "Genus")]
-#write.csv(DNA_corr_V2_pos, "./data/DNA_corr_V2_pos.csv")
-
-DNA_corr_V1_neg <- subset(DNA_corr_V1, DNA_corr_V1$V1_rho < -0.7)
-DNA_corr_V1_neg <- DNA_corr_V1_neg[,c("OTU","V1_rho", "Domain", "Phylum", "Class", "Order", "Family", "Genus")]
-#write.csv(DNA_corr_V1_neg, "./data/DNA_corr_V1_neg.csv")
-DNA_corr_V1_pos <- subset(DNA_corr_V1, DNA_corr_V1$V1_rho > 0.7)
-DNA_corr_V1_pos <- DNA_corr_V1_pos[,c("OTU","V1_rho", "Domain", "Phylum", "Class", "Order", "Family", "Genus")]
-#write.csv(DNA_corr_V1_pos, "./data/DNA_corr_V1_pos.csv")
-
-DNA_V2_family_neg <- data.frame()
-for(x in unique(DNA_corr_V2_neg$Family)){
-  DNA_V2_family_neg <- rbind(DNA_V2_family_neg, c(x, mean(subset(DNA_corr_V2_neg, DNA_corr_V2_neg$Family == x)$V2_rho), nrow(subset(DNA_corr_V2_neg, DNA_corr_V2_neg$Family == x))))
-}
-colnames(DNA_V2_family_neg) <- c("Family", "rho", "n")
-DNA_V2_family_neg$n <- as.numeric(DNA_V2_family_neg$n)
-DNA_V2_family_neg$rho <- as.numeric(DNA_V2_family_neg$rho)
-
-DNA_V2_family_pos <- data.frame()
-for(x in unique(DNA_corr_V2_pos$Family)){
-  DNA_V2_family_pos <- rbind(DNA_V2_family_pos, c(x, mean(subset(DNA_corr_V2_pos, DNA_corr_V2_pos$Family == x)$V2_rho), as.numeric(nrow(subset(DNA_corr_V2_pos, DNA_corr_V2_pos$Family == x)))))
-}
-colnames(DNA_V2_family_pos) <- c("Family", "rho", "n")
-DNA_V2_family_pos$n <- as.numeric(DNA_V2_family_pos$n)
-DNA_V2_family_pos$rho <- as.numeric(DNA_V2_family_pos$rho)
-
-DNA_V1_family_neg <- data.frame()
-for(x in unique(DNA_corr_V1_neg$Family)){
-  DNA_V1_family_neg <- rbind(DNA_V1_family_neg, c(x, mean(subset(DNA_corr_V1_neg, DNA_corr_V1_neg$Family == x)$V1_rho), nrow(subset(DNA_corr_V1_neg, DNA_corr_V1_neg$Family == x))))
-}
-colnames(DNA_V1_family_neg) <- c("Family", "rho", "n")
-DNA_V1_family_neg$n <- as.numeric(DNA_V1_family_neg$n)
-DNA_V1_family_neg$rho <- as.numeric(DNA_V1_family_neg$rho)
-
-DNA_V1_family_pos <- data.frame()
-for(x in unique(DNA_corr_V1_pos$Family)){
-  DNA_V1_family_pos <- rbind(DNA_V1_family_pos, c(x, mean(subset(DNA_corr_V1_pos, DNA_corr_V1_pos$Family == x)$V1_rho), nrow(subset(DNA_corr_V1_pos, DNA_corr_V1_pos$Family == x))))
-}
-colnames(DNA_V1_family_pos) <- c("Family", "rho", "n")
-DNA_V1_family_pos$n <- as.numeric(DNA_V1_family_pos$n)
-DNA_V1_family_pos$rho <- as.numeric(DNA_V1_family_pos$rho)
 ```
 
 ##Draw Figure
@@ -869,79 +755,64 @@ ggsave("./output/CommStr_PCoA.png", width = 12, height = 6)
 
 
 
+#Figure 4. Niche overlap
 
-
-#Supplemental community structure figures
 ```{r}
-#Manual vs. pump doesn't matter
-OTU_pump <- ggplot(tau.plot.order, aes(x = V1, y = V2))+
-  geom_path(linewidth = 1.25, color = alpha("black", 0.2))+
-  xlab(paste("PCoA 1 (", explainvar1, "%)", sep = ""))+
-  ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
-  geom_point(cex = 3, aes(color = Pump))+
-  labs(color = "Treatment\nmethod")+
-  scale_color_manual(values = c("#008d98", "black"), labels = c("Pump", "Pipette"))+
-  theme(legend.title = element_text(size = 14))
+#Generate OTU distance matrix using Spearman's correlation coefficient
+OTUs.70 <- as.data.frame(cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in% colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 25))]))[, -1]
 
-OTU_pump
+#Needed this for grep on fasta file for rep seq for Mothur
+#lapply(colnames(OTUs.70), write, "niche_OTUs.txt", append = TRUE)
 
-ggsave("./output/RTLC_BC_OTUpump.pdf")
-ggsave("./output/RTLC_BC_OTUpump.png", width = 8, height = 5)
+OTUs.70 <- OTUs.70[order(as.numeric(row.names(OTUs.70))),]
 
-#BC saturating along the residence time axis
-sat <- as.data.frame(Tau_20[-1, "Tau"])
-sat$BC <- rep(NA, 34)
-row = 1
-while(row <= nrow(sat)){
-  print(tau.db[row])
-  sat[(row), "BC"] <- tau.db[row]
-  row = row + 1
+OTUs.70_heat <- as.data.frame(colnames(OTUs.70))
+colnames(OTUs.70_heat) <- c("OTU")
+
+for (otu1 in OTUs.70_heat$OTU){
+  corr <- c()
+  for(otu2 in OTUs.70_heat$OTU){
+    corr <- c(corr, cor(as.numeric(OTUs.70[,paste0(otu1)]), as.numeric(OTUs.70[,paste0(otu2)]), method = "pearson"))
+  }
+  OTUs.70_heat[,paste0(otu1)] <- corr
+  print(otu1)
 }
-sat$Turn <- Tau_20[-1, "Turn"]
-colnames(sat) <- c("Tau", "BC")
-plot(data = sat, BC ~ Tau)
-```
 
-```{r}
-# taxa <- as.data.frame(imp.otus$Tau)
-# for(x in unique(OTU.tax.20$Phylum)){
-#   list <- data.frame(rep(0, 35))
-#   colnames(list) <- c(as.character(x))
-#   for(y in OTU.tax.20$OTU){
-#     if(subset(OTU.tax.20, OTU.tax.20$OTU == y)$Phylum == x){
-#       list[,x] <- list[,x] + as.data.frame(OTUsr_20[,y])
-#     }
-#   }
-#   taxa[,as.character(x)] <- list[,x]
-# }
-# rownames(taxa) <- taxa$`imp.otus$Tau`
-# taxa.20 <- taxa[,-1]
-# write.csv(taxa.20, "./data/taxa.20.csv")
+OTUs.70_dist <- ((1-OTUs.70_heat[,2:2205])/2)
+rownames(OTUs.70_dist) <- colnames(OTUs.70_heat[,2:2205])
+OTUs.70_dist <- as.matrix(OTUs.70_dist)
+OTUs.70_dist <- as.dist(OTUs.70_dist, upper = TRUE, diag = TRUE)
 
-taxa.20 <- read.csv("./data/taxa.20.csv", header = TRUE)
-rownames(taxa.20) <- taxa.20$X
-taxa.20 <- taxa.20[,-1]
-taxa.20.rel <- decostand(taxa.20, method = "total")
-taxa.20.rel <- cbind(imp.otus$Tau, taxa.20.rel)
-colnames(taxa.20.rel) <- c("Tau", unique(OTU.tax.20$Phylum))
-taxa.20.long <- gather(taxa.20.rel, phylum, REL, Proteobacteria:Modulibacteria)
 
-phylum_plot <- ggplot(taxa.20.long, aes(x = Tau, y = REL, group = phylum))+
-  geom_smooth(method = "loess", se = F, aes(color = phylum, group = phylum))+
-  ylab("Relative abundance")+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
-  labs(color = "Phylum")+
-  xlab(expression(paste(tau, " (h)")))+
-  theme(legend.title = element_text(size = 20), legend.text = element_text(size = 15), axis.title = element_text(size = 20))+
-  guides(color = guide_legend(ncol = 3))
-phylum_plot
+#Perform clustering with 6 clusters
+set.seed(47401)
+kmeans.clust <- kmeans(OTUs.70_dist,centers=5)
 
-ggsave("./output/RTLC_rel_phylum.pdf")
-ggsave("./output/RTLC_rel_phylum.png", width = 12, height = 8)
+
+OTU.niches <- data.frame()
+OTU.niche.sum <- as.data.frame(as.numeric(rownames(OTUs.70)))
+n.cluster <- 1
+while(n.cluster <= 5){
+  cond <- sapply(kmeans.clust$cluster, function(x) x ==n.cluster)
+  cluster <- names(kmeans.clust$cluster[cond])
+  OTUs.cluster <- cbind(as.numeric(rownames(OTUs.70)), rep(n.cluster, 35))
+  colnames(OTUs.cluster) <- c("Tau", "Cluster")
+  OTUs.cluster <- cbind(OTUs.cluster, OTUs.70[ ,colnames(OTUs.70) %in% cluster])
+  OTU.niche.sum <- cbind(OTU.niche.sum, rowSums(OTUs.70[ ,colnames(OTUs.70) %in% cluster]))
+  OTUs.cluster <- as.data.frame(OTUs.cluster) %>% gather(OTU, REL, cluster[1]:cluster[length(cluster)])
+  colnames(OTUs.cluster) <- c("Tau", "Cluster", "OTU", "REL")
+  OTU.niches <- rbind(OTU.niches, OTUs.cluster)
+  n.cluster <- n.cluster + 1
+}
+
+colnames(OTU.niche.sum) <- c("Tau", 1:(n.cluster-1))
+OTU.niche.sum <- as.data.frame(OTU.niche.sum) %>% gather(Cluster, REL, "1":paste(n.cluster-1))
+
+OTU.niche.sum$Cluster <- as.numeric(OTU.niche.sum$Cluster)
+OTU.niche.sum$Cluster <- as.factor(OTU.niche.sum$Cluster)
 ```
 
 
-#Figure 3. - Niche overlap
 ```{r}
 OTUs.70 <- as.data.frame(cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in% colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 25))]))[, -1]
 
@@ -950,29 +821,428 @@ OTUs.70 <- as.data.frame(cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in%
 
 initial.overlap <- mean(niche.overlap(as.data.frame(OTUs.70), method = "pianka"))
 
+uniform.niche.overlap <- read.csv("./data/uniform_nicheoverlap.csv", header = TRUE)[,-1]
+
+uniform.fixedzero.niche.overlap <- read.csv("./data/uniform_fixedzeros_nicheoverlap.csv", header = TRUE)[,-1]
+
+uniform.niche.overlap <- gather(uniform.niche.overlap, key = "Subset", value = "Pianka", L1.niche.overlap:A.niche.overlap)
+uniform.fixedzero.niche.overlap <- gather(uniform.fixedzero.niche.overlap, key = "Subset", value = "Pianka", L1.niche.overlap:A.niche.overlap)
+
+cohensD(x = initial.overlap, y = subset(uniform.fixedzero.niche.overlap, uniform.fixedzero.niche.overlap$Subset == "A.niche.overlap")$Pianka)
+
+cohensD(x = initial.overlap, y = subset(uniform.niche.overlap, uniform.niche.overlap$Subset == "A.niche.overlap")$Pianka)
+
+niche.overlap.uniform.long <- as.data.frame(subset(uniform.niche.overlap, uniform.niche.overlap$Subset == "A.niche.overlap")$Pianka)
+niche.overlap.uniform.long <- cbind(niche.overlap.uniform.long, subset(uniform.fixedzero.niche.overlap, uniform.fixedzero.niche.overlap$Subset == "A.niche.overlap")$Pianka)
+colnames(niche.overlap.uniform.long) <- c("uniform", "uniform.fixedzero")
+niche.overlap.uniform.long <- gather(niche.overlap.uniform.long, key = "Null_model", value = "Pianka")
 
 
-niche.overlap(as.data.frame(OTUs.70[,1:10]), method = "pianka")
+niche_uniform_nullmodels <- ggplot()+
+  geom_hline(yintercept = initial.overlap, linetype = "dotted",color = "#008d98", cex = 2)+
+  annotate("rect", xmin = 1.25, xmax = 1.75, ymin = initial.overlap -0.01, ymax = initial.overlap + 0.01, fill = "white")+
+  geom_violin(data = niche.overlap.uniform.long, aes(x = Null_model, y = Pianka), fill = "#95caa6", color = "white", cex = 1.5)+
+  geom_jitter(data = niche.overlap.uniform.long, width = 0.1, color = alpha("black", 0.1), aes(x = Null_model, y = Pianka), cex = 0.3)+
+  ylab("Niche overlap")+
+  scale_x_discrete(labels = c("Null model 1", "Null model 2"))+
+#  scale_x_discrete(labels = c("Uniform", "Uniform +\n Fixed zeros"))+
+  theme(legend.position = "none", axis.title.x = element_blank())+
+  annotate("text", x = 1.5, y = initial.overlap, label = "Observed", color = "#008d98")
 
-ggplot()+
-  geom_point(data = OTUs.70, aes(x = as.numeric(rownames(OTUs.70)), y = Otu00001))+
-  geom_point(data = OTUs.70, aes(x = as.numeric(rownames(OTUs.70)), y = Otu00002), color = "red")+
+niche_uniform_nullmodels
+
+ggsave("./output/Niche_uniform_nullmodels.pdf")
+ggsave("./output/Niche_uniform_nullmodels.png", width = 5, height = 5)
+```
+
+
+```{r}
+niche.gams <- data.frame()
+for(n in 1:5){
+  niche.gams <- rbind(niche.gams, cbind(rep(n, 50), predict_gam(gam(REL ~ s(Tau), family = gaussian(link = "identity"), data = subset(OTU.niche.sum, OTU.niche.sum$Cluster == n), method = "REML"))))
+  print(summary(gam(REL ~ s(Tau), family = gaussian(link = "identity"), data = subset(OTU.niche.sum, OTU.niche.sum$Cluster == n), method = "REML")))
+  print(mean(summary(gam(REL ~ s(Tau), family = gaussian(link = "identity"), data = subset(OTU.niche.sum, OTU.niche.sum$Cluster == n), method = "REML"))$s.table[,4]))
+}
+colnames(niche.gams) <- c("Cluster", "Tau", "fit", "se.fit")
+
+niche.gams$Cluster <- as.numeric(niche.gams$Cluster)
+niche.gams$Cluster <- as.factor(niche.gams$Cluster)
+
+niche.gams$umin <- (log(2)/(1/((10^niche.gams$Tau)*60)))
+niche.gams$umin <- na_if(niche.gams$umin, niche.gams$Tau < 3)
+scale.factor <- max(subset(niche.gams, niche.gams$Cluster %in% c(1, 4))$fit)/ max(niche.gams$umin)
+
+tau.1 <- log10(1/(log(2)))
+tau.100 <- log10(100/(log(2)))
+tau.12000 <- log10(12000/(log(2)))
+tau.876000 <- log10(876000/(log(2)))
+
+
+OTU.niches_totalREL <- ggplot(data = subset(niche.gams, niche.gams$Cluster %in% c(1, 4)), aes(x = Tau, y = fit, group = Cluster))+
+  geom_smooth_ci(cex = 2, ci_alpha= 0.2, color = "grey")+
+  geom_line(aes(color = Cluster),linewidth = 2)+
+  scale_y_continuous(name = "Relative abundance")+
+  geom_point(data = subset(OTU.niche.sum, OTU.niche.sum$Cluster %in% c(1,4)), aes(x = Tau, y = REL, color = Cluster))+
+  geom_vline(xintercept = c(tau.1, tau.100, tau.12000, tau.876000), color = alpha("black", 0.2), linetype = "13", linewidth = 1.5)+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force), limits = c(-0.3, 6.95), sec.axis = sec_axis(~log10(log(2)/(1/(10^.))), name = "Maximum generation time", breaks = c(0,2,log10(12000), log10(876000)), labels = c("1 h", "100 h", "500 d", "100 y")))+
+  scale_color_manual(values = as.vector(c(moma.colors("ustwo", 5, return_hex = TRUE)[1],moma.colors("ustwo", 5, return_hex = TRUE)[3])))+
+  xlab(expression(paste("Residence time (", tau, ", h)")))+
+  theme(legend.position = "none")+
+  geom_text(x = 6.72, y = 0.48, label = expression(paste("Long ", tau)))+
+  geom_text(x = 6.72, y = 0.45, label = "niche")+
+  geom_text(x = 6.72, y = 0.12, label = expression(paste("Short ", tau)))+
+  geom_text(x = 6.72, y = 0.09, label = "niche")
+
+OTU.niches_totalREL
+
+ggsave("./output/RTLC_niches_totalREL.pdf")
+ggsave("./output/RTLC_niches_totalREL.png", width = 6, height = 4)
+```
+
+
+```{r}
+niche.taxa <- data.frame()
+for(n in 1:5){
+  num <- nrow(subset(OTU.tax, OTU.tax$OTU %in% names(kmeans.clust$cluster[sapply(kmeans.clust$cluster, function(x) x ==n)])))
+  niche.taxa <- rbind(niche.taxa, cbind(rep(n, num), rep(1/num,num), subset(OTU.tax, OTU.tax$OTU %in% names(kmeans.clust$cluster[sapply(kmeans.clust$cluster, function(x) x ==n)]))))
+}
+colnames(niche.taxa) <- c("Niche", "Prop_num", "OTU", "Domain", "Phylum", "Class", "Order", "Family", "Genus")
+niche.taxa$Niche <- as.factor(niche.taxa$Niche)
+niche.taxa$Prop_num <- as.numeric(niche.taxa$Prop_num)
+
+for(x in 1:5){
+  print(paste("Niche: ", x, "   N:", nrow(subset(niche.taxa, niche.taxa$Niche == x)), "   %:", 
+round(nrow(subset(niche.taxa, niche.taxa$Niche == x))/nrow(niche.taxa), digits = 4)))
+}
+
+
+OTU.niches$Cluster <- as.numeric(OTU.niches$Cluster)
+OTU.niches$Cluster <- as.factor(OTU.niches$Cluster)
+
+OTUs_plot <- ggplot(subset(OTU.niches, OTU.niches$Cluster %in% c(1, 4)), aes(x = Tau, y = REL, group = Cluster, color = Cluster))+
+#  geom_point()+
+  geom_smooth(method = "loess")+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Relative abundance")+
   xlab(expression(paste(tau, " (h)")))+
-  ylab("REL")
+  scale_color_manual(values = as.vector(moma.colors("ustwo", 3, return_hex = TRUE))[1:2])+
+  theme(legend.position = "none")
 
-zeros <- data.frame(cbind(rownames(OTUs.70), rowSums(OTUs.70 ==0)))
-colnames(zeros) <- c("Tau", "Zeros")
-zeros$Tau <- as.numeric(zeros$Tau)
-zeros$Zeros <- as.numeric(zeros$Zeros)
+OTUs_plot
 
-OTU_zeros <- ggplot(data = zeros, aes(x = Tau, y = Zeros))+
+ggsave("./output/RTLC_niches_avgREL.pdf")
+ggsave("./output/RTLC_niches_avgREL.png", width = 6, height = 4)
+```
+
+#Draw figure
+```{r}
+ggdraw()+
+  draw_plot(niche_uniform_nullmodels, x = 0, y = 0.1, width = 0.42, height = 0.9) + 
+  draw_plot(OTU.niches_totalREL, x = 0.42, y = 0, width = 0.58, height = 1) +
+  draw_plot_label(label = c("(a)", "(b)"), size = 20, x = c(0,0.42), y = c(1,1))+
+  theme(plot.background = element_rect(fill="white", color = NA))
+
+ggsave("./output/CommStr_niches.pdf")
+ggsave("./output/CommStr_niches.png", width = 10, height = 5)
+```
+
+
+```{r}
+niche1.otus <- subset(niche.taxa, niche.taxa$Niche == 1)$OTU
+niche4.otus <- subset(niche.taxa, niche.taxa$Niche == 4)$OTU
+niche3.otus <- subset(niche.taxa, niche.taxa$Niche == 3)$OTU
+niche2.otus <- subset(niche.taxa, niche.taxa$Niche == 2)$OTU
+niche5.otus <- subset(niche.taxa, niche.taxa$Niche == 5)$OTU
+
+niche_dist <- read.csv("./data/niche_oturep.phylip.dist.csv", header = FALSE)[,-1]
+tip_otus <- read.csv("./seq_to_otu.csv", header = FALSE)
+colnames(tip_otus) <- c("Tips", "Otus")
+rownames(niche_dist) <- tip_otus$Otus
+colnames(niche_dist) <- tip_otus$Otus
+niche_dist[is.na(niche_dist)] <- 0
+niche_dist <- as.matrix(niche_dist)
+niche_dist[upper.tri(niche_dist)] <- NA
+df <- reshape2::melt(niche_dist, na.rm = TRUE)
+df <- df %>% dplyr::filter(!(value == 0)) %>%
+  dplyr::rename(otu1 = Var1, otu2 = Var2, distance = value)
+
+df.sub <- cbind(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche1.otus),], niche = rep("high tau niche", nrow(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche1.otus),])))
+df.sub <- rbind(df.sub, cbind(df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche4.otus),], niche = rep("low tau niche", nrow(df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche4.otus),]))))
+df.sub <- rbind(df.sub, cbind(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche4.otus),], niche = rep("high-low", nrow(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche4.otus),]))))
+df.sub <- rbind(df.sub, cbind(df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche1.otus),], niche = rep("high-low", nrow(df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche1.otus),]))))
+
+
+
+# n.1.4.dist <- mean(c(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche4.otus),]$distance, df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche1.otus),]$distance))
+# 
+# n.1.dist <- mean(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche1.otus),]$distance)
+# 
+# n.4.dist <- mean(df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche4.otus),]$distance)
+# 
+# columns <- c("N", "N1.N4.dist", "N1.dist","N2.dist","N3.dist","N4.dist", "N5.dist")
+# niche.rand.dist <- data.frame(matrix(nrow = 0, ncol = length(columns)))
+# colnames(niche.rand.dist) <- columns
+# niche.rand <- niche.taxa[,c("Niche","OTU")]
+# x <- 0
+# while(x <= 1000){
+#   niche.rand$Niche <- sample(niche.rand$Niche)
+# 
+#   niche1.otus <- subset(niche.rand, niche.rand$Niche == 1)$OTU
+#   niche2.otus <- subset(niche.rand, niche.rand$Niche == 2)$OTU
+#   niche3.otus <- subset(niche.rand, niche.rand$Niche == 3)$OTU
+#   niche4.otus <- subset(niche.rand, niche.rand$Niche == 4)$OTU
+#   niche5.otus <- subset(niche.rand, niche.rand$Niche == 5)$OTU
+#   
+#   n.1.4.dist <- mean(c(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche4.otus),]$distance, df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche1.otus),]$distance))
+#   n.1.dist <- mean(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche1.otus),]$distance)
+#   n.2.dist <- mean(df[which(df$otu1 %in% niche2.otus & df$otu2 %in% niche2.otus),]$distance)
+#   n.3.dist <- mean(df[which(df$otu1 %in% niche3.otus & df$otu2 %in% niche3.otus),]$distance)
+#   n.4.dist <- mean(df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche4.otus),]$distance)
+#   n.5.dist <- mean(df[which(df$otu1 %in% niche5.otus & df$otu2 %in% niche5.otus),]$distance)
+#   
+#   print(c(x))
+#   
+#   niche.rand.dist <- rbind(niche.rand.dist, c(x, n.1.4.dist, n.1.dist, n.2.dist, n.3.dist, n.4.dist, n.5.dist))
+#   
+#   x <- x + 1
+# }
+# 
+# colnames(niche.rand.dist) <- columns
+# 
+
+# n.1.4.dist <- mean(c(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche4.otus),]$distance, df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche1.otus),]$distance))
+# n.1.dist <- mean(df[which(df$otu1 %in% niche1.otus & df$otu2 %in% niche1.otus),]$distance)
+# n.4.dist <- mean(df[which(df$otu1 %in% niche4.otus & df$otu2 %in% niche4.otus),]$distance)
+# 
+# N.1.4 <- ggplot(niche.rand.dist, aes(x = N1.N4.dist))+
+#   geom_histogram()+
+#   geom_vline(xintercept = n.1.4.dist, color = "red")+
+#   theme(axis.title.x = element_blank())+
+#   ylab("Between low and \nhigh tau niche")
+# 
+# N.1.4
+# 
+# N.1 <- ggplot(niche.rand.dist, aes(x = N1.dist))+
+#   geom_histogram()+
+#   geom_vline(xintercept = n.1.dist, color = "red")+
+#   theme(axis.title.x = element_blank())+
+#   ylab("High tau niche")
+# 
+# N.1
+# 
+# N.4 <- ggplot(niche.rand.dist, aes(x = N4.dist))+
+#   geom_histogram()+
+#   geom_vline(xintercept = n.4.dist, color = "red")+
+#   xlab("Mean phylogenetic distance between OTUs in niche")+
+#   ylab("Low tau niche")
+# 
+# N.4
+# 
+# ggdraw()+
+#   draw_plot(N.1.4, x = 0, y = 0.7, width = 1, height = 0.3)+
+#   draw_plot(N.1, x = 0, y = 0.4, width = 1, height = 0.3)+
+#   draw_plot(N.4, x = 0, y = 0, width = 1, height = 0.4)+
+#   theme(plot.background = element_rect(fill="white", color = NA))
+# 
+# ggsave("./output/Niche_phylodist.pdf")
+# ggsave("./output/Niche_phylodist.png", width = 6.5, height = 10)
+
+
+niche_tree <- read.tree("./data/niche_oturep.phylip.tre") 
+tip_otus <- read.csv("./seq_to_otu.csv", header = FALSE)
+colnames(tip_otus) <- c("Tips", "Otus")
+tip_otus$Tips <- factor(tip_otus$Tips, levels = unique(as.character(niche_tree$tip.label)))
+tip_otus <- tip_otus[order(tip_otus$Tips),]
+niche_tree$tip.label <- tip_otus$Otus
+
+niche1 <- sapply(niche1.otus,grep,niche_tree$tip.label)
+niche4 <- sapply(niche4.otus,grep,niche_tree$tip.label)
+niche3 <- sapply(niche3.otus,grep,niche_tree$tip.label)
+niche2 <- sapply(niche2.otus,grep,niche_tree$tip.label)
+niche5 <- sapply(niche5.otus,grep,niche_tree$tip.label)
+
+niche_tree$edge.length[1] <- niche_tree$edge.length[296]
+
+
+
+
+niche.list <- as.data.frame(niche.taxa[,"Niche"])
+rownames(niche.list) <- niche.taxa$OTU
+colnames(niche.list) <- c("Niche")
+niche.list$Niche <- as.numeric(niche.list$Niche)
+niche.list <- as.data.frame((niche.list == 4)*1)
+niche.list$name <- rownames(niche.list)
+
+#install.packages('caper')
+library('caper')
+
+#library("adephylo")
+
+niche.list <- as.data.frame(niche.taxa[,"Niche"])
+rownames(niche.list) <- niche.taxa$OTU
+colnames(niche.list) <- c("Niche")
+niche.list$Niche <- as.numeric(niche.list$Niche)
+niche.list <- as.data.frame((niche.list == 4)*1)
+niche.list$name <- rownames(niche.list)
+
+rtlc.niche <- comparative.data(niche_tree, niche.list, "name")
+D.otu.4 <- phylo.d(rtlc.niche, binvar = Niche)
+
+niche.list <- as.data.frame(niche.taxa[,"Niche"])
+rownames(niche.list) <- niche.taxa$OTU
+colnames(niche.list) <- c("Niche")
+niche.list$Niche <- as.numeric(niche.list$Niche)
+niche.list <- as.data.frame((niche.list == 1)*1)
+niche.list$name <- rownames(niche.list)
+
+rtlc.niche <- comparative.data(niche_tree, niche.list, "name")
+D.otu.1 <- phylo.d(rtlc.niche, binvar = Niche)
+
+print(D.otu.4)
+print(D.otu.1)
+plot(D.otu.4)
+plot(D.otu.1)
+
+
+niche.1.D <- D.otu.1$Permutations[["random"]]
+cohensD(x = as.numeric(D.otu.1$Parameters[["Observed"]]), y = test)
+
+
+niche.4.D <- D.otu.4$Permutations[["random"]]
+cohensD(x = as.numeric(D.otu.4$Parameters[["Observed"]]), y = test)
+
+test <- subset(niche.taxa, niche.taxa$Niche == 4)
+test <- subset(test, !(test$Order %in% intersect(unique(subset(niche.taxa, niche.taxa$Niche == 1)$Order),  unique(subset(niche.taxa, niche.taxa$Niche == 4)$Order))))
+
+test <- subset(niche.taxa, niche.taxa$Niche == 1)
+test <- subset(test, !(test$Order %in% intersect(unique(subset(niche.taxa, niche.taxa$Niche == 1)$Order),  unique(subset(niche.taxa, niche.taxa$Niche == 4)$Order))))
+
+test <- subset(niche.taxa, niche.taxa$Niche %in% c(1,4))
+
+test <- subset(niche.taxa, niche.taxa$Niche %in% c(1,4) & niche.taxa$Phylum == "Planctomycetota" & niche.taxa$Order %in% intersect(unique(subset(niche.taxa, niche.taxa$Niche == 1)$Order),  unique(subset(niche.taxa, niche.taxa$Niche == 4)$Order)))
+
+unique(subset(test, test$Class == "Betaproteobacteria")$Order)
+
+
+
+test <- subset(niche.taxa, niche.taxa$Niche == 1)
+test <- subset(test, !(test$Family %in% intersect(unique(subset(niche.taxa, niche.taxa$Niche == 1)$Family),  unique(subset(niche.taxa, niche.taxa$Niche == 4)$Family))))
+
+test <- subset(niche.taxa, niche.taxa$Niche == 4)
+test <- subset(test, !(test$Class %in% intersect(unique(subset(niche.taxa, niche.taxa$Niche == 1)$Class),  unique(subset(niche.taxa, niche.taxa$Niche == 4)$Class))))
+
+niche.4d <- phylo4d(niche_tree, niche.list)
+table.phylo4d(x = niche.4d, treetype = "phylo", symbol = "colors", col = c("red", "blue"), show.node = TRUE, cex.label = 0.5, edge.color = "black",
+              edge.width = 2, box = FALSE, pch = 15, cex.symbol = 1.25, cex.legend = 1.5, show.tip.label = FALSE)
+
+
+pdf("./output/Niche_phylotree.pdf")
+plotTree(niche_tree, type = "fan", ftype="off", node.numbers = F, color = alpha("black", 0.25))
+#add.arrow(niche_tree, tip=niche1,arrl=0.05, col = alpha(moma.colors("ustwo", 4)[2], 0.25))
+add.arrow(niche_tree, tip = niche4, arrl = 0.025, col = alpha(moma.colors("ustwo", 4)[3], 00.75))
+dev.off()
+```
+
+
+#Figure S3. Niche cluster # and full REL clusters
+```{r}
+#Determine number of clusters where within group sum of squares asymptotes
+wss <- (nrow(OTUs.70_dist)-1)*sum(apply(OTUs.70_dist,2,var))
+  for (i in 2:15) wss[i] <- sum(kmeans(OTUs.70_dist,
+                                       centers=i)$withinss)
+wss.df <- as.data.frame(1:15)
+wss.df$wss <- wss
+colnames(wss.df) <- c("clusters", "wss")
+
+nclust <- ggplot(data = wss.df, aes(x = clusters, y = wss))+
   geom_point()+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
-  xlab(expression(paste(tau, " (h)")))+
-  ylab("Number of OTUs with zero abundance")
+  xlab("Number of Clusters")+
+  ylab("Within groups sum of squares")+
+  geom_smooth(method = "loess", color = "#008d98")
 
-OTU_zeros
+nclust
+
+ggsave("./output/RTLC_niches_nclust.pdf")
+ggsave("./output/RTLC_niches_nclust.png", width = 6, height = 4)
+
+```
+
+```{r}
+OTU.niches_totalREL_all <- ggplot(data =niche.gams, aes(x = Tau, y = fit, group = Cluster))+
+  geom_smooth_ci(cex = 2, ci_alpha= 0.2, color = "grey")+
+  geom_line(linewidth = 2, aes(color = Cluster))+
+  geom_point(data = OTU.niche.sum, aes(x = Tau, y = REL, color = Cluster))+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  ylab("Relative abundance")+
+  scale_color_manual(values = as.vector(c(moma.colors("ustwo", 5)[1], moma.colors("ustwo", 5)[2], moma.colors("ustwo", 5)[4], moma.colors("ustwo", 5)[3], moma.colors("ustwo", 5)[5])))+
+  xlab(expression(paste("Residence time (", tau, ", h)")))+
+  labs(color = "Niche")+
+  theme(legend.position = c(0.88, 0.5), axis.title.x = element_blank(), legend.text = element_text(size = 15), legend.title = element_text(size = 15))
+
+OTU.niches_totalREL_all
+
+ggsave("./output/RTLC_allniches_totalREL.pdf")
+ggsave("./output/RTLC_allniches_totalREL.png", width = 6, height = 4)
+```
+
+```{r}
+#ggplot(data = subset(OTU.niches, OTU.niches$Cluster %in% c(1,4)), aes(x = Tau, y = REL, group = OTU))+
+  
+
+OTU.niches$Cluster <- as.factor(OTU.niches$Cluster)
+OTU.niches$Cluster <- ordered(OTU.niches$Cluster, levels = c("4", "1", "2", "3", "5"))
+  
+OTU.niche.ind <- ggplot(data = subset(OTU.niches, OTU.niches$Cluster %in% c(1,4)), aes(x = Tau, y = REL, group = OTU, color = Cluster))+
+  geom_smooth(se = FALSE)+
+  scale_color_discrete(label= c(expression(paste("Short ", tau, " niche")), expression(paste("Long ", tau, " niche"))), type = c(moma.colors("ustwo", 5)[3], moma.colors("ustwo", 5)[1]))+
+  xlab(expression(paste("Residence time (", tau, ", h)")))+
+  ylab("Relative abundance")+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  theme(legend.title = element_blank(), legend.position = c(0.78, 0.8), legend.text = element_text(size = 15))
+  
+OTU.niche.ind
+
+
+```
+
+```{r}
+ggdraw()+
+  draw_plot(nclust, x = 0, y = 0.675, width = 1, height = 0.325) +
+  draw_plot(OTU.niches_totalREL_all, x = 0, y = 0.35, width = 1, height = 0.325)+
+  draw_plot(OTU.niche.ind, x = 0, y = 0, width = 1, height = 0.35)+
+  draw_plot_label(label = c("(a)", "(b)", "(c)"), size = 20, x = c(0,0,0), y = c(1,0.675,0.35))+
+  theme(plot.background = element_rect(fill="white", color = NA))
+
+ggsave("./output/CommStr_niches_supp.pdf")
+ggsave("./output/CommStr_niches_supp.png", width = 10, height = 15)
+```
+
+##Niche area - NOT USING
+```{r}
+OTU.niches_area <- ggplot(data = OTU.niche.sum, aes(x = Tau, y = REL, group = Cluster, fill = Cluster))+
+  geom_area()+
+  ylab("Niche cluster total \nrelative abundance")+
+  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  scale_fill_manual(values = as.list(moma.colors("ustwo", 7, return_hex = TRUE))[1:6])+
+  xlab(expression(paste(tau, " (h)")))+
+  theme(legend.position = "bottom")+
+  guides(fill = guide_legend(nrow = 1))
+
+OTU.niches_area
+
+ggsave("./output/RTLC_niches_area.pdf")
+ggsave("./output/RTLC_niches_area.png", width = 6, height = 4)
+```
+
+##Pianka sliding window - NOT USING
+```{r}
+OTUs.70 <- as.data.frame(cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in% colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 25))]))[, -1]
+
+#initial.overlap <- mean(niche.overlap(as.data.frame(OTUsREL_20), method = "pianka"))
+#niche overlap of all OTUsREL_20 = 0.120262184194187
+
+initial.overlap <- mean(niche.overlap(as.data.frame(OTUs.70), method = "pianka"))
+
 
 
 cohensD(x = initial.overlap, y = subset(uniform.fixedzero.niche.overlap, uniform.fixedzero.niche.overlap$Subset == "A.niche.overlap")$Pianka)
@@ -1033,262 +1303,67 @@ ggsave("./output/RTLC_window.niche.gam.png", width = 6.5, height = 5)
 
 ```
 
-#Figure 3. Niches along the residence time axis
+
+#Manual vs. pump for community comp - NOT USING
 ```{r}
-#Generate OTU distance matrix using Spearman's correlation coefficient
-OTUs.70 <- as.data.frame(cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in% colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 25))]))[, -1]
+#Manual vs. pump doesn't matter
+OTU_pump <- ggplot(tau.plot.order, aes(x = V1, y = V2))+
+  geom_path(linewidth = 1.25, color = alpha("black", 0.2))+
+  xlab(paste("PCoA 1 (", explainvar1, "%)", sep = ""))+
+  ylab(paste("PCoA 2 (", explainvar2, "%)", sep = ""))+
+  geom_point(cex = 3, aes(color = Pump))+
+  labs(color = "Treatment\nmethod")+
+  scale_color_manual(values = c("#008d98", "black"), labels = c("Pump", "Pipette"))+
+  theme(legend.title = element_text(size = 14))
 
-OTUs.70 <- OTUs.70[order(as.numeric(row.names(OTUs.70))),]
+OTU_pump
 
-OTUs.70_heat <- as.data.frame(colnames(OTUs.70))
-colnames(OTUs.70_heat) <- c("OTU")
-
-for (otu1 in OTUs.70_heat$OTU){
-  corr <- c()
-  for(otu2 in OTUs.70_heat$OTU){
-    corr <- c(corr, cor(as.numeric(OTUs.70[,paste0(otu1)]), as.numeric(OTUs.70[,paste0(otu2)]), method = "pearson"))
-  }
-  OTUs.70_heat[,paste0(otu1)] <- corr
-  print(otu1)
-}
-
-OTUs.70_dist <- ((1-OTUs.70_heat[,2:2205])/2)
-rownames(OTUs.70_dist) <- colnames(OTUs.70_heat[,2:2205])
-OTUs.70_dist <- as.matrix(OTUs.70_dist)
-OTUs.70_dist <- as.dist(OTUs.70_dist, upper = TRUE, diag = TRUE)
-
-set.seed(47401)
-#Perform clustering with 6 clusters
-kmeans.clust <- kmeans(OTUs.70_dist,centers=5)
-#plotcluster(OTUs.70_dist,kmeans.clust$cluster,xlab ="Number of groups")
-
-OTU.niches <- data.frame()
-OTU.sum <- as.data.frame(as.numeric(rownames(OTUs.70)))
-n.cluster <- 1
-while(n.cluster <= 5){
-  cond <- sapply(kmeans.clust$cluster, function(x) x ==n.cluster)
-  cluster <- names(kmeans.clust$cluster[cond])
-  OTUs.cluster <- cbind(as.numeric(rownames(OTUs.70)), rep(n.cluster, 35))
-  colnames(OTUs.cluster) <- c("Tau", "Cluster")
-  OTUs.cluster <- cbind(OTUs.cluster, OTUs.70[ ,colnames(OTUs.70) %in% cluster])
-  OTU.sum <- cbind(OTU.sum, rowSums(OTUs.70[ ,colnames(OTUs.70) %in% cluster]))
-  OTUs.cluster <- as.data.frame(OTUs.cluster) %>% gather(OTU, REL, cluster[1]:cluster[length(cluster)])
-  colnames(OTUs.cluster) <- c("Tau", "Cluster", "OTU", "REL")
-  OTU.niches <- rbind(OTU.niches, OTUs.cluster)
-  n.cluster <- n.cluster + 1
-}
-
-colnames(OTU.sum) <- c("Tau", 1:(n.cluster-1))
-OTU.sum <- as.data.frame(OTU.sum) %>% gather(Cluster, REL, "1":paste(n.cluster-1))
-
-OTU.sum$Cluster <- as.numeric(OTU.sum$Cluster)
-OTU.sum$Cluster <- as.factor(OTU.sum$Cluster)
+ggsave("./output/RTLC_BC_OTUpump.pdf")
+ggsave("./output/RTLC_BC_OTUpump.png", width = 8, height = 5)
+```
 
 
+#REL of phyla over tau - NOT USING
+```{r}
+# taxa <- as.data.frame(imp.otus$Tau)
+# for(x in unique(OTU.tax.20$Phylum)){
+#   list <- data.frame(rep(0, 35))
+#   colnames(list) <- c(as.character(x))
+#   for(y in OTU.tax.20$OTU){
+#     if(subset(OTU.tax.20, OTU.tax.20$OTU == y)$Phylum == x){
+#       list[,x] <- list[,x] + as.data.frame(OTUsr_20[,y])
+#     }
+#   }
+#   taxa[,as.character(x)] <- list[,x]
+# }
+# rownames(taxa) <- taxa$`imp.otus$Tau`
+# taxa.20 <- taxa[,-1]
+# write.csv(taxa.20, "./data/taxa.20.csv")
 
-OTU.niches_area <- ggplot(data = OTU.sum, aes(x = Tau, y = REL, group = Cluster, fill = Cluster))+
-  geom_area()+
-  ylab("Niche cluster total \nrelative abundance")+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
-  scale_fill_manual(values = as.list(moma.colors("ustwo", 7, return_hex = TRUE))[1:6])+
-  xlab(expression(paste(tau, " (h)")))+
-  theme(legend.position = "bottom")+
-  guides(fill = guide_legend(nrow = 1))
+taxa.20 <- read.csv("./data/taxa.20.csv", header = TRUE)
+rownames(taxa.20) <- taxa.20$X
+taxa.20 <- taxa.20[,-1]
+taxa.20.rel <- decostand(taxa.20, method = "total")
+taxa.20.rel <- cbind(imp.otus$Tau, taxa.20.rel)
+colnames(taxa.20.rel) <- c("Tau", unique(OTU.tax.20$Phylum))
+taxa.20.long <- gather(taxa.20.rel, phylum, REL, Proteobacteria:Modulibacteria)
 
-OTU.niches_area
-
-ggsave("./output/RTLC_niches_area.pdf")
-ggsave("./output/RTLC_niches_area.png", width = 6, height = 4)
-
-niche.gams <- data.frame()
-for(n in 1:5){
-  niche.gams <- rbind(niche.gams, cbind(rep(n, 50), predict_gam(gam(REL ~ s(Tau), family = gaussian(link = "identity"), data = subset(OTU.sum, OTU.sum$Cluster == n), method = "REML"))))
-  print(summary(gam(REL ~ s(Tau), family = gaussian(link = "identity"), data = subset(OTU.sum, OTU.sum$Cluster == n), method = "REML")))
-  print(mean(summary(gam(REL ~ s(Tau), family = gaussian(link = "identity"), data = subset(OTU.sum, OTU.sum$Cluster == n), method = "REML"))$s.table[,4]))
-}
-colnames(niche.gams) <- c("Cluster", "Tau", "fit", "se.fit")
-
-niche.gams$Cluster <- as.numeric(niche.gams$Cluster)
-niche.gams$Cluster <- as.factor(niche.gams$Cluster)
-
-moma.colors("ustwo", 4, return_hex = TRUE)
-
-OTU.niches_totalREL <- ggplot(data = subset(niche.gams, niche.gams$Cluster %in% c(1, 4)), aes(x = Tau, y = fit, group = Cluster))+
-  geom_smooth_ci(cex = 2, ci_alpha= 0.2, color = "grey")+
-  geom_line(linewidth = 2, aes(color = Cluster))+
-  geom_point(data = subset(OTU.sum, OTU.sum$Cluster %in% c(1,4)), aes(x = Tau, y = REL, color = Cluster))+
-  scale_x_continuous(labels = label_math(expr = 10^.x, format = force), limits = c(-0.3, 6.95))+
+phylum_plot <- ggplot(taxa.20.long, aes(x = Tau, y = REL, group = phylum))+
+  geom_smooth(method = "loess", se = F, aes(color = phylum, group = phylum))+
   ylab("Relative abundance")+
-  scale_color_manual(values = as.vector(moma.colors("ustwo", 4, return_hex = TRUE))[2:3])+
-  xlab(expression(paste("Residence time (", tau, ", h)")))+
-  theme(legend.position = "none")+
-  geom_text(x = 6.72, y = 0.48, label = expression(paste("High ", tau)))+
-  geom_text(x = 6.72, y = 0.45, label = "cluster")+
-  geom_text(x = 6.72, y = 0.12, label = expression(paste("Low ", tau)))+
-  geom_text(x = 6.72, y = 0.09, label = "cluster")
-
-OTU.niches_totalREL
-
-ggsave("./output/RTLC_niches_totalREL.pdf")
-ggsave("./output/RTLC_niches_totalREL.png", width = 6, height = 4)
-
-niche.taxa <- data.frame()
-for(n in 1:5){
-  num <- nrow(subset(OTU.tax, OTU.tax$OTU %in% names(kmeans.clust$cluster[sapply(kmeans.clust$cluster, function(x) x ==n)])))
-  niche.taxa <- rbind(niche.taxa, cbind(rep(n, num), rep(1/num,num), subset(OTU.tax, OTU.tax$OTU %in% names(kmeans.clust$cluster[sapply(kmeans.clust$cluster, function(x) x ==n)]))))
-}
-
-colnames(niche.taxa) <- c("Niche", "Prop_num", "OTU", "Domain", "Phylum", "Class", "Order", "Family", "Genus")
-niche.taxa$Niche <- as.factor(niche.taxa$Niche)
-niche.taxa$Prop_num <- as.numeric(niche.taxa$Prop_num)
-
-nrow(subset(niche.taxa, niche.taxa$Niche == "1"))
-nrow(subset(niche.taxa, niche.taxa$Niche == "1"))/nrow(niche.taxa)
-nrow(subset(niche.taxa, niche.taxa$Niche == "2"))
-nrow(subset(niche.taxa, niche.taxa$Niche == "2"))/nrow(niche.taxa)
-nrow(subset(niche.taxa, niche.taxa$Niche == "3"))
-nrow(subset(niche.taxa, niche.taxa$Niche == "3"))/nrow(niche.taxa)
-nrow(subset(niche.taxa, niche.taxa$Niche == "4"))
-nrow(subset(niche.taxa, niche.taxa$Niche == "4"))/nrow(niche.taxa)
-nrow(subset(niche.taxa, niche.taxa$Niche == "5"))
-nrow(subset(niche.taxa, niche.taxa$Niche == "5"))/nrow(niche.taxa)
-
-
-nrow(subset(niche.taxa, niche.taxa$Niche == "1" & niche.taxa$Phylum == "Verrucomicrobiota"))/nrow(subset(niche.taxa, niche.taxa$Niche == "1"))
-nrow(subset(niche.taxa, niche.taxa$Niche == "4" & niche.taxa$Phylum == "Verrucomicrobiota"))/nrow(subset(niche.taxa, niche.taxa$Niche == "4"))
-
-
-OTU.niches$Cluster <- as.numeric(OTU.niches$Cluster)
-OTU.niches$Cluster <- as.factor(OTU.niches$Cluster)
-
-OTUs_plot <- ggplot(subset(OTU.niches, OTU.niches$Cluster %in% c(1, 4)), aes(x = Tau, y = REL, group = Cluster, color = Cluster))+
-#  geom_point()+
-  geom_smooth(method = "loess")+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
-  ylab("Relative abundance")+
+  labs(color = "Phylum")+
   xlab(expression(paste(tau, " (h)")))+
-  scale_color_manual(values = as.vector(moma.colors("ustwo", 3, return_hex = TRUE))[1:2])+
-  theme(legend.position = "none")
+  theme(legend.title = element_text(size = 20), legend.text = element_text(size = 15), axis.title = element_text(size = 20))+
+  guides(color = guide_legend(ncol = 3))
+phylum_plot
 
-OTUs_plot
-
-ggsave("./output/RTLC_niches_avgREL.pdf")
-ggsave("./output/RTLC_niches_avgREL.png", width = 6, height = 4)
-```
-
-#Draw figure
-```{r}
-ggdraw()+
-  draw_plot(niche_uniform_nullmodels, x = 0, y = 0.1, width = 0.42, height = 0.9) + 
-  draw_plot(OTU.niches_totalREL, x = 0.42, y = 0, width = 0.58, height = 1) +
-  draw_plot_label(label = c("(a)", "(b)"), size = 20, x = c(0,0.42), y = c(1,1))+
-  theme(plot.background = element_rect(fill="white", color = NA))
-
-ggsave("./output/CommStr_niches.pdf")
-ggsave("./output/CommStr_niches.png", width = 10, height = 5)
-
+ggsave("./output/RTLC_rel_phylum.pdf")
+ggsave("./output/RTLC_rel_phylum.png", width = 12, height = 8)
 ```
 
 
-#Supplemental Figures - Niche overlap
-```{r}
-
-#Determine number of clusters where within group sum of squares asymptotes
-wss <- (nrow(OTUs.70_dist)-1)*sum(apply(OTUs.70_dist,2,var))
-  for (i in 2:15) wss[i] <- sum(kmeans(OTUs.70_dist,
-                                       centers=i)$withinss)
-wss.df <- as.data.frame(1:15)
-wss.df$wss <- wss
-colnames(wss.df) <- c("clusters", "wss")
-
-nclust <- ggplot(data = wss.df, aes(x = clusters, y = wss))+
-  geom_point()+
-  xlab("Number of Clusters")+
-  ylab("Within groups sum of squares")+
-  geom_smooth(method = "loess", color = "#008d98")
-
-nclust
-
-ggsave("./output/RTLC_niches_nclust.pdf")
-ggsave("./output/RTLC_niches_nclust.png", width = 6, height = 4)
-
-
-```
-
-```{r}
-OTUs.70 <- as.data.frame(cbind(Tau_20$Tau, OTUsREL_20[,colnames(OTUsREL_20) %in% colnames(as.data.frame(OTUsPA_20) %>% select_if(colSums(OTUsPA_20) >= 25))]))[, -1]
-
-#initial.overlap <- mean(niche.overlap(as.data.frame(OTUsREL_20), method = "pianka"))
-#niche overlap of all OTUsREL_20 = 0.120262184194187
-
-initial.overlap <- mean(niche.overlap(as.data.frame(OTUs.70), method = "pianka"))
-
-uniform.niche.overlap <- read.csv("./data/uniform_nicheoverlap.csv", header = TRUE)[,-1]
-
-uniform.fixedzero.niche.overlap <- read.csv("./data/uniform_fixedzeros_nicheoverlap.csv", header = TRUE)[,-1]
-
-uniform.niche.overlap <- gather(uniform.niche.overlap, key = "Subset", value = "Pianka", L1.niche.overlap:A.niche.overlap)
-uniform.fixedzero.niche.overlap <- gather(uniform.fixedzero.niche.overlap, key = "Subset", value = "Pianka", L1.niche.overlap:A.niche.overlap)
-
-cohensD(x = initial.overlap, y = subset(uniform.fixedzero.niche.overlap, uniform.fixedzero.niche.overlap$Subset == "A.niche.overlap")$Pianka)
-
-cohensD(x = initial.overlap, y = subset(uniform.niche.overlap, uniform.niche.overlap$Subset == "A.niche.overlap")$Pianka)
-
-niche.overlap.uniform.long <- as.data.frame(subset(uniform.niche.overlap, uniform.niche.overlap$Subset == "A.niche.overlap")$Pianka)
-niche.overlap.uniform.long <- cbind(niche.overlap.uniform.long, subset(uniform.fixedzero.niche.overlap, uniform.fixedzero.niche.overlap$Subset == "A.niche.overlap")$Pianka)
-colnames(niche.overlap.uniform.long) <- c("uniform", "uniform.fixedzero")
-niche.overlap.uniform.long <- gather(niche.overlap.uniform.long, key = "Null_model", value = "Pianka")
-
-moma.colors("ustwo", 4, return_hex = TRUE)
-
-niche_uniform_nullmodels <- ggplot()+
-  geom_hline(yintercept = initial.overlap, linetype = "dotted",color = "#008d98", cex = 2)+
-  annotate("rect", xmin = 1.25, xmax = 1.75, ymin = initial.overlap -0.01, ymax = initial.overlap + 0.01, fill = "white")+
-  geom_violin(data = niche.overlap.uniform.long, aes(x = Null_model, y = Pianka), fill = "#ff8e5e", color = "white", cex = 1.5)+
-  geom_jitter(data = niche.overlap.uniform.long, width = 0.1, color = alpha("black", 0.1), aes(x = Null_model, y = Pianka), cex = 0.3)+
-  ylab("Niche overlap")+
-  scale_x_discrete(labels = c("Null model 1", "Null model 2"))+
-#  scale_x_discrete(labels = c("Uniform", "Uniform +\n Fixed zeros"))+
-  theme(legend.position = "none", axis.title.x = element_blank())+
-  annotate("text", x = 1.5, y = initial.overlap, label = "Observed", color = "#008d98")
-
-niche_uniform_nullmodels
-
-ggsave("./output/Niche_uniform_nullmodels.pdf")
-ggsave("./output/Niche_uniform_nullmodels.png", width = 5, height = 5)
-```
-
-```{r}
-ggdraw()+
-  draw_plot(niche_uniform_nullmodels, x = 0, y = 0.5, width = 1, height = 0.5) + 
-  draw_plot(nclust, x = 0, y = 0, width = 1, height = 0.5) +
-  draw_plot_label(label = c("(a)", "(b)"), size = 20, x = c(0,0), y = c(1,0.5))+
-  theme(plot.background = element_rect(fill="white", color = NA))
-
-ggsave("./output/CommStr_niches_supp.pdf")
-ggsave("./output/CommStr_niches_supp.png", width = 8, height = 12)
-```
-
-
-
-
-#Figure 4. Community Function
-
-
-
-#Draw figure
-```{r}
-ggdraw()+
-  draw_plot(BP_Tau, x = 0, y = 0.55, width = 1, height = 0.45) + 
-  draw_plot(AvgRes, x = 0, y = 0, width = 1, height = 0.55) + 
-  draw_plot_label(label = c("A", "B"), size = 30, x = c(0.02,0.02), y = c(1,0.55))+
-  theme(plot.background = element_rect(fill="white", color = NA))
-
-ggsave("./output/Comm_Func.pdf")
-ggsave("./output/Comm_Func.png", width = 8, height = 10)
-```
-
-##Figure S6 - Individual carbon sources
+#Figure S6 - Individual carbon sources
 ```{r}
 csource_sig <- data.frame()
 for(c in unique(long_EP_48$C_Source)){
@@ -1308,15 +1383,15 @@ csource_sig.gam <- subset(csource_sig, csource_sig$BH_gam < 0.05)
 csource.gams <- data.frame()
 for(c in as.list(csource_sig.gam$Resource)){
   csource.gams <- rbind(csource.gams, cbind(rep(c, 50), rep(subset(csource_sig.gam, csource_sig.gam$Resource == c)$Type, 50), predict_gam(gam(data = subset(long_EP_48, long_EP_48$C_Source == c), OD_48 ~ s(Tau), family = gaussian(link="identity"), method = "REML"))))
-  print(c)
-  print(summary(gam(data = subset(long_EP_48, long_EP_48$C_Source == c), OD_48 ~ s(Tau), family = gaussian(link="identity"), method = "REML")))
-  print(mean(summary(gam(REL ~ s(Tau), family = gaussian(link = "identity"), data = subset(OTU.sum, OTU.sum$Cluster == n), method = "REML"))$s.table[,4]))
+#  print(c)
+#  print(summary(gam(data = subset(long_EP_48, long_EP_48$C_Source == c), OD_48 ~ s(Tau), family = gaussian(link="identity"), method = "REML")))
+#  print(mean(summary(gam(REL ~ s(Tau), family = gaussian(link = "identity"), data = subset(OTU.niche.sum, OTU.niche.sum$Cluster == n), method = "REML"))$s.table[,4]))
 }
 colnames(csource.gams) <- c("C_Source", "Type", "Tau", "fit", "se.fit")
 
 csource.gams$C_Source <- as.factor(csource.gams$C_Source)
 
-install.packages("lemon")
+#install.packages("lemon")
 library(lemon)
 
 
@@ -1329,7 +1404,7 @@ Sig.csource.gams <- ggplot(data = csource.gams, aes(x = Tau, y = fit, group = C_
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
   ylab("Resource use at 48 hours (OD 590)")+
   scale_color_discrete(type = moma.colors("ustwo", 16, type = "continuous"))+
-  xlab(expression(paste(tau, " (h)")))+
+  xlab(expression(paste("Residence time (", tau, ", h)")))+
   guides(color = guide_legend(nrow = 6))+
   theme(legend.position = "bottom", legend.title = element_blank(), legend.box.background = element_rect(color = "black", size = 2))
 
@@ -1399,21 +1474,35 @@ spe.corr.ep$Dim1 <- as.numeric(spe.corr.ep$Dim1)
 spe.corr.ep$Dim2 <- as.numeric(spe.corr.ep$Dim2)
 spe.corr.ep$C_source <- rownames(spe.corr.ep)
 
-EP_BC_pump <- ggplot(EP.plot, aes(x = V1, y = V2))+
-  geom_point(cex = 2, aes(color = Pump), alpha = 0.2)+
+spe.corr.ep.means[6, "Dim1"]
+
+
+EP_BC <- ggplot(EP.plot, aes(x = V1, y = V2))+
+  geom_point(shape = 21, cex = 2, aes(fill = as.numeric(Tau)), color = "black")+
   xlab(paste("PCoA 1 (", explainvar1.ep, "%)", sep = ""))+
   ylab(paste("PCoA 2 (", explainvar2.ep, "%)", sep = ""))+
-  xlim(c(-0.5, 0.3))+
-  labs(color = "Treatment\nmethod")+
-  scale_color_manual(values = c("#008d98", "black"), labels = c("Pump", "Manual"))+
+#  xlim(c(-0.5, 0.3))+
+  # labs(color = "Treatment\nmethod")+
+  # scale_color_manual(values = c("#008d98", "black"), labels = c("Pump", "Manual"))+
+  labs(fill = expression(paste(tau,  " (h)")))+
+  scale_fill_gradientn(colors = alpha(moma.colors("ustwo"),0.9), labels = label_math(expr = 10^.x, format = force))+
   theme(legend.title = element_text(size = 14))+
-  geom_text(size = 5, data = spe.corr.ep.means, aes(x = Dim1, y = Dim2, label = C_types), color = "black")+
-  theme(legend.title = element_text(size = 15), legend.position = c(0.8, 0.2), legend.text = element_text(size = 15), legend.box.background = element_rect(color = "black", size = 1))
+  geom_text(size = 5, data = subset(spe.corr.ep.means, spe.corr.ep.means$C_types != "amine"), aes(x = Dim1, y = Dim2, label = C_types), color = "black")+
+  geom_text(size =5, data = subset(spe.corr.ep.means, spe.corr.ep.means$C_types == "amine"), aes(x = Dim1, y = Dim2+0.20, label = C_types), color = "black")+
+    geom_segment(aes(x = as.numeric(spe.corr.ep.means[6, "Dim1"]), y = as.numeric(spe.corr.ep.means[6, "Dim2"]), xend = as.numeric(spe.corr.ep.means[6, "Dim1"]), yend = as.numeric(spe.corr.ep.means[6, "Dim2"])+0.15))+
+  theme(legend.title = element_text(size = 15), legend.position = c(0.2, 0.3), legend.text = element_text(size = 15))
 
-EP_BC_pump
+EP_BC
 
-ggsave("./output/RTLC_BC_Respump.pdf")
-ggsave("./output/RTLC_BC_Respump.png", width = 8, height = 5)
+ggsave("./output/RTLC_BC_Res.pdf")
+ggsave("./output/RTLC_BC_Res.png", width = 8, height = 5)
+
+dip.x <- c(rnorm(100, 10, 2), rnorm(100, 20, 2))
+
+hist(dip.x)
+hist(EP.plot$V2)
+
+dip.test(EP.plot$V2)
 
 EcoPlate_env$Set <- c(rep(1, 13), rep(2,12), rep(3,10), rep(4,14))
 
@@ -1442,6 +1531,7 @@ Res_PCoA1 <- predict_gam(Res_PCoA1_gam) %>%
 #  labs(color = "Number of turnovers")+
 #  scale_color_manual(values = c(alpha("blue", 0.3), alpha("black", 0.3)), labels = c("> 1", "< 1"))+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = -6, b = 0, l = 12)))+
   labs(title = bquote("Deviance explained =" ~ .(signif(summary(Res_PCoA1_gam)$dev, 2))))+
   theme(axis.title.x = element_blank())
 
@@ -1467,10 +1557,11 @@ Res_PCoA2 <- predict_gam(Res_PCoA2_gam_re, exclude_terms = "s(Set)") %>%
 #  geom_vline(xintercept = turnover, linetype = "dashed", color = "blue", size = 1)+
   geom_point(data = EP.plot, aes(x = Tau, y = V2))+
   ylab(paste("PCoA 2 (", explainvar2.ep, "%)\n", sep = ""))+
-  xlab(expression(paste(tau, " (h)")))+
+  xlab(expression(paste("Residence time (",tau, ", h)")))+
 #  labs(color = "Number of turnovers")+
 #  scale_color_manual(values = c(alpha("blue", 0.3), alpha("black", 0.3)), labels = c("> 1", "< 1"))+
   scale_x_continuous(labels = label_math(expr = 10^.x, format = force))+
+  theme(axis.title.y = element_text(margin = margin(t = 0, r = -6, b = 0, l = 12)))+
   labs(title = bquote("Deviance explained =" ~ .(signif(summary(Res_PCoA2_gam_re)$dev, 2))))
 
 Res_PCoA2
@@ -1480,7 +1571,7 @@ ggsave("./output/RTLC_Res_BC_PCoA2.png", width = 6.5, height = 5)
 ```
 ```{r}
 ggdraw()+
-  draw_plot(EP_BC_pump, x = 0, y = 0, width = 0.5, height = 1)+
+  draw_plot(EP_BC, x = 0, y = 0, width = 0.5, height = 1)+
   draw_plot(Res_PCoA1, x = 0.5, y = 0.55, width = 0.5, height = 0.45)+
   draw_plot(Res_PCoA2, x = 0.5, y = 0, width = 0.5, height = 0.55)+
   draw_plot_label(label = c("(a)", "(b)", "(c)"), size = 20, x = c(0,0.5,0.5), y = c(1.005,1.005,0.555))+

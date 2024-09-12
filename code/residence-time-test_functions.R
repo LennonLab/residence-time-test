@@ -77,6 +77,7 @@ BP_fxn <- function(CPMs, Tau, set){
   #Conversion of g to mol to umol to get umolC/hr
   Tau$uMChr <- Tau$gCLhr * 0.083333 * 100000
   Tau$log_uMChr <- log(Tau$uMChr, 10)
+  print(paste("Machine efficiency:", efficiency))
   return(Tau)
 }
 
